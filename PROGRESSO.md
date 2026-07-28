@@ -6,7 +6,7 @@ Diário de bordo do desenvolvimento. Atualizado a cada avanço, para retomar o t
 
 ## Onde estamos agora
 
-**Fase 1 — Fundação**, quase concluída. Todo o código está escrito, **`npm run build` fecha limpo, sem erro nem aviso**, e o `npm run dev` foi testado com sucesso: `/` e `/saidas` renderizam certo (com estado vazio, já que não há dado nenhum no Sanity ainda), `/studio` carrega, e `/saidas/[slug-que-nao-existe]` devolve 404 corretamente. Sessão pausada aqui — falta só: gerar o token de escrita do Sanity, rodar o seed, dar uma olhada visual real no navegador (não tive acesso ao Chrome nesta sessão, só validei por `curl`), subir na Vercel e commitar. Nada foi commitado ainda além da documentação inicial.
+**Fase 1 — Fundação**, quase concluída. Todo o código está escrito, **`npm run build` fecha limpo, sem erro nem aviso**, e o `npm run dev` foi testado com sucesso: `/` e `/saidas` renderizam certo (com estado vazio, já que não há dado nenhum no Sanity ainda), `/studio` carrega, e `/saidas/[slug-que-nao-existe]` devolve 404 corretamente. **Código da Fase 1 commitado** (`6ab5a38`). Falta só: gerar os tokens do Sanity (leitura e escrita — ambos ainda vazios em `.env.local`), rodar o seed, dar uma olhada visual real no navegador, e subir na Vercel.
 
 Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`. Hospedagem definida: Vercel. Resend fica para depois (Fase 2).
 
@@ -35,20 +35,21 @@ Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`
 
 ## Em andamento agora (retomar por aqui)
 
-- [ ] **Gerar um token de escrita no Sanity** e colar em `.env.local`, campo `SANITY_API_WRITE_TOKEN`:
+- [ ] **Gerar os tokens do Sanity** e colar em `.env.local` (ambos os campos estão vazios hoje):
   1. Ir em [sanity.io/manage](https://sanity.io/manage) → projeto "Felipe Muniz Site" (`sjs9wkjh`) → **API** → **Tokens** → **Add API token**
-  2. Nome `escrita-site`, permissão **Editor**
-  3. Colar o valor gerado em `.env.local`
-- [ ] Depois do token: rodar `npm run seed` (sobe as 4 saídas fictícias, ramais, depoimentos, FAQ, posts e as imagens de placeholder do picsum)
+  2. `SANITY_API_READ_TOKEN`: nome `leitura-site`, permissão **Viewer**
+  3. `SANITY_API_WRITE_TOKEN`: nome `escrita-site`, permissão **Editor**
+  4. Colar os dois valores gerados em `.env.local`
+- [ ] Depois dos tokens: rodar `npm run seed` (sobe as 4 saídas fictícias, ramais, depoimentos, FAQ, posts e as imagens de placeholder do picsum)
 
 ## Falta fazer (Fase 1)
 
 - [x] ~~Confirmar `npm run build` limpo~~ ✅ fechou sem erro nem aviso
 - [x] ~~Testar `npm run dev` nas rotas principais~~ ✅ verificado por `curl` (`/`, `/saidas`, `/studio`, 404 de saída inexistente) — **falta só uma conferida visual real no navegador**, que não deu para fazer nesta sessão (extensão do Chrome não conectada)
-- [ ] Rodar o seed (bloqueado no token, acima)
+- [x] ~~Commitar o código da Fase 1~~ ✅ commit `6ab5a38`
+- [ ] Rodar o seed (bloqueado nos tokens, acima)
 - [ ] Depois do seed: olhar `/saidas` e uma `/saidas/[slug]` de verdade no navegador (visual, não só HTTP 200)
 - [ ] Deploy na Vercel com domínio provisório
-- [ ] Commitar o código da Fase 1
 
 ---
 
