@@ -7,8 +7,9 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // CDN para leitura pública
+  useCdn: true,
   perspective: 'published',
+  token: process.env.SANITY_API_READ_TOKEN,
 });
 
 // Wrapper tipado com cache por tag
