@@ -6,9 +6,11 @@ Diário de bordo do desenvolvimento. Atualizado a cada avanço, para retomar o t
 
 ## Onde estamos agora
 
-**Fase 1 — Fundação**, quase concluída. Todo o código está escrito, **`npm run build` fecha limpo, sem erro nem aviso**, tokens do Sanity gerados e no `.env.local`, **seed rodado com sucesso** (36 documentos fictícios), e `/saidas` já mostra as 4 saídas de verdade (confirmado por `curl` e pelo build estático gerando as 4 páginas `/saidas/[slug]`). Falta: conferência visual no navegador (Bruno está fazendo agora manualmente) e deploy na Vercel.
+**Fase 1 — Fundação, concluída e confirmada visualmente no navegador.** Todo o código está escrito, **`npm run build` fecha limpo, sem erro nem aviso**, tokens do Sanity no `.env.local`, **seed rodado com sucesso** (36 documentos fictícios), `/saidas` mostra as 4 saídas com selo de vagas, cores e tipografia do documento 04 renderizando certo, `/` mostra o hero. Conferido com a extensão do Chrome nesta sessão (rodando em `http://localhost:3000`).
 
 Commits desta fase: `6ab5a38` (base), `a9ac756` (diário), `53c14d8` (fix dos scripts de seed + client de leitura).
+
+**Falta só:** deploy na Vercel com domínio provisório.
 
 Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`. Hospedagem definida: Vercel. Resend fica para depois (Fase 2).
 
@@ -37,7 +39,6 @@ Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`
 
 ## Em andamento agora (retomar por aqui)
 
-- [ ] Conferência visual no navegador (Bruno faz manualmente — extensão do Chrome não conecta nesta sessão)
 - [ ] Deploy na Vercel com domínio provisório
 - [ ] Depois do deploy: rodar `npm run seed:limpar` quando o conteúdo real do Felipe estiver pronto (lembrar — está tudo com prefixo `[EXEMPLO]` e fotos do picsum)
 
@@ -47,7 +48,7 @@ Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`
 - [x] ~~Testar `npm run dev` nas rotas principais~~ ✅ verificado por `curl` (`/`, `/saidas`, `/studio`, 404 de saída inexistente)
 - [x] ~~Commitar o código da Fase 1~~ ✅ commit `6ab5a38`
 - [x] ~~Rodar o seed~~ ✅ 36 documentos gravados
-- [x] ~~Olhar `/saidas` e uma `/saidas/[slug]` de verdade~~ ✅ confirmado por `curl` e pelo build estático (4 páginas geradas) — **falta a conferida visual real no navegador**, em andamento pelo Bruno
+- [x] ~~Olhar `/saidas` e uma `/saidas/[slug]` de verdade~~ ✅ confirmado por `curl`, pelo build estático **e visualmente no navegador** (extensão do Chrome conectada nesta sessão) — header, cores, tipografia e selos do documento 04 renderizando certo
 - [ ] Deploy na Vercel com domínio provisório
 
 ---
@@ -71,6 +72,8 @@ Corrigidos na ordem em que apareceram, durante `npm run build`, até fechar 100%
 8. `npm run seed` falhava com `Error: Configuration must contain projectId` → os scripts (`scripts/seed.ts`, `scripts/limpar-seed.ts`) usavam `import 'dotenv/config'` puro, que carrega `.env` — mas o projeto só tem `.env.local` (convenção do Next.js). **Corrigido** trocando para `config({ path: '.env.local' })` do pacote `dotenv` nos dois scripts.
 9. Depois do seed rodar certo, `/saidas` continuava mostrando "Nenhuma saída aberta" mesmo com os 4 documentos gravados no Sanity. Causa: **o dataset não devolve documentos dos tipos de conteúdo (`saida`, `ramal`, `depoimento`, `post`, `faq`, `material`, `lead`) para requisições sem token** — só `configuracao`, `quemSou` e imagens ficam visíveis anonimamente (confirmado testando a API do Sanity direto com e sem `Authorization: Bearer`, resposta anônima vinha com `"omitted":[{"reason":"permission"}]`). Isso contraria o que a documentação (`06-QUERIES-E-DADOS.md`) assume — que o dataset é público e não precisa de token pra leitura normal, só pra preview de rascunho. **Corrigido** passando `token: process.env.SANITY_API_READ_TOKEN` no client público (`src/sanity/client.ts`). Isso é na verdade mais seguro do que a doc sugeria: o tipo `lead` guarda contato de gente que preencheu formulário, e isso nunca deveria ser publicamente consultável via GROQ sem autenticação.
    - **Cuidado para não reabrir:** se o `SANITY_API_READ_TOKEN` for revogado/expirar, `/saidas` e as páginas de detalhe voltam a aparecer vazias silenciosamente (sem erro no build, já que o client só retorna array vazio) — se isso acontecer, gerar um novo token Viewer e atualizar `.env.local` e a env var na Vercel.
+
+10. Ao abrir o site na conferência visual, a página vinha **sem estilo nenhum** — sem cores, sem fonte, o CSS (`layout.css`) e os chunks JS voltando `503` do servidor de dev. Causa: havia **dois `next dev` rodando ao mesmo tempo** (um antigo, esquecido de uma sessão anterior, na porta 3000; outro novo, iniciado nesta sessão, que caiu na 3001 porque a 3000 já estava ocupada) — os dois escrevendo simultaneamente na mesma pasta `.next/`, corrompendo o cache de build (`Cannot find module './1331.js'`, `Cannot find module './vendor-chunks/@sanity.js'` no log do servidor). **Corrigido** matando todos os processos `node.exe`, apagando `.next/` e subindo um único `npm run dev` limpo. **Cuidado para não reabrir:** antes de rodar `npm run dev`, checar se já não tem um servidor de outra sessão rodando (`tasklist | grep node` no Git Bash) — nunca depender da porta trocar sozinha (3001, 3002...) como sinal de "tá tudo bem", isso é sintoma do problema, não solução.
 
 ## Desvios da documentação (registrados para não reabrir decisão à toa)
 
