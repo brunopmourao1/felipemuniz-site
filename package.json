@@ -1,0 +1,48 @@
+{
+  "name": "felipemuniz-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "npm run typegen && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typegen": "sanity schema extract --path=./schema.json --force && sanity typegen generate",
+    "seed": "tsx scripts/seed.ts",
+    "seed:limpar": "tsx scripts/limpar-seed.ts"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.5.7",
+    "@portabletext/react": "^7.0.1",
+    "@sanity/client": "^7.25.0",
+    "@sanity/icons": "^5.2.1",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/locale-pt-br": "^1.1.33",
+    "@sanity/vision": "5.0.0",
+    "next": "^15.5.22",
+    "next-sanity": "^11.6.13",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-hook-form": "^7.83.0",
+    "resend": "^6.18.0",
+    "sanity": "5.0.0",
+    "zod": "^4.4.3"
+  },
+  "overrides": {
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@sanity/cli": "^7.13.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
+    "eslint": "^9",
+    "eslint-config-next": "^15.5.22",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.1",
+    "typescript": "^5"
+  }
+}

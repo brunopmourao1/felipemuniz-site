@@ -1,0 +1,56 @@
+/* src/styles/tokens.css */
+:root {
+  /* Base — o azul da noite antes de sair caminhando */
+  --azul-profundo:  #0B2038;   /* fundo principal */
+  --azul-noite:     #12314F;   /* superfícies elevadas, cards */
+  --azul-sombra:    #071729;   /* rodapé, recuos, sobreposições */
+
+  /* Acento — o amarelo da seta */
+  --amarelo-seta:   #F5B31E;   /* CTA, selos, marcação de caminho */
+  --dourado:        #C9A227;   /* filetes, tipografia decorativa, bordas */
+
+  /* Texto */
+  --nevoa:          #E4EBF1;   /* texto principal sobre escuro */
+  --nevoa-fraca:    #9BB0C4;   /* texto secundário, legendas */
+
+  /* Pergaminho — reservado ao módulo Credencial */
+  --pergaminho:     #EFE6D2;
+  --tinta-carimbo:  #7A2E2E;
+
+  /* Terra — estados e trilha */
+  --terra:          #7A4E24;
+
+  /* Semânticos */
+  --sucesso:        #4E9A6B;
+  --alerta:         var(--amarelo-seta);
+  --erro:           #C25B4A;
+
+  /* Tipografia */
+  --fonte-display: 'Archivo', system-ui, sans-serif;
+  --fonte-corpo:   'Source Sans 3', system-ui, sans-serif;
+  --fonte-dados:   'IBM Plex Mono', ui-monospace, monospace;
+  --fonte-citacao: 'Newsreader', Georgia, serif;
+
+  /* Escala tipográfica — fluida, sem quebras entre breakpoints */
+  --texto-xs:  0.75rem;
+  --texto-sm:  0.875rem;
+  --texto-base: 1rem;
+  --texto-lg:  clamp(1.125rem, 1rem + 0.4vw, 1.25rem);
+  --texto-xl:  clamp(1.375rem, 1.1rem + 1vw, 1.75rem);
+  --texto-2xl: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+  --texto-3xl: clamp(2.25rem, 1.5rem + 3.5vw, 4rem);
+  --texto-4xl: clamp(2.75rem, 1.6rem + 5.5vw, 5.5rem);
+
+  /* Espaçamento — escala de 4px, ritmo vertical em múltiplos de 8 */
+  --e-1: 0.25rem;  --e-2: 0.5rem;   --e-3: 0.75rem;  --e-4: 1rem;
+  --e-6: 1.5rem;   --e-8: 2rem;     --e-12: 3rem;    --e-16: 4rem;
+  --e-24: 6rem;    --e-32: 8rem;
+
+  --largura-conteudo: 68ch;   /* texto corrido */
+  --largura-site: 1200px;     /* contêiner geral */
+  --largura-larga: 1440px;    /* galerias, hero */
+
+  --raio-p: 2px;
+  --raio-m: 4px;
+  --raio-g: 8px;
+}
