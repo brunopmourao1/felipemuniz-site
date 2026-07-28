@@ -6,7 +6,9 @@ Diário de bordo do desenvolvimento. Atualizado a cada avanço, para retomar o t
 
 ## Onde estamos agora
 
-**Fase 1 — Fundação**, quase concluída. Todo o código está escrito, **`npm run build` fecha limpo, sem erro nem aviso**, e o `npm run dev` foi testado com sucesso: `/` e `/saidas` renderizam certo (com estado vazio, já que não há dado nenhum no Sanity ainda), `/studio` carrega, e `/saidas/[slug-que-nao-existe]` devolve 404 corretamente. **Código da Fase 1 commitado** (`6ab5a38`). Falta só: gerar os tokens do Sanity (leitura e escrita — ambos ainda vazios em `.env.local`), rodar o seed, dar uma olhada visual real no navegador, e subir na Vercel.
+**Fase 1 — Fundação**, quase concluída. Todo o código está escrito, **`npm run build` fecha limpo, sem erro nem aviso**, tokens do Sanity gerados e no `.env.local`, **seed rodado com sucesso** (36 documentos fictícios), e `/saidas` já mostra as 4 saídas de verdade (confirmado por `curl` e pelo build estático gerando as 4 páginas `/saidas/[slug]`). Falta: conferência visual no navegador (Bruno está fazendo agora manualmente) e deploy na Vercel.
+
+Commits desta fase: `6ab5a38` (base), `a9ac756` (diário), `53c14d8` (fix dos scripts de seed + client de leitura).
 
 Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`. Hospedagem definida: Vercel. Resend fica para depois (Fase 2).
 
@@ -35,20 +37,17 @@ Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`
 
 ## Em andamento agora (retomar por aqui)
 
-- [ ] **Gerar os tokens do Sanity** e colar em `.env.local` (ambos os campos estão vazios hoje):
-  1. Ir em [sanity.io/manage](https://sanity.io/manage) → projeto "Felipe Muniz Site" (`sjs9wkjh`) → **API** → **Tokens** → **Add API token**
-  2. `SANITY_API_READ_TOKEN`: nome `leitura-site`, permissão **Viewer**
-  3. `SANITY_API_WRITE_TOKEN`: nome `escrita-site`, permissão **Editor**
-  4. Colar os dois valores gerados em `.env.local`
-- [ ] Depois dos tokens: rodar `npm run seed` (sobe as 4 saídas fictícias, ramais, depoimentos, FAQ, posts e as imagens de placeholder do picsum)
+- [ ] Conferência visual no navegador (Bruno faz manualmente — extensão do Chrome não conecta nesta sessão)
+- [ ] Deploy na Vercel com domínio provisório
+- [ ] Depois do deploy: rodar `npm run seed:limpar` quando o conteúdo real do Felipe estiver pronto (lembrar — está tudo com prefixo `[EXEMPLO]` e fotos do picsum)
 
 ## Falta fazer (Fase 1)
 
 - [x] ~~Confirmar `npm run build` limpo~~ ✅ fechou sem erro nem aviso
-- [x] ~~Testar `npm run dev` nas rotas principais~~ ✅ verificado por `curl` (`/`, `/saidas`, `/studio`, 404 de saída inexistente) — **falta só uma conferida visual real no navegador**, que não deu para fazer nesta sessão (extensão do Chrome não conectada)
+- [x] ~~Testar `npm run dev` nas rotas principais~~ ✅ verificado por `curl` (`/`, `/saidas`, `/studio`, 404 de saída inexistente)
 - [x] ~~Commitar o código da Fase 1~~ ✅ commit `6ab5a38`
-- [ ] Rodar o seed (bloqueado nos tokens, acima)
-- [ ] Depois do seed: olhar `/saidas` e uma `/saidas/[slug]` de verdade no navegador (visual, não só HTTP 200)
+- [x] ~~Rodar o seed~~ ✅ 36 documentos gravados
+- [x] ~~Olhar `/saidas` e uma `/saidas/[slug]` de verdade~~ ✅ confirmado por `curl` e pelo build estático (4 páginas geradas) — **falta a conferida visual real no navegador**, em andamento pelo Bruno
 - [ ] Deploy na Vercel com domínio provisório
 
 ---
@@ -66,6 +65,12 @@ Corrigidos na ordem em que apareceram, durante `npm run build`, até fechar 100%
 7. `Failed to collect configuration for /studio/[[...tool]]` → `TypeError: (0, d.createContext) is not a function` — causa raiz: o build de React usado em Server Components (`react.react-server.js`) **não exporta `createContext`** (é uma limitação proposital do React), e o pacote `sanity` chama isso no topo do módulo. Como a página do Studio não tinha isolamento de cliente explícito, o Next tentava avaliar esse módulo no "mundo" de Server Components durante o build. **Corrigido** criando `src/components/EstudioCliente.tsx`, um Client Component que carrega o `NextStudio` via `next/dynamic` com `{ ssr: false }` — isso garante que todo o pacote `sanity` só é avaliado no navegador, nunca no servidor/build.
    - Também corrigido de passagem: aviso de depreciação do `@sanity/image-url` (`import createImageUrlBuilder from ...` → `import { createImageUrlBuilder } from ...`, export nomeado).
    - **Cuidado para não reabrir:** `package.json` fixa `sanity` e `@sanity/vision` em `"5.0.0"` **exato** (sem `^`). Rodar `npm install <algumpacote>` sem cuidado, ou apagar o `package-lock.json` e reinstalar, pode fazer o `^5.0.0` antigo voltar a flutuar para a versão mais nova — foi exatamente isso que aconteceu no meio desta sessão e trouxe o erro do `useEffectEvent` de volta. Se for atualizar o Sanity no futuro, primeiro checar se `npm view sanity@<versao> dependencies.use-effect-event` retorna algo — se vier vazio, a versão já depende do hook nativo do React e vai quebrar até o React estabilizar `useEffectEvent`.
+
+## Bloqueios resolvidos nesta sessão (seed e leitura)
+
+8. `npm run seed` falhava com `Error: Configuration must contain projectId` → os scripts (`scripts/seed.ts`, `scripts/limpar-seed.ts`) usavam `import 'dotenv/config'` puro, que carrega `.env` — mas o projeto só tem `.env.local` (convenção do Next.js). **Corrigido** trocando para `config({ path: '.env.local' })` do pacote `dotenv` nos dois scripts.
+9. Depois do seed rodar certo, `/saidas` continuava mostrando "Nenhuma saída aberta" mesmo com os 4 documentos gravados no Sanity. Causa: **o dataset não devolve documentos dos tipos de conteúdo (`saida`, `ramal`, `depoimento`, `post`, `faq`, `material`, `lead`) para requisições sem token** — só `configuracao`, `quemSou` e imagens ficam visíveis anonimamente (confirmado testando a API do Sanity direto com e sem `Authorization: Bearer`, resposta anônima vinha com `"omitted":[{"reason":"permission"}]`). Isso contraria o que a documentação (`06-QUERIES-E-DADOS.md`) assume — que o dataset é público e não precisa de token pra leitura normal, só pra preview de rascunho. **Corrigido** passando `token: process.env.SANITY_API_READ_TOKEN` no client público (`src/sanity/client.ts`). Isso é na verdade mais seguro do que a doc sugeria: o tipo `lead` guarda contato de gente que preencheu formulário, e isso nunca deveria ser publicamente consultável via GROQ sem autenticação.
+   - **Cuidado para não reabrir:** se o `SANITY_API_READ_TOKEN` for revogado/expirar, `/saidas` e as páginas de detalhe voltam a aparecer vazias silenciosamente (sem erro no build, já que o client só retorna array vazio) — se isso acontecer, gerar um novo token Viewer e atualizar `.env.local` e a env var na Vercel.
 
 ## Desvios da documentação (registrados para não reabrir decisão à toa)
 
