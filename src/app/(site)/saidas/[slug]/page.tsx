@@ -14,6 +14,8 @@ import { Container } from '@/components/ui/Container';
 import { Selo } from '@/components/ui/Selo';
 import { Botao } from '@/components/ui/Botao';
 import { FitaAltimetria } from '@/components/saida/FitaAltimetria';
+import { FormularioReserva } from '@/components/saida/FormularioReserva';
+import { BarraReserva } from '@/components/saida/BarraReserva';
 
 export const revalidate = 3600;
 
@@ -58,7 +60,7 @@ export default async function PaginaSaida({ params }: Props) {
         ← Voltar para saídas
       </Link>
 
-      <header className="mt-6">
+      <header id="cabecalho-saida" className="mt-6">
         {saida.ramal?.nome && (
           <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
             {saida.ramal.nome}
@@ -222,16 +224,32 @@ export default async function PaginaSaida({ params }: Props) {
         </section>
       )}
 
-      <section className="mt-16 rounded-[var(--raio-m)] bg-[var(--azul-noite)] p-8 text-center">
-        <h2 className="font-[var(--fonte-display)] text-[var(--texto-xl)] font-extrabold text-[var(--nevoa)]">
-          Quer garantir sua vaga?
-        </h2>
-        <div className="mt-6 flex justify-center">
-          <Botao href={linkReserva} variante="primario" comSeta>
-            {textoDoBotao(status)}
-          </Botao>
+      <section className="mt-16 grid grid-cols-1 gap-8 rounded-[var(--raio-m)] bg-[var(--azul-noite)] p-8 sm:grid-cols-2">
+        <div>
+          <h2 className="font-[var(--fonte-display)] text-[var(--texto-xl)] font-extrabold text-[var(--nevoa)]">
+            Quer garantir sua vaga?
+          </h2>
+          <p className="mt-2 text-[var(--nevoa-fraca)]">
+            Preencha o formulário ou fale direto no WhatsApp — o Felipe responde pessoalmente.
+          </p>
+          <div className="mt-6">
+            <Botao href={linkReserva} variante="secundario" comSeta>
+              {textoDoBotao(status)} pelo WhatsApp
+            </Botao>
+          </div>
         </div>
+        {saida._id && saida.titulo && (
+          <FormularioReserva saidaId={saida._id} saidaTitulo={saida.titulo} />
+        )}
       </section>
+
+      <BarraReserva
+        alvoId="cabecalho-saida"
+        periodo={formatarPeriodo(saida.dataInicio, saida.dataFim)}
+        vagasTexto={status === 'esgotada' ? 'Esgotada' : `${saida.vagasDisponiveis ?? 0} vagas`}
+        href={linkReserva}
+        textoBotao={textoDoBotao(status)}
+      />
     </Container>
   );
 }

@@ -94,3 +94,91 @@ export const CONFIGURACAO = groq`
     peregrinosGuiados, saidasRealizadas, anoInicio
   }
 `;
+
+/** Página "Quem sou" — usada também no bloco "Quem guia" da home. */
+export const QUEM_SOU = groq`
+  *[_type == "quemSou"][0]{
+    titulo, credenciais,
+    foto ${IMAGEM},
+    historia[]{ ..., _type == "imagemComAlt" => ${IMAGEM} },
+    ${SEO}
+  }
+`;
+
+/** Depoimentos para o módulo Credencial na home. */
+export const DEPOIMENTOS_HOME = groq`
+  *[_type == "depoimento" && publicado == true]
+  | order(destaque desc, _createdAt desc)[0...8]{
+    _id, nome, cidade, texto,
+    foto ${IMAGEM},
+    saida->{ dataInicio, ramal->{ nome } }
+  }
+`;
+
+/** As 5 perguntas mais frequentes, para o acordeão da home. */
+export const FAQ_HOME = groq`
+  *[_type == "faq" && naHome == true] | order(ordem asc)[0...5]{
+    _id, pergunta, resposta
+  }
+`;
+
+/** Material principal, usado na faixa de captura da home. */
+export const MATERIAL_PRINCIPAL = groq`
+  *[_type == "material" && ativo == true] | order(_createdAt asc)[0]{
+    titulo, "slug": slug.current, promessa, capa ${IMAGEM}
+  }
+`;
+
+/** Landing de captura de um material específico. */
+export const MATERIAL_POR_SLUG = groq`
+  *[_type == "material" && slug.current == $slug && ativo == true][0]{
+    _id, titulo, "slug": slug.current, promessa, topicos,
+    capa ${IMAGEM},
+    "arquivoUrl": arquivo.asset->url,
+    ${SEO}
+  }
+`;
+
+/** Os 3 conteúdos de preparação mais fortes, para o bloco da home. */
+export const POSTS_HOME = groq`
+  *[_type == "post" && categoria == "preparacao" && publicadoEm <= now()]
+  | order(publicadoEm desc)[0...3]{
+    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,
+    capa ${IMAGEM}
+  }
+`;
+
+export const POSTS = groq`
+  *[_type == "post" && publicadoEm <= now()]
+  | order(publicadoEm desc)[$inicio...$fim]{
+    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,
+    capa ${IMAGEM}
+  }
+`;
+
+export const TOTAL_POSTS = groq`count(*[_type == "post" && publicadoEm <= now()])`;
+
+export const POST_POR_SLUG = groq`
+  *[_type == "post" && slug.current == $slug][0]{
+    ...,
+    "slug": slug.current,
+    capa ${IMAGEM},
+    corpo[]{
+      ...,
+      _type == "imagemComAlt" => ${IMAGEM},
+      markDefs[]{ ..., _type == "link" => { href } }
+    },
+    saidasRelacionadas[]-> ${CARTAO_SAIDA},
+    ${SEO},
+    "relacionados": *[_type == "post" && categoria == ^.categoria
+                      && _id != ^._id] | order(publicadoEm desc)[0...3]{
+      _id, titulo, "slug": slug.current, resumo, capa ${IMAGEM}
+    },
+    "tempoLeitura": round(length(pt::text(corpo)) / 5 / 200)
+  }
+`;
+
+/** Slugs para generateStaticParams. */
+export const SLUGS_POST = groq`
+  *[_type == "post" && defined(slug.current)][]{ "slug": slug.current }
+`;

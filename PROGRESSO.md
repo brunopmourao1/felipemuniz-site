@@ -6,12 +6,33 @@ Diário de bordo do desenvolvimento. Atualizado a cada avanço, para retomar o t
 
 ## Onde estamos agora
 
-**Fase 1 — Fundação, 100% concluída, testada e no ar.** 🎉
+**Fase 2 — Conversão, concluída localmente. Falta só o deploy.**
 
-**URL de produção:** https://felipemuniz-site.vercel.app
-**Studio de produção:** https://felipemuniz-site.vercel.app/studio (registrado no Sanity como "Studio host" — não é preview, é o Studio de verdade, com sync de schema)
+**URL de produção (ainda com o código da Fase 1):** https://felipemuniz-site.vercel.app
+**Studio de produção:** https://felipemuniz-site.vercel.app/studio
 
-Nesta sessão foi feita uma varredura completa pedida pelo Bruno ("terminar o site 100% antes do deploy, testar 100% local"), cobrindo: build de produção, todas as páginas, Studio (login, edição, publicação), o ciclo completo de revalidação, foco de teclado e a página 404. Quatro bugs reais foram encontrados e corrigidos (ver seção de bloqueios). Depois disso: push pro GitHub, projeto importado na Vercel, as 8 variáveis de ambiente cadastradas manualmente (o "smart paste" de `.env` da Vercel não funcionou direito — colar multilinha bagunçou os campos), deploy feito e confirmado no ar: `/`, `/saidas`, `/saidas/[slug]`, o 404 em português e o `/studio` — todos testados na URL de produção real, não só localmente.
+A Fase 1 (fundação) está 100% concluída, testada e no ar — detalhes na seção abaixo, mantidos como histórico.
+
+### O que entrou na Fase 2
+
+- **Home completa**, os 8 blocos do documento 02: hero (com a segunda ação "Receber o guia de preparação"), próximas saídas, quem guia (foto + história + números), como funciona (4 etapas), **A Credencial**, preparação, captura (formulário de material) e FAQ resumida em acordeão.
+- **Módulo Credencial** (`src/components/credencial/`): carimbos com rotação e opacidade determinísticas derivadas do `_id` (`src/lib/credencial.ts`), fundo pergaminho, clique/toque revela o depoimento completo — testado no navegador.
+- **Rotas `/api/lead` e `/api/reserva`**: honeypot, rate limit em memória, validação Zod (`src/lib/schemas.ts`), grava documento `lead` no Sanity, envia e-mail pelo Resend só se `RESEND_API_KEY` estiver preenchido (ainda vazio — ver pendências). Testado de ponta a ponta pelo navegador: formulário → API → documento gravado no Sanity (conferido e depois removido, era só teste) → redirecionamento para `/obrigado`.
+- **Formulários** (`FormularioLead`, `FormularioReserva`): React Hook Form + Zod, mensagens de erro em português, acessíveis (`aria-invalid`, `aria-describedby`, `role="alert"`).
+- **Barra fixa de reserva no mobile** (`BarraReserva`): aparece via `IntersectionObserver` quando o cabeçalho da saída sai da tela, `md:hidden`. O botão flutuante do WhatsApp sobe automaticamente pra não colidir com ela (classe `tem-barra-reserva` no `<body>`).
+- **`/materiais/[slug]` e `/obrigado`**: landing de captura com o `FormularioLead`, confirmação genérica pós-envio.
+- **`/blog`, `/blog/[slug]` e `/preparacao`** — antecipados da Fase 3 por decisão explícita do Bruno, só para os links da home ("Preparação" → hub, cada post → `/blog/[slug]`) não caírem em 404. Versão mínima: sem paginação, sem `/blog/categoria/[slug]`, sem JSON-LD (isso fica para a Fase 3 de verdade).
+- Queries novas em `src/sanity/queries.ts`: `QUEM_SOU`, `DEPOIMENTOS_HOME`, `FAQ_HOME`, `MATERIAL_PRINCIPAL`, `MATERIAL_POR_SLUG`, `POSTS_HOME`, `POSTS`, `POST_POR_SLUG`, `SLUGS_POST`.
+
+### Testado nesta sessão
+
+`npm run build` limpo (typegen + build de produção sem erro nem aviso de tipo). No navegador: os 8 blocos da home, o carimbo da Credencial (clique revela/esconde), envio real do formulário de captura e do formulário de reserva (confirmado o documento `lead` gravado no Sanity com os campos certos, depois apagado por ser só teste), `/blog`, `/blog/[slug]`, `/preparacao`, `/materiais/[slug]`, `/obrigado`, acordeão de FAQ, console sem erros. **Não testado visualmente em 375px** nesta sessão (mesma limitação de sempre — `resize_window` não funciona neste ambiente); o CSS usa os mesmos padrões responsivos já validados na Fase 1, mas vale um teste manual do Bruno na barra fixa de reserva e no formulário de captura em tela pequena antes do deploy.
+
+### Pendências antes de fechar a Fase 2 de verdade
+
+- **`RESEND_API_KEY` continua vazia.** Sem ela, o lead é gravado no Sanity mas nenhum e-mail sai (a rota detecta a ausência da chave e pula o envio silenciosamente, não quebra). Precisa criar a conta no Resend, verificar o domínio e colar a chave em `.env.local` e na Vercel antes de o marco "formulário chega no e-mail do Felipe" estar realmente cumprido.
+- **Deploy pendente**: todo o trabalho acima está só local. Falta commitar, dar push e fazer o deploy na Vercel (com a `RESEND_API_KEY` cadastrada lá também).
+- Links do menu principal para `/o-caminho` e `/quem-sou` continuam quebrados (404) — pré-existentes da Fase 1, ficam para a Fase 3.
 
 Commits desta fase: `6ab5a38` (base), `a9ac756` (diário), `53c14d8` (fix dos scripts de seed + client de leitura), `56c55c1` (diário), `14b0bda` (página 404 em português), `dfa47e0` (diário).
 
@@ -112,4 +133,4 @@ A extensão do Chrome não conseguiu forçar uma janela estreita neste ambiente 
 
 1. Ler este arquivo primeiro.
 2. Rodar `npm run build` e ver se os bloqueios acima já foram resolvidos ou se sobrou algum novo.
-3. Seguir a lista "Falta fazer (Fase 1)" na ordem.
+3. Se a Fase 2 ainda não foi implantada: conferir as "Pendências antes de fechar a Fase 2 de verdade" no topo deste arquivo (chave do Resend, deploy) antes de seguir para a Fase 3.

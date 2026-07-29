@@ -841,6 +841,366 @@ export type CONFIGURACAO_RESULT = {
   anoInicio: number | null;
 } | null;
 
+// Source: src\sanity\queries.ts
+// Variable: QUEM_SOU
+// Query: *[_type == "quemSou"][0]{    titulo, credenciais,    foto {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    historia[]{ ..., _type == "imagemComAlt" => {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions} },    seo{  titulo, descricao, naoIndexar,  imagem { ..., "lqip": asset->metadata.lqip }}  }
+export type QUEM_SOU_RESULT = {
+  titulo: string | null;
+  credenciais: Array<string> | null;
+  foto: {
+    _type: "imagemComAlt";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string | "";
+    legenda?: string;
+    lqip: string | null;
+    dimensoes: SanityImageDimensions | null;
+  } | null;
+  historia: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?:
+          "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        _key: string;
+        _type: "imagemComAlt";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string | "";
+        legenda?: string;
+        lqip: string | null;
+        dimensoes: SanityImageDimensions | null;
+      }
+  > | null;
+  seo: {
+    titulo: string | null;
+    descricao: string | null;
+    naoIndexar: boolean | null;
+    imagem: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      lqip: string | null;
+    } | null;
+  } | null;
+} | null;
+
+// Source: src\sanity\queries.ts
+// Variable: DEPOIMENTOS_HOME
+// Query: *[_type == "depoimento" && publicado == true]  | order(destaque desc, _createdAt desc)[0...8]{    _id, nome, cidade, texto,    foto {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    saida->{ dataInicio, ramal->{ nome } }  }
+export type DEPOIMENTOS_HOME_RESULT = Array<{
+  _id: string;
+  nome: string | null;
+  cidade: string | null;
+  texto: string | null;
+  foto: {
+    _type: "imagemComAlt";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string | "";
+    legenda?: string;
+    lqip: string | null;
+    dimensoes: SanityImageDimensions | null;
+  } | null;
+  saida: {
+    dataInicio: string | null;
+    ramal: {
+      nome: string | null;
+    } | null;
+  } | null;
+}>;
+
+// Source: src\sanity\queries.ts
+// Variable: FAQ_HOME
+// Query: *[_type == "faq" && naHome == true] | order(ordem asc)[0...5]{    _id, pergunta, resposta  }
+export type FAQ_HOME_RESULT = Array<{
+  _id: string;
+  pergunta: string | null;
+  resposta: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+}>;
+
+// Source: src\sanity\queries.ts
+// Variable: MATERIAL_PRINCIPAL
+// Query: *[_type == "material" && ativo == true] | order(_createdAt asc)[0]{    titulo, "slug": slug.current, promessa, capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}  }
+export type MATERIAL_PRINCIPAL_RESULT = {
+  titulo: string | null;
+  slug: string | null;
+  promessa: string | null;
+  capa: {
+    _type: "imagemComAlt";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string | "";
+    legenda?: string;
+    lqip: string | null;
+    dimensoes: SanityImageDimensions | null;
+  } | null;
+} | null;
+
+// Source: src\sanity\queries.ts
+// Variable: MATERIAL_POR_SLUG
+// Query: *[_type == "material" && slug.current == $slug && ativo == true][0]{    _id, titulo, "slug": slug.current, promessa, topicos,    capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    "arquivoUrl": arquivo.asset->url,    seo{  titulo, descricao, naoIndexar,  imagem { ..., "lqip": asset->metadata.lqip }}  }
+export type MATERIAL_POR_SLUG_RESULT = {
+  _id: string;
+  titulo: string | null;
+  slug: string | null;
+  promessa: string | null;
+  topicos: Array<string> | null;
+  capa: {
+    _type: "imagemComAlt";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string | "";
+    legenda?: string;
+    lqip: string | null;
+    dimensoes: SanityImageDimensions | null;
+  } | null;
+  arquivoUrl: string | null;
+  seo: {
+    titulo: string | null;
+    descricao: string | null;
+    naoIndexar: boolean | null;
+    imagem: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      lqip: string | null;
+    } | null;
+  } | null;
+} | null;
+
+// Source: src\sanity\queries.ts
+// Variable: POSTS_HOME
+// Query: *[_type == "post" && categoria == "preparacao" && publicadoEm <= now()]  | order(publicadoEm desc)[0...3]{    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,    capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}  }
+export type POSTS_HOME_RESULT = Array<{
+  _id: string;
+  titulo: string | null;
+  slug: string | null;
+  resumo: string | null;
+  categoria: "espiritualidade" | "preparacao" | "relatos" | "roteiros" | null;
+  publicadoEm: string | null;
+  capa: {
+    _type: "imagemComAlt";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string | "";
+    legenda?: string;
+    lqip: string | null;
+    dimensoes: SanityImageDimensions | null;
+  } | null;
+}>;
+
+// Source: src\sanity\queries.ts
+// Variable: POSTS
+// Query: *[_type == "post" && publicadoEm <= now()]  | order(publicadoEm desc)[$inicio...$fim]{    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,    capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}  }
+export type POSTS_RESULT = Array<{
+  _id: string;
+  titulo: string | null;
+  slug: string | null;
+  resumo: string | null;
+  categoria: "espiritualidade" | "preparacao" | "relatos" | "roteiros" | null;
+  publicadoEm: string | null;
+  capa: {
+    _type: "imagemComAlt";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string | "";
+    legenda?: string;
+    lqip: string | null;
+    dimensoes: SanityImageDimensions | null;
+  } | null;
+}>;
+
+// Source: src\sanity\queries.ts
+// Variable: TOTAL_POSTS
+// Query: count(*[_type == "post" && publicadoEm <= now()])
+export type TOTAL_POSTS_RESULT = number;
+
+// Source: src\sanity\queries.ts
+// Variable: POST_POR_SLUG
+// Query: *[_type == "post" && slug.current == $slug][0]{    ...,    "slug": slug.current,    capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    corpo[]{      ...,      _type == "imagemComAlt" => {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},      markDefs[]{ ..., _type == "link" => { href } }    },    saidasRelacionadas[]-> {  _id,  titulo,  "slug": slug.current,  dataInicio,  dataFim,  cidadeSaida,  resumo,  distanciaKm,  nivel,  vagasTotal,  vagasDisponiveis,  valor,  destaque,  imagemCapa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},  ramal->{ nome, "slug": slug.current, km }},    seo{  titulo, descricao, naoIndexar,  imagem { ..., "lqip": asset->metadata.lqip }},    "relacionados": *[_type == "post" && categoria == ^.categoria                      && _id != ^._id] | order(publicadoEm desc)[0...3]{      _id, titulo, "slug": slug.current, resumo, capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}    },    "tempoLeitura": round(length(pt::text(corpo)) / 5 / 200)  }
+export type POST_POR_SLUG_RESULT = {
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  titulo?: string;
+  slug: string | null;
+  categoria?: "espiritualidade" | "preparacao" | "relatos" | "roteiros";
+  resumo?: string;
+  capa: {
+    _type: "imagemComAlt";
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string | "";
+    legenda?: string;
+    lqip: string | null;
+    dimensoes: SanityImageDimensions | null;
+  } | null;
+  publicadoEm?: string;
+  corpo: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h2" | "h3" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          href: string | null;
+          _type: "link";
+          _key: string;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        texto?: string;
+        _type: "destaque";
+        _key: string;
+        markDefs: null;
+      }
+    | {
+        _key: string;
+        _type: "imagemComAlt";
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string | "";
+        legenda?: string;
+        lqip: string | null;
+        dimensoes: SanityImageDimensions | null;
+        markDefs: null;
+      }
+  > | null;
+  saidasRelacionadas: Array<{
+    _id: string;
+    titulo: string | null;
+    slug: string | null;
+    dataInicio: string | null;
+    dataFim: string | null;
+    cidadeSaida: string | null;
+    resumo: string | null;
+    distanciaKm: number | null;
+    nivel: "exigente" | "leve" | "moderado" | null;
+    vagasTotal: number | null;
+    vagasDisponiveis: number | null;
+    valor: string | null;
+    destaque: boolean | null;
+    imagemCapa: {
+      _type: "imagemComAlt";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string | "";
+      legenda?: string;
+      lqip: string | null;
+      dimensoes: SanityImageDimensions | null;
+    } | null;
+    ramal: {
+      nome: string | null;
+      slug: string | null;
+      km: number | null;
+    } | null;
+  }> | null;
+  seo: {
+    titulo: string | null;
+    descricao: string | null;
+    naoIndexar: boolean | null;
+    imagem: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+      lqip: string | null;
+    } | null;
+  } | null;
+  relacionados: Array<{
+    _id: string;
+    titulo: string | null;
+    slug: string | null;
+    resumo: string | null;
+    capa: {
+      _type: "imagemComAlt";
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string | "";
+      legenda?: string;
+      lqip: string | null;
+      dimensoes: SanityImageDimensions | null;
+    } | null;
+  }>;
+  tempoLeitura: number;
+} | null;
+
+// Source: src\sanity\queries.ts
+// Variable: SLUGS_POST
+// Query: *[_type == "post" && defined(slug.current)][]{ "slug": slug.current }
+export type SLUGS_POST_RESULT = Array<{
+  slug: string | null;
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -855,5 +1215,15 @@ declare module "@sanity/client" {
     '\n  *[_type == "saida" && defined(slug.current)][]{ "slug": slug.current }\n': SLUGS_SAIDA_RESULT;
     '\n  *[_type == "saida" && slugGrupo.current == $slug][0]{\n    titulo, dataInicio, dataFim, cidadeSaida, distanciaKm,\n    roteiro[]{ dia, trecho, km, altimetria, pousada, descricao },\n    orientacoesGrupo,\n    incluso, naoIncluso,\n    ramal->{ nome, km }\n  }\n': GRUPO_POR_SLUG_RESULT;
     '\n  *[_type == "configuracao"][0]{\n    whatsapp, email, instagram,\n    heroTitulo, heroSubtitulo,\n    heroImagem {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    peregrinosGuiados, saidasRealizadas, anoInicio\n  }\n': CONFIGURACAO_RESULT;
+    '\n  *[_type == "quemSou"][0]{\n    titulo, credenciais,\n    foto {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    historia[]{ ..., _type == "imagemComAlt" => {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n} },\n    seo{\n  titulo, descricao, naoIndexar,\n  imagem { ..., "lqip": asset->metadata.lqip }\n}\n  }\n': QUEM_SOU_RESULT;
+    '\n  *[_type == "depoimento" && publicado == true]\n  | order(destaque desc, _createdAt desc)[0...8]{\n    _id, nome, cidade, texto,\n    foto {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    saida->{ dataInicio, ramal->{ nome } }\n  }\n': DEPOIMENTOS_HOME_RESULT;
+    '\n  *[_type == "faq" && naHome == true] | order(ordem asc)[0...5]{\n    _id, pergunta, resposta\n  }\n': FAQ_HOME_RESULT;
+    '\n  *[_type == "material" && ativo == true] | order(_createdAt asc)[0]{\n    titulo, "slug": slug.current, promessa, capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n  }\n': MATERIAL_PRINCIPAL_RESULT;
+    '\n  *[_type == "material" && slug.current == $slug && ativo == true][0]{\n    _id, titulo, "slug": slug.current, promessa, topicos,\n    capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    "arquivoUrl": arquivo.asset->url,\n    seo{\n  titulo, descricao, naoIndexar,\n  imagem { ..., "lqip": asset->metadata.lqip }\n}\n  }\n': MATERIAL_POR_SLUG_RESULT;
+    '\n  *[_type == "post" && categoria == "preparacao" && publicadoEm <= now()]\n  | order(publicadoEm desc)[0...3]{\n    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,\n    capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n  }\n': POSTS_HOME_RESULT;
+    '\n  *[_type == "post" && publicadoEm <= now()]\n  | order(publicadoEm desc)[$inicio...$fim]{\n    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,\n    capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n  }\n': POSTS_RESULT;
+    'count(*[_type == "post" && publicadoEm <= now()])': TOTAL_POSTS_RESULT;
+    '\n  *[_type == "post" && slug.current == $slug][0]{\n    ...,\n    "slug": slug.current,\n    capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    corpo[]{\n      ...,\n      _type == "imagemComAlt" => {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n      markDefs[]{ ..., _type == "link" => { href } }\n    },\n    saidasRelacionadas[]-> {\n  _id,\n  titulo,\n  "slug": slug.current,\n  dataInicio,\n  dataFim,\n  cidadeSaida,\n  resumo,\n  distanciaKm,\n  nivel,\n  vagasTotal,\n  vagasDisponiveis,\n  valor,\n  destaque,\n  imagemCapa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n  ramal->{ nome, "slug": slug.current, km }\n},\n    seo{\n  titulo, descricao, naoIndexar,\n  imagem { ..., "lqip": asset->metadata.lqip }\n},\n    "relacionados": *[_type == "post" && categoria == ^.categoria\n                      && _id != ^._id] | order(publicadoEm desc)[0...3]{\n      _id, titulo, "slug": slug.current, resumo, capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n    },\n    "tempoLeitura": round(length(pt::text(corpo)) / 5 / 200)\n  }\n': POST_POR_SLUG_RESULT;
+    '\n  *[_type == "post" && defined(slug.current)][]{ "slug": slug.current }\n': SLUGS_POST_RESULT;
   }
 }

@@ -149,3 +149,18 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Sobe o botão flutuante de WhatsApp quando a barra fixa de reserva aparece no mobile */
+.whatsapp-flutuante {
+  transition: bottom 150ms ease-out;
+}
+
+body.tem-barra-reserva .whatsapp-flutuante {
+  bottom: 4.75rem;
+}
+
+@media (min-width: 768px) {
+  body.tem-barra-reserva .whatsapp-flutuante {
+    bottom: 1rem;
+  }
+}
