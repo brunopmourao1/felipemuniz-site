@@ -118,7 +118,8 @@ export const DEPOIMENTOS_HOME = groq`
 /** As 5 perguntas mais frequentes, para o acordeão da home. */
 export const FAQ_HOME = groq`
   *[_type == "faq" && naHome == true] | order(ordem asc)[0...5]{
-    _id, pergunta, resposta
+    _id, pergunta, resposta,
+    "respostaTexto": pt::text(resposta)
   }
 `;
 
@@ -182,3 +183,67 @@ export const POST_POR_SLUG = groq`
 export const SLUGS_POST = groq`
   *[_type == "post" && defined(slug.current)][]{ "slug": slug.current }
 `;
+
+/** Posts de uma categoria específica, para /blog/categoria/[slug]. */
+export const POSTS_POR_CATEGORIA = groq`
+  *[_type == "post" && categoria == $categoria && publicadoEm <= now()]
+  | order(publicadoEm desc){
+    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,
+    capa ${IMAGEM}
+  }
+`;
+
+/** Todos os depoimentos publicados, para a página /depoimentos. */
+export const DEPOIMENTOS = groq`
+  *[_type == "depoimento" && publicado == true] | order(_createdAt desc){
+    _id, nome, cidade, texto, videoUrl,
+    foto ${IMAGEM},
+    saida->{ titulo, "slug": slug.current, dataInicio, ramal->{ nome } }
+  }
+`;
+
+/** FAQ completa, agrupada por categoria na página /perguntas-frequentes. */
+export const FAQ_COMPLETA = groq`
+  *[_type == "faq"] | order(ordem asc){
+    _id, pergunta, resposta, categoria,
+    "respostaTexto": pt::text(resposta)
+  }
+`;
+
+/** Todos os ramais, para o hub /o-caminho. */
+export const RAMAIS = groq`
+  *[_type == "ramal"] | order(km asc){
+    _id, nome, "slug": slug.current, cidadeInicio, km,
+    diasSugeridos, dificuldade, imagem ${IMAGEM}
+  }
+`;
+
+/** Página de um ramal específico. */
+export const RAMAL_POR_SLUG = groq`
+  *[_type == "ramal" && slug.current == $slug][0]{
+    _id, nome, "slug": slug.current, cidadeInicio, km,
+    diasSugeridos, dificuldade,
+    descricao[]{ ..., _type == "imagemComAlt" => ${IMAGEM} },
+    imagem ${IMAGEM},
+    ${SEO},
+    "saidas": *[_type == "saida" && references(^._id) && dataFim >= now()]
+      | order(dataInicio asc) ${CARTAO_SAIDA}
+  }
+`;
+
+/** Slugs para generateStaticParams. */
+export const SLUGS_RAMAL = groq`
+  *[_type == "ramal" && defined(slug.current)][]{ "slug": slug.current }
+`;
+
+/** Tudo que entra no sitemap. Grupos ficam de fora de propósito. */
+export const SITEMAP = groq`{
+  "saidas": *[_type == "saida" && defined(slug.current)]{
+    "slug": slug.current, _updatedAt },
+  "posts": *[_type == "post" && defined(slug.current) && publicadoEm <= now()]{
+    "slug": slug.current, _updatedAt },
+  "ramais": *[_type == "ramal" && defined(slug.current)]{
+    "slug": slug.current, _updatedAt },
+  "materiais": *[_type == "material" && ativo == true && defined(slug.current)]{
+    "slug": slug.current, _updatedAt }
+}`;

@@ -7,6 +7,7 @@ import { buscar } from '@/sanity/client';
 import { POST_POR_SLUG, SLUGS_POST } from '@/sanity/queries';
 import type { POST_POR_SLUG_RESULT, SLUGS_POST_RESULT } from '@/sanity/types';
 import { urlDaImagem } from '@/sanity/image';
+import { jsonLdArtigo } from '@/lib/seo';
 import { Container } from '@/components/ui/Container';
 import { CardSaida } from '@/components/saida/CardSaida';
 import { CardPost } from '@/components/conteudo/CardPost';
@@ -29,6 +30,7 @@ const componentesPortableText: PortableTextComponents = {
             src={urlDaImagem(value).width(1000).height(667).url()}
             alt={value.alt ?? ''}
             fill
+            sizes="(min-width: 768px) 680px, 100vw"
             placeholder={value.lqip ? 'blur' : undefined}
             blurDataURL={value.lqip ?? undefined}
             className="object-cover"
@@ -81,6 +83,11 @@ export default async function PaginaPost({ params }: Props) {
 
   return (
     <Container className="py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArtigo(post)) }}
+      />
+
       <Link href="/blog" className="text-sm text-[var(--nevoa-fraca)] hover:text-[var(--amarelo-seta)]">
         ← Voltar para o blog
       </Link>
@@ -106,6 +113,8 @@ export default async function PaginaPost({ params }: Props) {
             alt={post.capa.alt}
             fill
             priority
+            fetchPriority="high"
+            sizes="(min-width: 1200px) 1200px, 100vw"
             placeholder={post.capa.lqip ? 'blur' : undefined}
             blurDataURL={post.capa.lqip ?? undefined}
             className="object-cover"

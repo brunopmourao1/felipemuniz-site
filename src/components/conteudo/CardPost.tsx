@@ -23,6 +23,7 @@ export function CardPost({ post }: { post: Post }) {
             src={urlDaImagem(post.capa).width(600).height(400).url()}
             alt={post.capa.alt}
             fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             placeholder={post.capa.lqip ? 'blur' : undefined}
             blurDataURL={post.capa.lqip ?? undefined}
             className="object-cover"

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { esquemaLead, type Lead } from '@/lib/schemas';
 import { Campo } from '@/components/ui/Campo';
 import { Botao } from '@/components/ui/Botao';
@@ -94,7 +95,11 @@ export function FormularioLead({
       <div className={compacto ? 'flex flex-col gap-3 sm:w-auto' : 'flex flex-col gap-3'}>
         <label className="flex items-start gap-2 text-sm text-[var(--nevoa-fraca)]">
           <input type="checkbox" {...register('consentimento')} className="mt-1 min-h-4 min-w-4" />
-          Autorizo o Felipe a entrar em contato comigo.
+          Autorizo o Felipe a entrar em contato comigo. Li a{' '}
+          <Link href="/politica-de-privacidade" className="underline hover:text-[var(--amarelo-seta)]">
+            política de privacidade
+          </Link>
+          .
         </label>
         {errors.consentimento && (
           <p role="alert" className="text-sm text-[var(--erro)]">

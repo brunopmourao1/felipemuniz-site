@@ -38,6 +38,7 @@ export default async function PaginaMaterial({ params }: Props) {
                 src={urlDaImagem(material.capa).width(900).height(600).url()}
                 alt={material.capa.alt}
                 fill
+                sizes="(min-width: 768px) 50vw, 100vw"
                 placeholder={material.capa.lqip ? 'blur' : undefined}
                 blurDataURL={material.capa.lqip ?? undefined}
                 className="object-cover"

@@ -1,6 +1,7 @@
 import { buscar } from '@/sanity/client';
 import { CONFIGURACAO, PROXIMAS_SAIDAS } from '@/sanity/queries';
 import type { CONFIGURACAO_RESULT, PROXIMAS_SAIDAS_RESULT } from '@/sanity/types';
+import { jsonLdOrganizacao } from '@/lib/seo';
 import { Cabecalho } from '@/components/layout/Cabecalho';
 import { Rodape } from '@/components/layout/Rodape';
 import { BotaoWhatsApp } from '@/components/layout/BotaoWhatsApp';
@@ -17,6 +18,10 @@ export default async function LayoutSite({ children }: { children: React.ReactNo
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganizacao(config)) }}
+      />
       <Cabecalho whatsapp={whatsapp} />
       <main className="flex-1">{children}</main>
       <Rodape

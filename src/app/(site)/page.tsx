@@ -21,6 +21,7 @@ import type {
   FAQ_HOME_RESULT,
 } from '@/sanity/types';
 import { urlDaImagem } from '@/sanity/image';
+import { jsonLdFaq } from '@/lib/seo';
 import { Container } from '@/components/ui/Container';
 import { Botao } from '@/components/ui/Botao';
 import { Acordeao } from '@/components/ui/Acordeao';
@@ -84,6 +85,8 @@ export default async function PaginaInicial() {
             alt={config.heroImagem.alt}
             fill
             priority
+            fetchPriority="high"
+            sizes="100vw"
             placeholder={config.heroImagem.lqip ? 'blur' : undefined}
             blurDataURL={config.heroImagem.lqip ?? undefined}
             className="object-cover"
@@ -159,6 +162,7 @@ export default async function PaginaInicial() {
                   src={urlDaImagem(quemSou.foto).width(800).height(1000).url()}
                   alt={quemSou.foto.alt}
                   fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   placeholder={quemSou.foto.lqip ? 'blur' : undefined}
                   blurDataURL={quemSou.foto.lqip ?? undefined}
                   className="object-cover"
@@ -282,6 +286,7 @@ export default async function PaginaInicial() {
                   src={urlDaImagem(material.capa).width(800).height(533).url()}
                   alt={material.capa.alt}
                   fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   placeholder={material.capa.lqip ? 'blur' : undefined}
                   blurDataURL={material.capa.lqip ?? undefined}
                   className="object-cover"
@@ -306,6 +311,10 @@ export default async function PaginaInicial() {
       {/* 8. FAQ resumida */}
       {perguntas.length > 0 && (
         <section className="mt-24 pb-24 md:mt-32">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFaq(perguntas)) }}
+          />
           <Container>
             <p className={classeEyebrow}>Dúvidas</p>
             <h2 className={classeTituloSecao}>Perguntas frequentes</h2>

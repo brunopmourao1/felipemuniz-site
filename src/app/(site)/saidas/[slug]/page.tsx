@@ -10,6 +10,7 @@ import { urlDaImagem } from '@/sanity/image';
 import { statusDaSaida, rotuloDoStatus, textoDoBotao } from '@/lib/status-saida';
 import { formatarPeriodo, contarDias } from '@/lib/datas';
 import { linkDoWhatsapp, mensagemReserva } from '@/lib/whatsapp';
+import { jsonLdSaida } from '@/lib/seo';
 import { Container } from '@/components/ui/Container';
 import { Selo } from '@/components/ui/Selo';
 import { Botao } from '@/components/ui/Botao';
@@ -56,6 +57,11 @@ export default async function PaginaSaida({ params }: Props) {
 
   return (
     <Container className="py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSaida(saida)) }}
+      />
+
       <Link href="/saidas" className="text-sm text-[var(--nevoa-fraca)] hover:text-[var(--amarelo-seta)]">
         ← Voltar para saídas
       </Link>
@@ -177,6 +183,7 @@ export default async function PaginaSaida({ params }: Props) {
                     src={urlDaImagem(foto).width(400).height(400).url()}
                     alt={foto.alt}
                     fill
+                    sizes="(min-width: 640px) 25vw, 50vw"
                     placeholder={foto.lqip ? 'blur' : undefined}
                     blurDataURL={foto.lqip ?? undefined}
                     className="object-cover"
