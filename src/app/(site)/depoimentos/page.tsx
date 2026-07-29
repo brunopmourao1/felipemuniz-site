@@ -6,6 +6,7 @@ import type { DEPOIMENTOS_RESULT } from '@/sanity/types';
 import { urlDaImagem } from '@/sanity/image';
 import { formatarData } from '@/lib/datas';
 import { Container } from '@/components/ui/Container';
+import { VideoDepoimento } from '@/components/conteudo/VideoDepoimento';
 
 export const revalidate = 3600;
 
@@ -57,6 +58,8 @@ export default async function PaginaDepoimentos() {
               {dep.texto && (
                 <p className="font-[var(--fonte-citacao)] italic text-[var(--nevoa)]">&ldquo;{dep.texto}&rdquo;</p>
               )}
+
+              {dep.videoUrl && <VideoDepoimento url={dep.videoUrl} />}
 
               {dep.saida?.slug && (
                 <Link

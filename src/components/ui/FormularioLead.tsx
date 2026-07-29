@@ -11,10 +11,12 @@ import { Botao } from '@/components/ui/Botao';
 
 export function FormularioLead({
   origem,
+  materialSlug,
   compacto = false,
   textoBotao = 'Quero receber',
 }: {
   origem: string;
+  materialSlug?: string;
   compacto?: boolean;
   textoBotao?: string;
 }) {
@@ -28,7 +30,7 @@ export function FormularioLead({
     formState: { errors },
   } = useForm<Lead>({
     resolver: zodResolver(esquemaLead),
-    defaultValues: { origem },
+    defaultValues: { origem, materialSlug },
   });
 
   async function aoEnviar(dados: Lead) {
@@ -44,7 +46,7 @@ export function FormularioLead({
         const corpo = await resposta.json().catch(() => null);
         throw new Error(corpo?.erro ?? 'Não foi possível enviar agora. Tente de novo em instantes.');
       }
-      router.push('/obrigado');
+      router.push(materialSlug ? `/obrigado?material=${materialSlug}` : '/obrigado');
     } catch (erro) {
       setErroEnvio(erro instanceof Error ? erro.message : 'Não foi possível enviar agora.');
     } finally {
@@ -67,6 +69,7 @@ export function FormularioLead({
         aria-hidden="true"
       />
       <input type="hidden" {...register('origem')} />
+      <input type="hidden" {...register('materialSlug')} />
 
       <div className={compacto ? 'flex-1' : ''}>
         <Campo label="Nome" id="lead-nome" autoComplete="name" erro={errors.nome?.message} {...register('nome')} />

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createClient } from '@sanity/client';
 import { esquemaLead } from '@/lib/schemas';
+import { MATERIAL_POR_SLUG } from '@/sanity/queries';
+import type { MATERIAL_POR_SLUG_RESULT } from '@/sanity/types';
 
 const escritor = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
@@ -46,7 +48,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { nome, email, whatsapp, origem, consentimento } = validacao.data;
+  const { nome, email, whatsapp, origem, materialSlug, consentimento } = validacao.data;
 
   try {
     await escritor.create({
@@ -61,12 +63,32 @@ export async function POST(req: NextRequest) {
 
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY);
+
       await resend.emails.send({
         from: process.env.EMAIL_REMETENTE!,
         to: process.env.EMAIL_DESTINO!,
         subject: `Novo contato pelo site: ${nome}`,
         text: `Nome: ${nome}\nWhatsApp: ${whatsapp}\nE-mail: ${email}\nOrigem: ${origem}`,
       });
+
+      if (materialSlug) {
+        const material = await escritor.fetch<MATERIAL_POR_SLUG_RESULT>(MATERIAL_POR_SLUG, {
+          slug: materialSlug,
+        });
+
+        if (material) {
+          const texto = material.arquivoUrl
+            ? `Olá, ${nome}!\n\nAqui está o seu material "${material.titulo}": ${material.arquivoUrl}\n\nO link não expira, pode baixar quando quiser.`
+            : `Olá, ${nome}!\n\nRecebemos seu pedido do material "${material.titulo}". O Felipe vai te enviar o arquivo em breve.`;
+
+          await resend.emails.send({
+            from: process.env.EMAIL_REMETENTE!,
+            to: email,
+            subject: `Seu material: ${material.titulo}`,
+            text: texto,
+          });
+        }
+      }
     }
 
     return NextResponse.json({ ok: true });

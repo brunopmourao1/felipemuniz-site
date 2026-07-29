@@ -7,6 +7,7 @@ export const esquemaLead = z.object({
   email: z.string().trim().email('Digite um e-mail válido.'),
   whatsapp: z.string().trim().regex(whatsappBR, 'Digite o WhatsApp com DDD.'),
   origem: z.string().min(1),
+  materialSlug: z.string().optional(),
   consentimento: z.literal(true, {
     error: 'É preciso concordar para continuar.',
   }),

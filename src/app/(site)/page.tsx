@@ -300,6 +300,7 @@ export default async function PaginaInicial() {
               <div className="mt-6">
                 <FormularioLead
                   origem={material.slug ? `material:${material.slug}` : 'captura-home'}
+                  materialSlug={material.slug ?? undefined}
                   textoBotao="Quero receber"
                 />
               </div>

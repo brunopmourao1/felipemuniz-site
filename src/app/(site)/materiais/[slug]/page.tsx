@@ -74,7 +74,11 @@ export default async function PaginaMaterial({ params }: Props) {
             Receba grátis por e-mail
           </h2>
           <div className="mt-6">
-            <FormularioLead origem={`material:${material.slug ?? slug}`} textoBotao="Quero receber" />
+            <FormularioLead
+              origem={`material:${material.slug ?? slug}`}
+              materialSlug={material.slug ?? slug}
+              textoBotao="Quero receber"
+            />
           </div>
         </div>
       </div>

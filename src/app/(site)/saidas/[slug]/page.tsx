@@ -12,6 +12,7 @@ import { formatarPeriodo, contarDias } from '@/lib/datas';
 import { linkDoWhatsapp, mensagemReserva } from '@/lib/whatsapp';
 import { jsonLdSaida } from '@/lib/seo';
 import { Container } from '@/components/ui/Container';
+import { VideoDepoimento } from '@/components/conteudo/VideoDepoimento';
 import { Selo } from '@/components/ui/Selo';
 import { Botao } from '@/components/ui/Botao';
 import { FitaAltimetria } from '@/components/saida/FitaAltimetria';
@@ -204,6 +205,7 @@ export default async function PaginaSaida({ params }: Props) {
             {saida.depoimentos.map((dep) => (
               <li key={dep._id} className="rounded-[var(--raio-m)] bg-[var(--azul-noite)] p-6">
                 <p className="font-[var(--fonte-citacao)] italic text-[var(--nevoa)]">&ldquo;{dep.texto}&rdquo;</p>
+                {dep.videoUrl && <VideoDepoimento url={dep.videoUrl} />}
                 <p className="mt-3 font-[var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)]">
                   {dep.nome}{dep.cidade ? ` · ${dep.cidade}` : ''}
                 </p>
