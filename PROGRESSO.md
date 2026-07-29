@@ -6,9 +6,9 @@ Diário de bordo do desenvolvimento. Atualizado a cada avanço, para retomar o t
 
 ## Onde estamos agora
 
-**Fase 1 — Fundação, concluída e confirmada visualmente no navegador.** Todo o código está escrito, **`npm run build` fecha limpo, sem erro nem aviso**, tokens do Sanity no `.env.local`, **seed rodado com sucesso** (36 documentos fictícios), `/saidas` mostra as 4 saídas com selo de vagas, cores e tipografia do documento 04 renderizando certo, `/` mostra o hero. Conferido com a extensão do Chrome nesta sessão (rodando em `http://localhost:3000`).
+**Fase 1 — Fundação, testada de ponta a ponta local e pronta para deploy.** Nesta sessão foi feita uma varredura completa pedida pelo Bruno ("terminar o site 100% antes do deploy, testar 100% local"), cobrindo: build de produção, todas as páginas, Studio (login, edição, publicação), o ciclo completo de revalidação, foco de teclado e a página 404. Dois bugs reais foram encontrados e corrigidos (ver seção de bloqueios). `npm run build` fecha limpo, sem erro nem aviso.
 
-Commits desta fase: `6ab5a38` (base), `a9ac756` (diário), `53c14d8` (fix dos scripts de seed + client de leitura).
+Commits desta fase: `6ab5a38` (base), `a9ac756` (diário), `53c14d8` (fix dos scripts de seed + client de leitura), `56c55c1` (diário), `14b0bda` (página 404 em português).
 
 **Falta só:** deploy na Vercel com domínio provisório.
 
@@ -40,15 +40,19 @@ Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`
 ## Em andamento agora (retomar por aqui)
 
 - [ ] Deploy na Vercel com domínio provisório
+- [ ] No painel do Sanity, criar o webhook real apontando para `/api/revalidate` (código já testado e funcionando — só falta cadastrar no `sanity.io/manage` → projeto → API → Webhooks, apontando pra URL de produção depois do deploy). É item de Fase 2, mas o segredo (`SANITY_REVALIDATE_SECRET`) já está gerado e no `.env.local`.
 - [ ] Depois do deploy: rodar `npm run seed:limpar` quando o conteúdo real do Felipe estiver pronto (lembrar — está tudo com prefixo `[EXEMPLO]` e fotos do picsum)
 
 ## Falta fazer (Fase 1)
 
-- [x] ~~Confirmar `npm run build` limpo~~ ✅ fechou sem erro nem aviso
-- [x] ~~Testar `npm run dev` nas rotas principais~~ ✅ verificado por `curl` (`/`, `/saidas`, `/studio`, 404 de saída inexistente)
+- [x] ~~Confirmar `npm run build` limpo~~ ✅ fechou sem erro nem aviso, testado múltiplas vezes
+- [x] ~~Testar `npm run dev` nas rotas principais~~ ✅ verificado visualmente no navegador
 - [x] ~~Commitar o código da Fase 1~~ ✅ commit `6ab5a38`
 - [x] ~~Rodar o seed~~ ✅ 36 documentos gravados
-- [x] ~~Olhar `/saidas` e uma `/saidas/[slug]` de verdade~~ ✅ confirmado por `curl`, pelo build estático **e visualmente no navegador** (extensão do Chrome conectada nesta sessão) — header, cores, tipografia e selos do documento 04 renderizando certo
+- [x] ~~Olhar `/saidas` e uma `/saidas/[slug]` de verdade~~ ✅ confirmado visualmente — hero, fita de altimetria, roteiro, incluso/não incluso, galeria, depoimentos (Newsreader itálico), FAQ, CTA, tudo renderizando certo
+- [x] ~~Testar o Studio de ponta a ponta~~ ✅ login, estrutura em português, edição de um campo, publicação, e o dado aparecendo no site depois de revalidar
+- [x] ~~Testar navegação por teclado~~ ✅ foco visível confirmado (contorno no botão via Tab)
+- [x] ~~Página 404 em português~~ ✅ corrigida nesta sessão (estava em inglês, violava regra do `CLAUDE.md`)
 - [ ] Deploy na Vercel com domínio provisório
 
 ---
@@ -74,6 +78,15 @@ Corrigidos na ordem em que apareceram, durante `npm run build`, até fechar 100%
    - **Cuidado para não reabrir:** se o `SANITY_API_READ_TOKEN` for revogado/expirar, `/saidas` e as páginas de detalhe voltam a aparecer vazias silenciosamente (sem erro no build, já que o client só retorna array vazio) — se isso acontecer, gerar um novo token Viewer e atualizar `.env.local` e a env var na Vercel.
 
 10. Ao abrir o site na conferência visual, a página vinha **sem estilo nenhum** — sem cores, sem fonte, o CSS (`layout.css`) e os chunks JS voltando `503` do servidor de dev. Causa: havia **dois `next dev` rodando ao mesmo tempo** (um antigo, esquecido de uma sessão anterior, na porta 3000; outro novo, iniciado nesta sessão, que caiu na 3001 porque a 3000 já estava ocupada) — os dois escrevendo simultaneamente na mesma pasta `.next/`, corrompendo o cache de build (`Cannot find module './1331.js'`, `Cannot find module './vendor-chunks/@sanity.js'` no log do servidor). **Corrigido** matando todos os processos `node.exe`, apagando `.next/` e subindo um único `npm run dev` limpo. **Cuidado para não reabrir:** antes de rodar `npm run dev`, checar se já não tem um servidor de outra sessão rodando (`tasklist | grep node` no Git Bash) — nunca depender da porta trocar sozinha (3001, 3002...) como sinal de "tá tudo bem", isso é sintoma do problema, não solução.
+
+11. **`.next/` corrompeu de novo**, desta vez porque rodei `npm run build` (produção) enquanto o `npm run dev` ainda estava de pé — os dois usam formatos de cache incompatíveis na mesma pasta `.next/`. **Regra para não reabrir: nunca rodar `npm run build` com o `npm run dev` ligado.** Sempre `taskkill //F //IM node.exe` (mata todo node — cuidado se houver outro projeto node rodando) antes de trocar entre os dois, e `rm -rf .next` se already corrompeu.
+12. **O Studio pedia "Connect this studio to your project"** ao abrir `/studio` pela primeira vez nesta sessão — comportamento novo do Sanity, que exige ou registrar o Studio (produção) ou autorizar `localhost` como "development host". **Resolvido** clicando em "Add development host", que abre uma janela de login no `sanity.io/manage` (conta do Bruno) e cadastra `http://localhost:3000` em **API → CORS origins** com credenciais permitidas. Depois disso, o Studio ainda pediu login próprio (Google/GitHub/e-mail) — é o login normal de quem vai editar (Felipe também vai precisar disso). Ambos os logins já estão feitos nesta máquina.
+13. **`SANITY_API_WRITE_TOKEN`/`SANITY_REVALIDATE_SECRET` vazio** impedia testar o webhook de revalidação. Gerado com `openssl rand -base64 32` e salvo no `.env.local`. Testado manualmente simulando uma chamada assinada do Sanity (script descartável, não commitado) contra `/api/revalidate` — funcionou: `revalidateTag` limpou o cache e a mudança feita no Studio (vagas disponíveis) apareceu em `/saidas` depois da chamada. **Falta só** cadastrar o webhook de verdade no painel do Sanity (Fase 2, depois que existir uma URL de produção).
+14. **A página 404 vinha em inglês** ("This page could not be found") — o `not-found` padrão do Next, nunca sobrescrito. Violava a regra inviolável do `CLAUDE.md` ("português em tudo que o usuário final vê"). **Corrigido** com `src/components/PaginaNaoEncontrada.tsx` (compartilhado) usado em `src/app/(site)/not-found.tsx` (rotas dentro do site, com cabeçalho/rodapé) e `src/app/not-found.tsx` (rotas totalmente fora dos grupos existentes, ex. `/blog` antes de a Fase 3 criar a página — sem cabeçalho/rodapé, mas ainda em português).
+
+## Limitação conhecida desta sessão (não verificada, sinalizar ao Bruno)
+
+**Não foi possível testar visualmente o layout em 375px de largura** (item da "Definição de pronto" do `CLAUDE.md`). O `resize_window` da extensão do Chrome não teve efeito neste ambiente (a tela ficou travada em ~2560px de largura, parece uma tela virtual fixa). Conferido por leitura de código que `Cabecalho.tsx`/`MenuMobil.tsx` usam os breakpoints certos do Tailwind (`hidden md:flex` / `md:hidden`) e que o menu mobile tem ARIA, fecha com Esc e respeita `prefers-reduced-motion` — mas o teste visual real em 375px (ou no DevTools do Bruno, ou no celular) ainda não foi feito. Fazer antes de considerar a Fase 1 100% fechada.
 
 ## Desvios da documentação (registrados para não reabrir decisão à toa)
 
