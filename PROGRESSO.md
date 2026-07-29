@@ -6,11 +6,16 @@ Diário de bordo do desenvolvimento. Atualizado a cada avanço, para retomar o t
 
 ## Onde estamos agora
 
-**Fase 1 — Fundação, testada de ponta a ponta local e pronta para deploy.** Nesta sessão foi feita uma varredura completa pedida pelo Bruno ("terminar o site 100% antes do deploy, testar 100% local"), cobrindo: build de produção, todas as páginas, Studio (login, edição, publicação), o ciclo completo de revalidação, foco de teclado e a página 404. Dois bugs reais foram encontrados e corrigidos (ver seção de bloqueios). `npm run build` fecha limpo, sem erro nem aviso.
+**Fase 1 — Fundação, 100% concluída, testada e no ar.** 🎉
 
-Commits desta fase: `6ab5a38` (base), `a9ac756` (diário), `53c14d8` (fix dos scripts de seed + client de leitura), `56c55c1` (diário), `14b0bda` (página 404 em português).
+**URL de produção:** https://felipemuniz-site.vercel.app
+**Studio de produção:** https://felipemuniz-site.vercel.app/studio (registrado no Sanity como "Studio host" — não é preview, é o Studio de verdade, com sync de schema)
 
-**Falta só:** deploy na Vercel com domínio provisório.
+Nesta sessão foi feita uma varredura completa pedida pelo Bruno ("terminar o site 100% antes do deploy, testar 100% local"), cobrindo: build de produção, todas as páginas, Studio (login, edição, publicação), o ciclo completo de revalidação, foco de teclado e a página 404. Quatro bugs reais foram encontrados e corrigidos (ver seção de bloqueios). Depois disso: push pro GitHub, projeto importado na Vercel, as 8 variáveis de ambiente cadastradas manualmente (o "smart paste" de `.env` da Vercel não funcionou direito — colar multilinha bagunçou os campos), deploy feito e confirmado no ar: `/`, `/saidas`, `/saidas/[slug]`, o 404 em português e o `/studio` — todos testados na URL de produção real, não só localmente.
+
+Commits desta fase: `6ab5a38` (base), `a9ac756` (diário), `53c14d8` (fix dos scripts de seed + client de leitura), `56c55c1` (diário), `14b0bda` (página 404 em português), `dfa47e0` (diário).
+
+**Marco da Fase 1 batido:** o Felipe consegue entrar em `/studio`, cadastrar/editar uma saída, publicar, e ela aparece no site (testado o ciclo completo, inclusive a revalidação de cache).
 
 Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`. Hospedagem definida: Vercel. Resend fica para depois (Fase 2).
 
@@ -39,21 +44,23 @@ Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`
 
 ## Em andamento agora (retomar por aqui)
 
-- [ ] Deploy na Vercel com domínio provisório
-- [ ] No painel do Sanity, criar o webhook real apontando para `/api/revalidate` (código já testado e funcionando — só falta cadastrar no `sanity.io/manage` → projeto → API → Webhooks, apontando pra URL de produção depois do deploy). É item de Fase 2, mas o segredo (`SANITY_REVALIDATE_SECRET`) já está gerado e no `.env.local`.
-- [ ] Depois do deploy: rodar `npm run seed:limpar` quando o conteúdo real do Felipe estiver pronto (lembrar — está tudo com prefixo `[EXEMPLO]` e fotos do picsum)
+**Fase 1 fechada.** Próximos passos são de Fase 2 ou manutenção:
 
-## Falta fazer (Fase 1)
+- [ ] No painel do Sanity, criar o webhook real apontando para `https://felipemuniz-site.vercel.app/api/revalidate` (o código já está testado e funcionando — falta só cadastrar em `sanity.io/manage` → projeto → API → Webhooks, com o mesmo valor de `SANITY_REVALIDATE_SECRET` que já está na Vercel). Sem isso, uma edição no Studio de produção só aparece no site depois de 1h (cache) ou de uma chamada manual — igual ao que vimos local nesta sessão. É item de Fase 2, mas vale fazer logo porque melhora a experiência do Felipe.
+- [ ] Quando o conteúdo real do Felipe estiver pronto: rodar `npm run seed:limpar` (remove os documentos com prefixo `seed.`) e depois preencher os dados reais — lembrar que hoje **o site em produção está com conteúdo 100% fictício** (`[EXEMPLO]`, fotos do picsum). Antes de divulgar o link pra qualquer pessoa de fora, isso precisa estar resolvido.
+- [ ] Considerar restringir quem pode logar no Studio de produção (hoje qualquer conta com acesso ao projeto Sanity consegue editar — revisar em Access → Members antes de dar o acesso pro Felipe).
 
-- [x] ~~Confirmar `npm run build` limpo~~ ✅ fechou sem erro nem aviso, testado múltiplas vezes
-- [x] ~~Testar `npm run dev` nas rotas principais~~ ✅ verificado visualmente no navegador
-- [x] ~~Commitar o código da Fase 1~~ ✅ commit `6ab5a38`
-- [x] ~~Rodar o seed~~ ✅ 36 documentos gravados
-- [x] ~~Olhar `/saidas` e uma `/saidas/[slug]` de verdade~~ ✅ confirmado visualmente — hero, fita de altimetria, roteiro, incluso/não incluso, galeria, depoimentos (Newsreader itálico), FAQ, CTA, tudo renderizando certo
-- [x] ~~Testar o Studio de ponta a ponta~~ ✅ login, estrutura em português, edição de um campo, publicação, e o dado aparecendo no site depois de revalidar
-- [x] ~~Testar navegação por teclado~~ ✅ foco visível confirmado (contorno no botão via Tab)
-- [x] ~~Página 404 em português~~ ✅ corrigida nesta sessão (estava em inglês, violava regra do `CLAUDE.md`)
-- [ ] Deploy na Vercel com domínio provisório
+## Falta fazer (Fase 1) — tudo concluído ✅
+
+- [x] Confirmar `npm run build` limpo — fechou sem erro nem aviso, testado múltiplas vezes
+- [x] Testar `npm run dev` nas rotas principais — verificado visualmente no navegador
+- [x] Commitar o código da Fase 1 — commit `6ab5a38`
+- [x] Rodar o seed — 36 documentos gravados
+- [x] Olhar `/saidas` e uma `/saidas/[slug]` de verdade — hero, fita de altimetria, roteiro, incluso/não incluso, galeria, depoimentos (Newsreader itálico), FAQ, CTA, tudo renderizando certo
+- [x] Testar o Studio de ponta a ponta — login, estrutura em português, edição de um campo, publicação, e o dado aparecendo no site depois de revalidar
+- [x] Testar navegação por teclado — foco visível confirmado (contorno no botão via Tab)
+- [x] Página 404 em português — corrigida nesta sessão (estava em inglês, violava regra do `CLAUDE.md`)
+- [x] **Deploy na Vercel com domínio provisório** — https://felipemuniz-site.vercel.app, testado no ar (home, saídas, detalhe, 404, Studio)
 
 ---
 
@@ -84,9 +91,9 @@ Corrigidos na ordem em que apareceram, durante `npm run build`, até fechar 100%
 13. **`SANITY_API_WRITE_TOKEN`/`SANITY_REVALIDATE_SECRET` vazio** impedia testar o webhook de revalidação. Gerado com `openssl rand -base64 32` e salvo no `.env.local`. Testado manualmente simulando uma chamada assinada do Sanity (script descartável, não commitado) contra `/api/revalidate` — funcionou: `revalidateTag` limpou o cache e a mudança feita no Studio (vagas disponíveis) apareceu em `/saidas` depois da chamada. **Falta só** cadastrar o webhook de verdade no painel do Sanity (Fase 2, depois que existir uma URL de produção).
 14. **A página 404 vinha em inglês** ("This page could not be found") — o `not-found` padrão do Next, nunca sobrescrito. Violava a regra inviolável do `CLAUDE.md` ("português em tudo que o usuário final vê"). **Corrigido** com `src/components/PaginaNaoEncontrada.tsx` (compartilhado) usado em `src/app/(site)/not-found.tsx` (rotas dentro do site, com cabeçalho/rodapé) e `src/app/not-found.tsx` (rotas totalmente fora dos grupos existentes, ex. `/blog` antes de a Fase 3 criar a página — sem cabeçalho/rodapé, mas ainda em português).
 
-## Limitação conhecida desta sessão (não verificada, sinalizar ao Bruno)
+## Teste em 375px (mobile)
 
-**Não foi possível testar visualmente o layout em 375px de largura** (item da "Definição de pronto" do `CLAUDE.md`). O `resize_window` da extensão do Chrome não teve efeito neste ambiente (a tela ficou travada em ~2560px de largura, parece uma tela virtual fixa). Conferido por leitura de código que `Cabecalho.tsx`/`MenuMobil.tsx` usam os breakpoints certos do Tailwind (`hidden md:flex` / `md:hidden`) e que o menu mobile tem ARIA, fecha com Esc e respeita `prefers-reduced-motion` — mas o teste visual real em 375px (ou no DevTools do Bruno, ou no celular) ainda não foi feito. Fazer antes de considerar a Fase 1 100% fechada.
+A extensão do Chrome não conseguiu forçar uma janela estreita neste ambiente (`resize_window` não teve efeito — tela virtual fixa em ~2560px). Ficou confirmado por leitura de código que `Cabecalho.tsx`/`MenuMobil.tsx` usam os breakpoints certos do Tailwind (`hidden md:flex` / `md:hidden`) e que o menu mobile tem ARIA, fecha com Esc e respeita `prefers-reduced-motion`. **O Bruno testou manualmente no próprio navegador nesta sessão e confirmou que está funcionando.**
 
 ## Desvios da documentação (registrados para não reabrir decisão à toa)
 
