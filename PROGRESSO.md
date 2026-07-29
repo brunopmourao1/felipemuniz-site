@@ -6,9 +6,9 @@ Diário de bordo do desenvolvimento. Atualizado a cada avanço, para retomar o t
 
 ## Onde estamos agora
 
-**Fases 3 e 4 implementadas localmente (código completo). Fase 2 segue com o mesmo bloqueio de antes: falta a chave do Resend, e nada foi enviado pro GitHub nem implantado na Vercel ainda — tudo é local.**
+**Fases 3 e 4 no ar.** Commit `18890ff`, enviado pro GitHub e implantado na Vercel nesta sessão (autorizado pelo Bruno). O único bloqueio que sobra de sessões anteriores é a `RESEND_API_KEY`, que segue vazia — ver "Pendências" abaixo.
 
-**URL de produção (ainda com o código da Fase 1):** https://felipemuniz-site.vercel.app
+**URL de produção:** https://felipemuniz-site.vercel.app (já com as páginas das Fases 3 e 4)
 **Studio de produção:** https://felipemuniz-site.vercel.app/studio
 
 A Fase 1 (fundação) está 100% concluída, testada e no ar — detalhes na seção abaixo, mantidos como histórico.
@@ -25,7 +25,7 @@ Partindo de onde a sessão anterior parou (Fase 2 pronta localmente, sem deploy)
 - **`sitemap.ts` e `robots.ts`** — do documento 07, usando a query `SITEMAP` nova.
 - **Imagem OG dinâmica** da saída (`saidas/[slug]/opengraph-image.tsx`) via `ImageResponse`.
 - **Link para a política de privacidade** adicionado no texto de consentimento dos dois formulários (`FormularioLead`, `FormularioReserva`) — fechava o requisito 02.4, que dependia da página existir.
-- **Auditoria Lighthouse mobile** (critério de aceite do documento 01): rodada contra o build de produção local (`npm run start` + `npx lighthouse`, já que não há URL pública ainda). Acessibilidade, Boas Práticas e SEO em **100** na home e na página de saída. Performance: página de saída **97**, home **89** (meta é 90). Na investigação, achei que **nenhuma imagem do site usava a prop `sizes`** em `next/image` com `fill` — gap pré-existente das Fases 1/2, não só desta sessão — e que a prop `priority` nesta versão do Next **não** liga `fetchPriority="high"` sozinha (são props independentes no código do `next/image` instalado). Corrigi as duas coisas em todas as imagens `fill` do projeto (cards, heróis, galeria, avatares) e no LCP da home caiu de 3,8s para 3,6s, a pontuação foi de 82 → 89. O 1 ponto que falta na home é dominado pelo próprio LCP (3,6s, peso 25 de 100) — e isso aqui é testado com o servidor local reotimizando e buscando a imagem do CDN do Sanity a cada request, sem o cache de borda que a Vercel dá em produção (a página da saída, sob a mesma penalidade, já bateu 97, o que sugere que o número real em produção deve ficar bem acima de 89). **Vale rodar o Lighthouse de novo depois do deploy real** para confirmar.
+- **Auditoria Lighthouse mobile** (critério de aceite do documento 01). Achei que **nenhuma imagem do site usava a prop `sizes`** em `next/image` com `fill` — gap pré-existente das Fases 1/2, não só desta sessão — e que a prop `priority` nesta versão do Next **não** liga `fetchPriority="high"` sozinha (são props independentes no código do `next/image` instalado). Corrigi as duas coisas em todas as imagens `fill` do projeto (cards, heróis, galeria, avatares). Testado três vezes: local sem a correção (home 82), local com a correção (home 89, saída 97) e, depois do deploy, **contra a URL pública real** — home **95**, LCP caiu para 2,8s. Acessibilidade, Boas Práticas e SEO em **100** em todos os três testes. **Critério de aceite batido**: Lighthouse mobile ≥ 90 nas quatro categorias, confirmado em produção.
 - **`npm run build` limpo** em todas as rodadas (typegen + build de produção, sem erro nem aviso de tipo).
 
 ### Testado nesta sessão
@@ -34,15 +34,13 @@ No navegador (dev server local): `/o-caminho`, `/o-caminho/aguas-da-prata`, `/qu
 
 ### Pendências antes de considerar o site pronto para o domínio definitivo
 
-Nada mudou aqui desde a sessão passada, só ficou mais claro o que falta:
-
-- **`RESEND_API_KEY` continua vazia** — sem ela, os leads gravam no Sanity mas nenhum e-mail sai.
-- **Nada foi commitado, enviado pro GitHub nem implantado na Vercel nesta sessão** — pedir autorização explícita antes de fazer isso (`git push` e deploy são ações que exigem confirmação, não são automáticas).
-- Rodar o Lighthouse de novo contra a URL pública depois do deploy, pra confirmar que a home passa de 90 em produção.
-- Testar em 375px de verdade (o ambiente de automação não força janela estreita) e em iPhone/Android reais em 4G — isso é Fase 4, item "Teste real em iPhone e Android".
+- **`RESEND_API_KEY` continua vazia** — sem ela, os leads gravam no Sanity mas nenhum e-mail sai. Precisa criar a conta no Resend, verificar o domínio e colar a chave no `.env.local` e nas variáveis de ambiente da Vercel.
+- Testar em 375px de verdade (o ambiente de automação não força janela estreita) e em iPhone/Android reais em 4G — Fase 4, item "Teste real em iPhone e Android".
+- Rich Results Test do Google para `TouristTrip` e `FAQPage` — agora dá pra fazer, já que existe URL pública (`search.google.com/test/rich-results`).
 - Revisão de todo o texto do site, domínio definitivo, migração pra Cloudflare (se for a decisão), treinamento do Felipe, vídeo de 10 min, entrega dos acessos — todos são itens do documento 09 seção 3 (Fase 4) que dependem do Bruno e do Felipe, não são coisa que eu resolvo sozinho no código.
+- Google Search Console ainda não instalado (documento 07, seção 10) — depende de domínio definitivo ou, ao menos, de decidir verificar a URL de preview da Vercel.
 
-Commits pendentes de push: `c8c7b8b` (Fase 2) e `255d94d` (diário), mais o que sair desta sessão.
+Todos os commits até `18890ff` já estão no GitHub e no ar na Vercel.
 
 ### O que entrou na Fase 2
 
