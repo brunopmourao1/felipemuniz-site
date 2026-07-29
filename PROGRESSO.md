@@ -46,7 +46,7 @@ Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`
 
 **Fase 1 fechada.** Próximos passos são de Fase 2 ou manutenção:
 
-- [ ] No painel do Sanity, criar o webhook real apontando para `https://felipemuniz-site.vercel.app/api/revalidate` (o código já está testado e funcionando — falta só cadastrar em `sanity.io/manage` → projeto → API → Webhooks, com o mesmo valor de `SANITY_REVALIDATE_SECRET` que já está na Vercel). Sem isso, uma edição no Studio de produção só aparece no site depois de 1h (cache) ou de uma chamada manual — igual ao que vimos local nesta sessão. É item de Fase 2, mas vale fazer logo porque melhora a experiência do Felipe.
+- [x] ~~Webhook de revalidação no Sanity~~ ✅ Criado em `sanity.io/manage` → projeto → API → Webhooks: "Revalidar site (producao)", apontando para `https://felipemuniz-site.vercel.app/api/revalidate`, gatilho em Create/Update/Delete, dataset `production`, mesmo segredo já usado na Vercel. **Testado de ponta a ponta**: editei uma saída no Studio de produção, publiquei, e o site atualizou sozinho em poucos segundos, sem chamada manual — confirma que o Felipe vai ver a mudança quase na hora depois de publicar.
 - [ ] Quando o conteúdo real do Felipe estiver pronto: rodar `npm run seed:limpar` (remove os documentos com prefixo `seed.`) e depois preencher os dados reais — lembrar que hoje **o site em produção está com conteúdo 100% fictício** (`[EXEMPLO]`, fotos do picsum). Antes de divulgar o link pra qualquer pessoa de fora, isso precisa estar resolvido.
 - [ ] Considerar restringir quem pode logar no Studio de produção (hoje qualquer conta com acesso ao projeto Sanity consegue editar — revisar em Access → Members antes de dar o acesso pro Felipe).
 
