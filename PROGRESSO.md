@@ -34,9 +34,16 @@ A Fase 1 (fundação) está 100% concluída, testada e no ar — detalhes na se�
 - **Deploy pendente**: todo o trabalho acima está só local. Falta commitar, dar push e fazer o deploy na Vercel (com a `RESEND_API_KEY` cadastrada lá também).
 - Links do menu principal para `/o-caminho` e `/quem-sou` continuam quebrados (404) — pré-existentes da Fase 1, ficam para a Fase 3.
 
-Commits desta fase: `6ab5a38` (base), `a9ac756` (diário), `53c14d8` (fix dos scripts de seed + client de leitura), `56c55c1` (diário), `14b0bda` (página 404 em português), `dfa47e0` (diário).
+Commit da Fase 2 (local, sem push ainda): `c8c7b8b`.
+Commits da Fase 1: `6ab5a38` (base), `a9ac756` (diário), `53c14d8` (fix dos scripts de seed + client de leitura), `56c55c1` (diário), `14b0bda` (página 404 em português), `dfa47e0` (diário), `448e105` (deploy confirmado), `30061f7` (webhook de revalidação).
 
 **Marco da Fase 1 batido:** o Felipe consegue entrar em `/studio`, cadastrar/editar uma saída, publicar, e ela aparece no site (testado o ciclo completo, inclusive a revalidação de cache).
+
+**Marco da Fase 2 ainda não batido:** falta a `RESEND_API_KEY` para o e-mail realmente chegar na caixa do Felipe (hoje o lead grava no Sanity, mas o e-mail é pulado em silêncio) — ver "Pendências" acima.
+
+### Parada de hoje — retomar amanhã a partir daqui
+
+Sessão pausada a pedido do Bruno logo após o commit `c8c7b8b`. Nada foi enviado pro GitHub nem implantado na Vercel — é só código local commitado. Para retomar: ver "Pendências antes de fechar a Fase 2 de verdade" acima (chave do Resend e decisão sobre push/deploy) antes de considerar a Fase 2 encerrada.
 
 Projeto Sanity conectado: `sjs9wkjh` ("Felipe Muniz Site"), dataset `production`. Hospedagem definida: Vercel. Resend fica para depois (Fase 2).
 
