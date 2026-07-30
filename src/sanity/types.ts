@@ -92,6 +92,7 @@ export type Configuracao = {
   heroTitulo?: string;
   heroSubtitulo?: string;
   heroImagem?: ImagemComAlt;
+  heroCitacao?: string;
   peregrinosGuiados?: number;
   saidasRealizadas?: number;
   anoInicio?: number;
@@ -818,13 +819,14 @@ export type GRUPO_POR_SLUG_RESULT = {
 
 // Source: src\sanity\queries.ts
 // Variable: CONFIGURACAO
-// Query: *[_type == "configuracao"][0]{    whatsapp, email, instagram,    heroTitulo, heroSubtitulo,    heroImagem {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    peregrinosGuiados, saidasRealizadas, anoInicio  }
+// Query: *[_type == "configuracao"][0]{    whatsapp, email, instagram,    heroTitulo, heroSubtitulo, heroCitacao,    heroImagem {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    peregrinosGuiados, saidasRealizadas, anoInicio  }
 export type CONFIGURACAO_RESULT = {
   whatsapp: string | null;
   email: string | null;
   instagram: string | null;
   heroTitulo: string | null;
   heroSubtitulo: string | null;
+  heroCitacao: string | null;
   heroImagem: {
     _type: "imagemComAlt";
     asset?: SanityImageAssetReference;
@@ -1436,7 +1438,7 @@ declare module "@sanity/client" {
     '\n  *[_type == "saida" && slug.current == $slug][0]{\n    ...,\n    "slug": slug.current,\n    imagemCapa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    galeria[] {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    ramal->{ nome, "slug": slug.current, km, dificuldade, cidadeInicio },\n    roteiro[]{ dia, trecho, km, altimetria, pousada, descricao },\n    incluso,\n    naoIncluso,\n    seo{\n  titulo, descricao, naoIndexar,\n  imagem { ..., "lqip": asset->metadata.lqip }\n},\n    "depoimentos": *[_type == "depoimento" && publicado == true\n                     && references(^._id)] | order(_createdAt desc){\n      _id, nome, cidade, texto, videoUrl, foto {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n    },\n    "perguntas": *[_type == "faq" && categoria in ["decisao", "valores"]]\n                 | order(ordem asc)[0...6]{ _id, pergunta, resposta }\n  }\n': SAIDA_POR_SLUG_RESULT;
     '\n  *[_type == "saida" && defined(slug.current)][]{ "slug": slug.current }\n': SLUGS_SAIDA_RESULT;
     '\n  *[_type == "saida" && slugGrupo.current == $slug][0]{\n    titulo, dataInicio, dataFim, cidadeSaida, distanciaKm,\n    roteiro[]{ dia, trecho, km, altimetria, pousada, descricao },\n    orientacoesGrupo,\n    incluso, naoIncluso,\n    ramal->{ nome, km }\n  }\n': GRUPO_POR_SLUG_RESULT;
-    '\n  *[_type == "configuracao"][0]{\n    whatsapp, email, instagram,\n    heroTitulo, heroSubtitulo,\n    heroImagem {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    peregrinosGuiados, saidasRealizadas, anoInicio\n  }\n': CONFIGURACAO_RESULT;
+    '\n  *[_type == "configuracao"][0]{\n    whatsapp, email, instagram,\n    heroTitulo, heroSubtitulo, heroCitacao,\n    heroImagem {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    peregrinosGuiados, saidasRealizadas, anoInicio\n  }\n': CONFIGURACAO_RESULT;
     '\n  *[_type == "quemSou"][0]{\n    titulo, credenciais,\n    foto {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    historia[]{ ..., _type == "imagemComAlt" => {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n} },\n    seo{\n  titulo, descricao, naoIndexar,\n  imagem { ..., "lqip": asset->metadata.lqip }\n}\n  }\n': QUEM_SOU_RESULT;
     '\n  *[_type == "depoimento" && publicado == true]\n  | order(destaque desc, _createdAt desc)[0...8]{\n    _id, nome, cidade, texto,\n    foto {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    saida->{ dataInicio, ramal->{ nome } }\n  }\n': DEPOIMENTOS_HOME_RESULT;
     '\n  *[_type == "faq" && naHome == true] | order(ordem asc)[0...5]{\n    _id, pergunta, resposta,\n    "respostaTexto": pt::text(resposta)\n  }\n': FAQ_HOME_RESULT;

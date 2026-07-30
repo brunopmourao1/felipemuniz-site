@@ -89,7 +89,7 @@ export const GRUPO_POR_SLUG = groq`
 export const CONFIGURACAO = groq`
   *[_type == "configuracao"][0]{
     whatsapp, email, instagram,
-    heroTitulo, heroSubtitulo,
+    heroTitulo, heroSubtitulo, heroCitacao,
     heroImagem ${IMAGEM},
     peregrinosGuiados, saidasRealizadas, anoInicio
   }

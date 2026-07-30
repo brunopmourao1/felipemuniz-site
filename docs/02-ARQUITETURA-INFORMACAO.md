@@ -55,7 +55,7 @@ A home tem uma tarefa: fazer o visitante entender em 5 segundos o que o Felipe f
 
 | # | Bloco | Conteúdo | Fonte |
 |---|---|---|---|
-| 1 | **Hero** | Foto real de grupo em movimento na trilha. Título curto e humano. Duas ações: *Ver próximas saídas* / *Receber o guia de preparação* | `configuracao` |
+| 1 | **Hero** *(cinematográfica, ver documento 04 seção 5.1)* | Três cenas presas ao scroll: **lugar** (foto real, zoom lento, título + subtítulo) → **citação** (seta pintada + linha devocional) → **guia** (retrato do Felipe num quadro, mesma foto do bloco 3). Ao final, libera o scroll normal direto para o bloco 2. Duas ações no fim da sequência: *Ver próximas saídas* / *Receber o guia de preparação* | `configuracao` + `quemSou` |
 | 2 | **Próximas saídas** | Até 3 cards com data, ramal, dias, vagas restantes, status. Link para todas | `saida` |
 | 3 | **Quem guia** | Foto do Felipe + 3 parágrafos + números reais (peregrinos guiados, saídas, anos) | `configuracao` |
 | 4 | **Como funciona** | 4 etapas: escolher a saída → conversar com o Felipe → preparar → caminhar. Aqui a numeração se justifica: é sequência real | estático |

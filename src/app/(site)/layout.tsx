@@ -23,7 +23,9 @@ export default async function LayoutSite({ children }: { children: React.ReactNo
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganizacao(config)) }}
       />
       <Cabecalho whatsapp={whatsapp} />
-      <main className="flex-1">{children}</main>
+      {/* pt-16 compensa o Cabecalho ser fixed (fora do fluxo) — a hero da
+          home cancela isso com -mt-16 pra ficar atrás dele de propósito. */}
+      <main className="flex-1 pt-16">{children}</main>
       <Rodape
         proximasSaidas={proximas
           .slice(0, 3)

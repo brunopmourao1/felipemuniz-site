@@ -30,6 +30,9 @@
   --fonte-corpo:   'Source Sans 3', system-ui, sans-serif;
   --fonte-dados:   'IBM Plex Mono', ui-monospace, monospace;
   --fonte-citacao: 'Newsreader', Georgia, serif;
+  /* Uso restrito ao título da hero cinematográfica (documento 04, seção 5.1)
+     — não é a família de display do site, essa continua sendo a Archivo. */
+  --fonte-hero:    'Cormorant Garamond', Georgia, serif;
 
   /* Escala tipográfica — fluida, sem quebras entre breakpoints */
   --texto-xs:  0.75rem;

@@ -256,6 +256,7 @@ async function semear() {
     instagram: 'https://www.instagram.com/cf_comfelipemuniz/',
     heroTitulo: '[EXEMPLO] Caminhe o Caminho da Fé com quem conhece cada passo',
     heroSubtitulo: '[EXEMPLO] Grupos guiados com segurança, acolhimento e experiência.',
+    heroCitacao: '[EXEMPLO] O caminho não é sobre a chegada, é sobre a transformação.',
     heroImagem: await subirImagem('hero', 'Grupo de peregrinos caminhando ao amanhecer'),
     peregrinosGuiados: 247,
     saidasRealizadas: 18,

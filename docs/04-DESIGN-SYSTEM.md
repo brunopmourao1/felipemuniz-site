@@ -176,6 +176,28 @@ export function anguloDoCarimbo(id: string): number {
 
 ---
 
+## 5.1 Segunda exceção — a hero cinematográfica
+
+A home abre com uma sequência de três cenas presa ao scroll: **lugar** (foto da Basílica de Aparecida, zoom lento) → **citação** (a seta se pinta na tela, linha devocional em Newsreader Italic) → **guia** (retrato do Felipe num quadro, mesma foto do bloco "Quem guia" mais abaixo). A página fica "no lugar" enquanto essas três cenas se revezam; só depois de completar a transição o scroll volta a rolar a home normalmente.
+
+Isso é, na prática, o tipo de efeito que a seção 8 abaixo proíbe ("sem parallax"). É uma exceção deliberada, decidida em conversa com o Bruno — não uma brecha. O critério é o mesmo da Credencial: **um objeto de assinatura por vez, com justificativa específica deste projeto, não um padrão pra reaproveitar em qualquer bloco.**
+
+Por que aqui e não em outro lugar:
+- É a primeira coisa que todo visitante vê — o único ponto da página em que vale gastar esse orçamento de atenção.
+- Usa dispositivos que o documento já sancionava separadamente, só nunca reunidos numa sequência: a seta amarela como indicador de rolagem do hero (seção 6) e a linha devocional em Newsreader Italic (seção 3). A hero cinematográfica não introduz vocabulário novo — organiza no tempo o que já existia no espaço.
+- É construída sem biblioteca de animação (JS vanilla via hooks React, suavizado por interpolação, com `IntersectionObserver` decidindo quando rodar) — a mesma restrição técnica do resto do site, só aplicada a um efeito mais elaborado.
+- Respeita `prefers-reduced-motion` de verdade: desliga o scroll-pin inteiro e mostra as três cenas empilhadas, roláveis normalmente.
+
+**Histórico da cena 3 (registrado pra não reabrir a discussão à toa).** Na primeira versão desta seção, a cena do guia tinha sido cortada por duplicar o bloco "Quem guia". O Bruno viu as duas versões ao vivo (com e sem a cena 3) e decidiu trazê-la de volta — a repetição intencional funciona como reforço, não como redundância: a cena 3 é só uma virada de página rápida (retrato + nome + cargo), o bloco "Quem guia" é que carrega a história de verdade. Pra não duplicar conteúdo no Sanity, a cena 3 reaproveita a mesma foto do documento `quemSou` — não existe um campo de imagem separado pra ela.
+
+**Tipografia da hero.** O título da cena 1 e o nome na cena 3 usam **Cormorant Garamond** (`--fonte-hero`), não a Archivo — uma segunda exceção de fonte, no mesmo espírito restrito da Newsreader (seção 3): uso travado a este bloco, não é a família de display do site.
+
+**Cabeçalho.** Nesta hero (e em todo o site, por consequência) o `Cabecalho` ficou transparente no topo da página e só fica sólido (fundo `--azul-profundo`/95 + blur) depois de rolar ~40px. Em páginas sem imagem de fundo isso é imperceptível — o corpo já é `--azul-profundo`, então transparente-no-topo e sólido-ao-rolar têm quase a mesma cor. A logo ganhou o ícone da seta ao lado do nome.
+
+**Não é precedente pra mais cenas.** A régua pra qualquer proposta futura de "mais uma cena" ou "mais um efeito preso ao scroll" continua sendo a mesma da Credencial: resolve um problema que nenhum dispositivo existente resolve, ou não entra. Três cenas é o teto combinado com o Bruno pra este bloco especificamente.
+
+---
+
 ## 6. Dispositivos estruturais
 
 Cada um codifica informação real. Nenhum é decoração.
@@ -263,7 +285,7 @@ Contido e com propósito único: reforçar a ideia de avanço.
 | Fita de altimetria | Traço desenhado da esquerda para a direita ao entrar na tela | 1200 ms, uma vez |
 | Abertura do menu mobile | Deslize a partir da direita | 250 ms |
 
-**Sem parallax. Sem contador animado. Sem partículas. Sem carrossel automático.**
+**Sem parallax. Sem contador animado. Sem partículas. Sem carrossel automático.** A única exceção é a hero cinematográfica (seção 5.1) — documentada e justificada ali, não um precedente pro resto do site.
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -304,5 +326,6 @@ Antes de codificar, o teste: cada decisão é específica deste projeto ou seria
 | Raio de borda quase zero | Deriva das formas angulares da marca. **Específica.** |
 | Numeração 01/02/03 | Só onde há sequência real. Passou no teste. |
 | Fade de entrada de seção | Genérico. **Mantido** porque é o mínimo funcional, mas limitado a uma ocorrência por seção e desativado com `prefers-reduced-motion`. |
+| Hero cinematográfica (scroll-pin, 3 cenas) | Reúne dispositivos já específicos do projeto (seta amarela, linha devocional) numa sequência, só no primeiro bloco da home. A cena 3 reaproveita a foto de `quemSou`, sem duplicar conteúdo no Sanity. Decidida com o Bruno como segunda exceção, ao lado da Credencial — não é padrão pro resto do site. **Específica, com ressalva registrada.** |
 
 O acessório removido: havia um mapa interativo do trajeto planejado para a home. Foi cortado. Ele competia com a credencial pela atenção, custava peso de JavaScript numa página que precisa carregar rápido em 4G, e a informação de trajeto pertence à página do ramal — não à home.

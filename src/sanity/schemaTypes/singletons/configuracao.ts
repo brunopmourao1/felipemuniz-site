@@ -28,6 +28,15 @@ export const configuracao = defineType({
       group: 'home', validation: (r) => r.max(180) }),
     defineField({ name: 'heroImagem', title: 'Foto principal', type: 'imagemComAlt',
       group: 'home', validation: (r) => r.required() }),
+    defineField({
+      name: 'heroCitacao', title: 'Citação devocional do hero', type: 'text', rows: 2,
+      group: 'home',
+      description:
+        'A frase que aparece depois da seta se pintar na tela, na abertura da home. ' +
+        'Curta e de voz própria — é o único lugar do site, além de depoimento de peregrino, ' +
+        'onde o texto aparece em itálico.',
+      validation: (r) => r.required().max(160),
+    }),
 
     defineField({ name: 'peregrinosGuiados', title: 'Peregrinos já guiados', type: 'number',
       group: 'numeros' }),

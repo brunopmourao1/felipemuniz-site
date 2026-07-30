@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { Botao } from '@/components/ui/Botao';
@@ -12,14 +16,40 @@ const ITENS_NAV = [
 ];
 
 export function Cabecalho({ whatsapp }: { whatsapp: string }) {
+  // Transparente no topo (sobre a hero, na home) e sólido assim que rola —
+  // em páginas sem hero de foto, o fundo --azul-profundo por trás já é
+  // praticamente igual à barra sólida, então não salta.
+  const [solido, setSolido] = useState(false);
+
+  useEffect(() => {
+    function aoRolar() {
+      setSolido(window.scrollY > 40);
+    }
+    aoRolar();
+    window.addEventListener('scroll', aoRolar, { passive: true });
+    return () => window.removeEventListener('scroll', aoRolar);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-30 border-b border-[color-mix(in_srgb,var(--dourado)_20%,transparent)] bg-[var(--azul-profundo)]/95 backdrop-blur">
+    <header
+      className={`fixed inset-x-0 top-0 z-30 border-b transition-colors duration-300 ${
+        solido
+          ? 'border-[color-mix(in_srgb,var(--dourado)_20%,transparent)] bg-[var(--azul-profundo)]/95 backdrop-blur'
+          : 'border-transparent bg-transparent'
+      }`}
+    >
       <Container className="flex h-16 items-center justify-between">
-        <Link
-          href="/"
-          className="font-[var(--fonte-display)] font-extrabold uppercase tracking-[-0.02em] text-[var(--nevoa)]"
-        >
-          Felipe Muniz
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/marca/seta-amarela.png"
+            alt=""
+            width={2795}
+            height={1525}
+            className="h-4 w-auto"
+          />
+          <span className="font-[var(--fonte-display)] font-extrabold uppercase tracking-[-0.02em] text-[var(--nevoa)]">
+            Felipe Muniz
+          </span>
         </Link>
 
         <nav aria-label="Menu principal" className="hidden md:flex items-center gap-6">

@@ -6,12 +6,42 @@ Diário de bordo do desenvolvimento. Atualizado a cada avanço, para retomar o t
 
 ## Onde estamos agora
 
-**Fases 3 e 4 no ar.** Commit `18890ff`, enviado pro GitHub e implantado na Vercel nesta sessão (autorizado pelo Bruno). O único bloqueio que sobra de sessões anteriores é a `RESEND_API_KEY`, que segue vazia — ver "Pendências" abaixo.
+**Hero cinematográfica pronta localmente — ainda não commitada nem enviada.** Últimos commits em produção (`2bf8111`) são das Fases 3/4. Esta sessão trocou a hero da home por uma sequência fixa no scroll com 3 cenas, mais um cabeçalho transparente-no-topo sitewide, testada e com build limpo, mas **aguardando autorização pra commit/push** antes de ir pra Vercel. O bloqueio de sessões anteriores segue: `RESEND_API_KEY` vazia — ver "Pendências" abaixo.
 
-**URL de produção:** https://felipemuniz-site.vercel.app (já com as páginas das Fases 3 e 4)
+**URL de produção (ainda com a hero antiga):** https://felipemuniz-site.vercel.app
 **Studio de produção:** https://felipemuniz-site.vercel.app/studio
 
 A Fase 1 (fundação) está 100% concluída, testada e no ar — detalhes na seção abaixo, mantidos como histórico.
+
+### Hero cinematográfica (fora do roadmap das fases, feita a pedido do Bruno)
+
+A home ganhou uma hero em três cenas presas ao scroll — **lugar** (foto em Ken Burns) → **citação** (seta se pinta na tela, linha devocional) → **guia** (retrato do Felipe num quadro). Veio de um protótipo isolado (`test_hero/prototipo/cinema-basilica.html`, HTML/CSS/JS puro, várias rodadas de ajuste direto com o Bruno) que depois recriei como componente React de verdade (`src/components/home/HeroCinematico.tsx`), usando os tokens reais do site em vez da paleta ad-hoc do protótipo.
+
+**Isso passou por duas rodadas de conflito com o documento 04, nenhuma decidida sozinho:**
+1. Primeira rodada: "sem parallax" e a cena do guia duplicando o bloco "Quem guia" — o Bruno decidiu abrir exceção documentada e cortar a cena do guia (hero ficou só lugar → citação).
+2. Segunda rodada: depois de ver as duas versões ao vivo, o Bruno pediu de volta o visual exato do protótipo original — cena do guia de volta, tipografia Cormorant Garamond (não a Archivo do site), barra dourada sob o título, e cabeçalho transparente com a seta ao lado do nome. Perguntei sobre o escopo do cabeçalho (só a home ou o site inteiro) e escolhi a solução tecnicamente mais limpa (ver abaixo) em vez de reabrir pergunta.
+
+O documento 04 (seção 5.1) tem o histórico completo registrado — inclusive a explicação de por que a cena do guia voltou sem duplicar conteúdo no Sanity (reaproveita `quemSou.foto`, não tem imagem própria). **Isso importa pra quem retomar depois:** três cenas é o teto combinado pra este bloco especificamente; qualquer pedido futuro de mais uma cena ou mais um efeito preso ao scroll precisa passar pelo mesmo crivo da Credencial.
+
+O que mudou no código, além do componente:
+- `configuracao` ganhou o campo `heroCitacao` (texto, obrigatório, grupo "Página inicial") — única peça de conteúdo genuinamente nova. `heroTitulo`/`heroSubtitulo`/`heroImagem` reaproveitados sem mudar de significado; a cena do guia reaproveita `quemSou.foto` (mesma foto do bloco "Quem guia" mais abaixo na home).
+- `public/marca/seta-amarela.png` — ativo real fornecido pelo cliente (não é placeholder), copiado de dentro de `test_hero/`.
+- **Fonte nova, uso restrito**: Cormorant Garamond (`--fonte-hero` em `tokens.css`), auto-hospedada em `public/fontes/` (pesos 500/600, latin + latin-ext, baixada da própria Google Fonts via `curl` e convertida — mesmo padrão das outras 4 fontes do site). Usada só no título da cena 1 e no nome na cena 3, no mesmo espírito restrito da Newsreader.
+- **`Cabecalho` virou `'use client'`, `fixed` (não mais `sticky`), transparente no topo e sólido depois de ~40px de scroll.** Isso é sitewide, não só na home — decisão técnica, não só de design: `sticky` reserva espaço no fluxo e nunca fica "por cima" de nada (só gruda no topo depois de rolar), então não tem como flutuar sobre a foto da hero sem virar `fixed`. Como `fixed` tira o cabeçalho do fluxo, `<main>` em `layout.tsx` ganhou `pt-16` de compensação (senão o topo de toda página ficaria escondido atrás do cabeçalho) — e a hero cancela esse `pt-16` com `-mt-16` pra ficar atrás do cabeçalho de propósito. Testado nas outras páginas (saídas, quem-sou): idêntico visualmente a antes, porque o fundo `--azul-profundo` já é a mesma cor da barra sólida.
+- Ganhou de volta a barra dourada (`--dourado`, não `--amarelo-seta` — é "filete decorativo", token certo pra isso) sob o título da cena 1.
+- Suavização por interpolação (`requestAnimationFrame` + `IntersectionObserver`), `inert` (React 19) em vez de `aria-hidden`+`pointer-events` manual pra tirar a cena inativa do foco de teclado, `prefers-reduced-motion` com fallback via variantes `motion-reduce:` do Tailwind (cenas empilhadas, sem prender o scroll).
+- Régua de scroll voltou a `220vh` (era `170vh` na versão de 2 cenas) com os pontos de corte do protótipo original — 3 cenas precisam de mais distância que 2. Documentado dentro do próprio componente.
+- **`npm run seed` não foi rodado de novo** — o dataset real ainda não tem `heroCitacao` preenchido (o campo aparece com aviso de obrigatório no Studio). O componente tem um texto de fallback, então o site funciona normalmente enquanto isso; rodar o seed (ou preencher direto no Studio) antes de considerar isso fechado de verdade.
+
+### Testado nesta sessão
+
+Local (`npm run dev`): as três cenas transicionam sem sobra de espaço morto, o cabeçalho fica transparente no topo (foto visível por trás) e sólido depois de rolar um pouco, em todas as páginas testadas (home, saídas, quem-sou) sem regressão visual. O scroll solta sozinho direto pro bloco "Próximas saídas". Teclado: Tab pula os CTAs das cenas inativas e entra neles normalmente (com contorno visível) assim que cada cena assume — `inert` funcionando. Console sem erro em nenhuma página. `npm run build` limpo (typegen + build de produção, sem erro nem aviso de tipo/lint) em todas as rodadas. **Não testado**: `prefers-reduced-motion` ao vivo (mesma limitação de sempre neste ambiente pra emular a media query) — a lógica foi revisada com cuidado, mas vale um teste manual do Bruno antes do deploy.
+
+### Pendências desta hero
+
+- Rodar `npm run seed` (ou preencher manualmente no Studio) pra `heroCitacao` parar de aparecer vazio no dataset real.
+- Testar `prefers-reduced-motion` de verdade (SO ou DevTools) antes do deploy.
+- Decidir com o Bruno se commita/envia — nada foi commitado ainda.
 
 ### O que entrou nesta sessão (Fases 3 e 4)
 

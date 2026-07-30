@@ -521,6 +521,13 @@
         },
         "optional": true
       },
+      "heroCitacao": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "peregrinosGuiados": {
         "type": "objectAttribute",
         "value": {
