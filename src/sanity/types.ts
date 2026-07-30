@@ -12,6 +12,8 @@
  * ---------------------------------------------------------------------------------
  */
 
+export declare const internalGroqTypeReferenceTo: unique symbol;
+
 // Source: schema.json
 export type QuemSou = {
   _id: string;
@@ -494,19 +496,17 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
-export declare const internalGroqTypeReferenceTo: unique symbol;
-
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: IMAGEM
 // Query: {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}
 export type IMAGEM_RESULT = never;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: SEO
 // Query: seo{  titulo, descricao, naoIndexar,  imagem { ..., "lqip": asset->metadata.lqip }}
 export type SEO_RESULT = never;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: CARTAO_SAIDA
 // Query: {  _id,  titulo,  "slug": slug.current,  dataInicio,  dataFim,  cidadeSaida,  resumo,  distanciaKm,  nivel,  vagasTotal,  vagasDisponiveis,  valor,  destaque,  imagemCapa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},  ramal->{ nome, "slug": slug.current, km }}
 export type CARTAO_SAIDA_RESULT = {
@@ -527,7 +527,7 @@ export type CARTAO_SAIDA_RESULT = {
   ramal: never;
 };
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: PROXIMAS_SAIDAS
 // Query: *[_type == "saida" && dataFim >= now()]  | order(dataInicio asc) {  _id,  titulo,  "slug": slug.current,  dataInicio,  dataFim,  cidadeSaida,  resumo,  distanciaKm,  nivel,  vagasTotal,  vagasDisponiveis,  valor,  destaque,  imagemCapa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},  ramal->{ nome, "slug": slug.current, km }}
 export type PROXIMAS_SAIDAS_RESULT = Array<{
@@ -562,7 +562,16 @@ export type PROXIMAS_SAIDAS_RESULT = Array<{
   } | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
+// Variable: RODAPE_SAIDAS
+// Query: *[_type == "saida" && dataFim >= now()]  | order(dataInicio asc)[0...3]{    titulo, "slug": slug.current, dataInicio  }
+export type RODAPE_SAIDAS_RESULT = Array<{
+  titulo: string | null;
+  slug: string | null;
+  dataInicio: string | null;
+}>;
+
+// Source: src/sanity/queries.ts
 // Variable: SAIDAS_HOME
 // Query: *[_type == "saida" && dataFim >= now()]  | order(destaque desc, dataInicio asc)[0...$limite] {  _id,  titulo,  "slug": slug.current,  dataInicio,  dataFim,  cidadeSaida,  resumo,  distanciaKm,  nivel,  vagasTotal,  vagasDisponiveis,  valor,  destaque,  imagemCapa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},  ramal->{ nome, "slug": slug.current, km }}
 export type SAIDAS_HOME_RESULT = Array<{
@@ -597,7 +606,7 @@ export type SAIDAS_HOME_RESULT = Array<{
   } | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: SAIDAS_REALIZADAS
 // Query: *[_type == "saida" && dataFim < now()]  | order(dataInicio desc) {  _id,  titulo,  "slug": slug.current,  dataInicio,  dataFim,  cidadeSaida,  resumo,  distanciaKm,  nivel,  vagasTotal,  vagasDisponiveis,  valor,  destaque,  imagemCapa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},  ramal->{ nome, "slug": slug.current, km }}
 export type SAIDAS_REALIZADAS_RESULT = Array<{
@@ -632,7 +641,7 @@ export type SAIDAS_REALIZADAS_RESULT = Array<{
   } | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: SAIDA_POR_SLUG
 // Query: *[_type == "saida" && slug.current == $slug][0]{    ...,    "slug": slug.current,    imagemCapa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    galeria[] {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    ramal->{ nome, "slug": slug.current, km, dificuldade, cidadeInicio },    roteiro[]{ dia, trecho, km, altimetria, pousada, descricao },    incluso,    naoIncluso,    seo{  titulo, descricao, naoIndexar,  imagem { ..., "lqip": asset->metadata.lqip }},    "depoimentos": *[_type == "depoimento" && publicado == true                     && references(^._id)] | order(_createdAt desc){      _id, nome, cidade, texto, videoUrl, foto {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}    },    "perguntas": *[_type == "faq" && categoria in ["decisao", "valores"]]                 | order(ordem asc)[0...6]{ _id, pergunta, resposta }  }
 export type SAIDA_POR_SLUG_RESULT = {
@@ -767,14 +776,14 @@ export type SAIDA_POR_SLUG_RESULT = {
   }>;
 } | null;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: SLUGS_SAIDA
 // Query: *[_type == "saida" && defined(slug.current)][]{ "slug": slug.current }
 export type SLUGS_SAIDA_RESULT = Array<{
   slug: string | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: GRUPO_POR_SLUG
 // Query: *[_type == "saida" && slugGrupo.current == $slug][0]{    titulo, dataInicio, dataFim, cidadeSaida, distanciaKm,    roteiro[]{ dia, trecho, km, altimetria, pousada, descricao },    orientacoesGrupo,    incluso, naoIncluso,    ramal->{ nome, km }  }
 export type GRUPO_POR_SLUG_RESULT = {
@@ -817,7 +826,7 @@ export type GRUPO_POR_SLUG_RESULT = {
   } | null;
 } | null;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: CONFIGURACAO
 // Query: *[_type == "configuracao"][0]{    whatsapp, email, instagram,    heroTitulo, heroSubtitulo, heroCitacao,    heroImagem {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    peregrinosGuiados, saidasRealizadas, anoInicio  }
 export type CONFIGURACAO_RESULT = {
@@ -843,7 +852,7 @@ export type CONFIGURACAO_RESULT = {
   anoInicio: number | null;
 } | null;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: QUEM_SOU
 // Query: *[_type == "quemSou"][0]{    titulo, credenciais,    foto {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    historia[]{ ..., _type == "imagemComAlt" => {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions} },    seo{  titulo, descricao, naoIndexar,  imagem { ..., "lqip": asset->metadata.lqip }}  }
 export type QUEM_SOU_RESULT = {
@@ -908,7 +917,7 @@ export type QUEM_SOU_RESULT = {
   } | null;
 } | null;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: DEPOIMENTOS_HOME
 // Query: *[_type == "depoimento" && publicado == true]  | order(destaque desc, _createdAt desc)[0...8]{    _id, nome, cidade, texto,    foto {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    saida->{ dataInicio, ramal->{ nome } }  }
 export type DEPOIMENTOS_HOME_RESULT = Array<{
@@ -935,7 +944,7 @@ export type DEPOIMENTOS_HOME_RESULT = Array<{
   } | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: FAQ_HOME
 // Query: *[_type == "faq" && naHome == true] | order(ordem asc)[0...5]{    _id, pergunta, resposta,    "respostaTexto": pt::text(resposta)  }
 export type FAQ_HOME_RESULT = Array<{
@@ -962,7 +971,7 @@ export type FAQ_HOME_RESULT = Array<{
   respostaTexto: string;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: MATERIAL_PRINCIPAL
 // Query: *[_type == "material" && ativo == true] | order(_createdAt asc)[0]{    titulo, "slug": slug.current, promessa, capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}  }
 export type MATERIAL_PRINCIPAL_RESULT = {
@@ -982,7 +991,7 @@ export type MATERIAL_PRINCIPAL_RESULT = {
   } | null;
 } | null;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: MATERIAL_POR_SLUG
 // Query: *[_type == "material" && slug.current == $slug && ativo == true][0]{    _id, titulo, "slug": slug.current, promessa, topicos,    capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    "arquivoUrl": arquivo.asset->url,    seo{  titulo, descricao, naoIndexar,  imagem { ..., "lqip": asset->metadata.lqip }}  }
 export type MATERIAL_POR_SLUG_RESULT = {
@@ -1018,7 +1027,7 @@ export type MATERIAL_POR_SLUG_RESULT = {
   } | null;
 } | null;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: POSTS_HOME
 // Query: *[_type == "post" && categoria == "preparacao" && publicadoEm <= now()]  | order(publicadoEm desc)[0...3]{    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,    capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}  }
 export type POSTS_HOME_RESULT = Array<{
@@ -1041,7 +1050,7 @@ export type POSTS_HOME_RESULT = Array<{
   } | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: POSTS
 // Query: *[_type == "post" && publicadoEm <= now()]  | order(publicadoEm desc)[$inicio...$fim]{    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,    capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}  }
 export type POSTS_RESULT = Array<{
@@ -1064,12 +1073,7 @@ export type POSTS_RESULT = Array<{
   } | null;
 }>;
 
-// Source: src\sanity\queries.ts
-// Variable: TOTAL_POSTS
-// Query: count(*[_type == "post" && publicadoEm <= now()])
-export type TOTAL_POSTS_RESULT = number;
-
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: POST_POR_SLUG
 // Query: *[_type == "post" && slug.current == $slug][0]{    ...,    "slug": slug.current,    capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    corpo[]{      ...,      _type == "imagemComAlt" => {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},      markDefs[]{ ..., _type == "link" => { href } }    },    saidasRelacionadas[]-> {  _id,  titulo,  "slug": slug.current,  dataInicio,  dataFim,  cidadeSaida,  resumo,  distanciaKm,  nivel,  vagasTotal,  vagasDisponiveis,  valor,  destaque,  imagemCapa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},  ramal->{ nome, "slug": slug.current, km }},    seo{  titulo, descricao, naoIndexar,  imagem { ..., "lqip": asset->metadata.lqip }},    "relacionados": *[_type == "post" && categoria == ^.categoria                      && _id != ^._id] | order(publicadoEm desc)[0...3]{      _id, titulo, "slug": slug.current, resumo, capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}    },    "tempoLeitura": round(length(pt::text(corpo)) / 5 / 200)  }
 export type POST_POR_SLUG_RESULT = {
@@ -1197,14 +1201,14 @@ export type POST_POR_SLUG_RESULT = {
   tempoLeitura: number;
 } | null;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: SLUGS_POST
 // Query: *[_type == "post" && defined(slug.current)][]{ "slug": slug.current }
 export type SLUGS_POST_RESULT = Array<{
   slug: string | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: POSTS_POR_CATEGORIA
 // Query: *[_type == "post" && categoria == $categoria && publicadoEm <= now()]  | order(publicadoEm desc){    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,    capa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}  }
 export type POSTS_POR_CATEGORIA_RESULT = Array<{
@@ -1227,7 +1231,7 @@ export type POSTS_POR_CATEGORIA_RESULT = Array<{
   } | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: DEPOIMENTOS
 // Query: *[_type == "depoimento" && publicado == true] | order(_createdAt desc){    _id, nome, cidade, texto, videoUrl,    foto {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    saida->{ titulo, "slug": slug.current, dataInicio, ramal->{ nome } }  }
 export type DEPOIMENTOS_RESULT = Array<{
@@ -1257,7 +1261,7 @@ export type DEPOIMENTOS_RESULT = Array<{
   } | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: FAQ_COMPLETA
 // Query: *[_type == "faq"] | order(ordem asc){    _id, pergunta, resposta, categoria,    "respostaTexto": pt::text(resposta)  }
 export type FAQ_COMPLETA_RESULT = Array<{
@@ -1286,7 +1290,7 @@ export type FAQ_COMPLETA_RESULT = Array<{
   respostaTexto: string;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: RAMAIS
 // Query: *[_type == "ramal"] | order(km asc){    _id, nome, "slug": slug.current, cidadeInicio, km,    diasSugeridos, dificuldade, imagem {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions}  }
 export type RAMAIS_RESULT = Array<{
@@ -1310,7 +1314,7 @@ export type RAMAIS_RESULT = Array<{
   } | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: RAMAL_POR_SLUG
 // Query: *[_type == "ramal" && slug.current == $slug][0]{    _id, nome, "slug": slug.current, cidadeInicio, km,    diasSugeridos, dificuldade,    descricao[]{ ..., _type == "imagemComAlt" => {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions} },    imagem {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},    seo{  titulo, descricao, naoIndexar,  imagem { ..., "lqip": asset->metadata.lqip }},    "saidas": *[_type == "saida" && references(^._id) && dataFim >= now()]      | order(dataInicio asc) {  _id,  titulo,  "slug": slug.current,  dataInicio,  dataFim,  cidadeSaida,  resumo,  distanciaKm,  nivel,  vagasTotal,  vagasDisponiveis,  valor,  destaque,  imagemCapa {  ...,  "alt": coalesce(alt, ""),  "lqip": asset->metadata.lqip,  "dimensoes": asset->metadata.dimensions},  ramal->{ nome, "slug": slug.current, km }}  }
 export type RAMAL_POR_SLUG_RESULT = {
@@ -1396,14 +1400,14 @@ export type RAMAL_POR_SLUG_RESULT = {
   }>;
 } | null;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: SLUGS_RAMAL
 // Query: *[_type == "ramal" && defined(slug.current)][]{ "slug": slug.current }
 export type SLUGS_RAMAL_RESULT = Array<{
   slug: string | null;
 }>;
 
-// Source: src\sanity\queries.ts
+// Source: src/sanity/queries.ts
 // Variable: SITEMAP
 // Query: {  "saidas": *[_type == "saida" && defined(slug.current)]{    "slug": slug.current, _updatedAt },  "posts": *[_type == "post" && defined(slug.current) && publicadoEm <= now()]{    "slug": slug.current, _updatedAt },  "ramais": *[_type == "ramal" && defined(slug.current)]{    "slug": slug.current, _updatedAt },  "materiais": *[_type == "material" && ativo == true && defined(slug.current)]{    "slug": slug.current, _updatedAt }}
 export type SITEMAP_RESULT = {
@@ -1433,6 +1437,7 @@ declare module "@sanity/client" {
     'seo{\n  titulo, descricao, naoIndexar,\n  imagem { ..., "lqip": asset->metadata.lqip }\n}': SEO_RESULT;
     '{\n  _id,\n  titulo,\n  "slug": slug.current,\n  dataInicio,\n  dataFim,\n  cidadeSaida,\n  resumo,\n  distanciaKm,\n  nivel,\n  vagasTotal,\n  vagasDisponiveis,\n  valor,\n  destaque,\n  imagemCapa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n  ramal->{ nome, "slug": slug.current, km }\n}': CARTAO_SAIDA_RESULT;
     '\n  *[_type == "saida" && dataFim >= now()]\n  | order(dataInicio asc) {\n  _id,\n  titulo,\n  "slug": slug.current,\n  dataInicio,\n  dataFim,\n  cidadeSaida,\n  resumo,\n  distanciaKm,\n  nivel,\n  vagasTotal,\n  vagasDisponiveis,\n  valor,\n  destaque,\n  imagemCapa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n  ramal->{ nome, "slug": slug.current, km }\n}\n': PROXIMAS_SAIDAS_RESULT;
+    '\n  *[_type == "saida" && dataFim >= now()]\n  | order(dataInicio asc)[0...3]{\n    titulo, "slug": slug.current, dataInicio\n  }\n': RODAPE_SAIDAS_RESULT;
     '\n  *[_type == "saida" && dataFim >= now()]\n  | order(destaque desc, dataInicio asc)[0...$limite] {\n  _id,\n  titulo,\n  "slug": slug.current,\n  dataInicio,\n  dataFim,\n  cidadeSaida,\n  resumo,\n  distanciaKm,\n  nivel,\n  vagasTotal,\n  vagasDisponiveis,\n  valor,\n  destaque,\n  imagemCapa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n  ramal->{ nome, "slug": slug.current, km }\n}\n': SAIDAS_HOME_RESULT;
     '\n  *[_type == "saida" && dataFim < now()]\n  | order(dataInicio desc) {\n  _id,\n  titulo,\n  "slug": slug.current,\n  dataInicio,\n  dataFim,\n  cidadeSaida,\n  resumo,\n  distanciaKm,\n  nivel,\n  vagasTotal,\n  vagasDisponiveis,\n  valor,\n  destaque,\n  imagemCapa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n  ramal->{ nome, "slug": slug.current, km }\n}\n': SAIDAS_REALIZADAS_RESULT;
     '\n  *[_type == "saida" && slug.current == $slug][0]{\n    ...,\n    "slug": slug.current,\n    imagemCapa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    galeria[] {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    ramal->{ nome, "slug": slug.current, km, dificuldade, cidadeInicio },\n    roteiro[]{ dia, trecho, km, altimetria, pousada, descricao },\n    incluso,\n    naoIncluso,\n    seo{\n  titulo, descricao, naoIndexar,\n  imagem { ..., "lqip": asset->metadata.lqip }\n},\n    "depoimentos": *[_type == "depoimento" && publicado == true\n                     && references(^._id)] | order(_createdAt desc){\n      _id, nome, cidade, texto, videoUrl, foto {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n    },\n    "perguntas": *[_type == "faq" && categoria in ["decisao", "valores"]]\n                 | order(ordem asc)[0...6]{ _id, pergunta, resposta }\n  }\n': SAIDA_POR_SLUG_RESULT;
@@ -1446,7 +1451,6 @@ declare module "@sanity/client" {
     '\n  *[_type == "material" && slug.current == $slug && ativo == true][0]{\n    _id, titulo, "slug": slug.current, promessa, topicos,\n    capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    "arquivoUrl": arquivo.asset->url,\n    seo{\n  titulo, descricao, naoIndexar,\n  imagem { ..., "lqip": asset->metadata.lqip }\n}\n  }\n': MATERIAL_POR_SLUG_RESULT;
     '\n  *[_type == "post" && categoria == "preparacao" && publicadoEm <= now()]\n  | order(publicadoEm desc)[0...3]{\n    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,\n    capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n  }\n': POSTS_HOME_RESULT;
     '\n  *[_type == "post" && publicadoEm <= now()]\n  | order(publicadoEm desc)[$inicio...$fim]{\n    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,\n    capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n  }\n': POSTS_RESULT;
-    'count(*[_type == "post" && publicadoEm <= now()])': TOTAL_POSTS_RESULT;
     '\n  *[_type == "post" && slug.current == $slug][0]{\n    ...,\n    "slug": slug.current,\n    capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n    corpo[]{\n      ...,\n      _type == "imagemComAlt" => {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n      markDefs[]{ ..., _type == "link" => { href } }\n    },\n    saidasRelacionadas[]-> {\n  _id,\n  titulo,\n  "slug": slug.current,\n  dataInicio,\n  dataFim,\n  cidadeSaida,\n  resumo,\n  distanciaKm,\n  nivel,\n  vagasTotal,\n  vagasDisponiveis,\n  valor,\n  destaque,\n  imagemCapa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n},\n  ramal->{ nome, "slug": slug.current, km }\n},\n    seo{\n  titulo, descricao, naoIndexar,\n  imagem { ..., "lqip": asset->metadata.lqip }\n},\n    "relacionados": *[_type == "post" && categoria == ^.categoria\n                      && _id != ^._id] | order(publicadoEm desc)[0...3]{\n      _id, titulo, "slug": slug.current, resumo, capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n    },\n    "tempoLeitura": round(length(pt::text(corpo)) / 5 / 200)\n  }\n': POST_POR_SLUG_RESULT;
     '\n  *[_type == "post" && defined(slug.current)][]{ "slug": slug.current }\n': SLUGS_POST_RESULT;
     '\n  *[_type == "post" && categoria == $categoria && publicadoEm <= now()]\n  | order(publicadoEm desc){\n    _id, titulo, "slug": slug.current, resumo, categoria, publicadoEm,\n    capa {\n  ...,\n  "alt": coalesce(alt, ""),\n  "lqip": asset->metadata.lqip,\n  "dimensoes": asset->metadata.dimensions\n}\n  }\n': POSTS_POR_CATEGORIA_RESULT;

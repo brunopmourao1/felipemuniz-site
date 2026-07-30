@@ -36,6 +36,14 @@ export const PROXIMAS_SAIDAS = groq`
   | order(dataInicio asc) ${CARTAO_SAIDA}
 `;
 
+/** As 3 próximas saídas, só os campos que o rodapé usa (roda em toda página). */
+export const RODAPE_SAIDAS = groq`
+  *[_type == "saida" && dataFim >= now()]
+  | order(dataInicio asc)[0...3]{
+    titulo, "slug": slug.current, dataInicio
+  }
+`;
+
 /** Até N saídas para a home; prioriza as marcadas como destaque. */
 export const SAIDAS_HOME = groq`
   *[_type == "saida" && dataFim >= now()]
@@ -156,8 +164,6 @@ export const POSTS = groq`
     capa ${IMAGEM}
   }
 `;
-
-export const TOTAL_POSTS = groq`count(*[_type == "post" && publicadoEm <= now()])`;
 
 export const POST_POR_SLUG = groq`
   *[_type == "post" && slug.current == $slug][0]{

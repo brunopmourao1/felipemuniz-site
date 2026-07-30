@@ -196,6 +196,22 @@ Por que aqui e não em outro lugar:
 
 **Não é precedente pra mais cenas.** A régua pra qualquer proposta futura de "mais uma cena" ou "mais um efeito preso ao scroll" continua sendo a mesma da Credencial: resolve um problema que nenhum dispositivo existente resolve, ou não entra. Três cenas é o teto combinado com o Bruno pra este bloco especificamente.
 
+### 5.1.1 Terceira rodada — identidade visual própria (paleta, tipografia, cabeçalho)
+
+Pedido do Bruno depois de ver a hero em produção: a cor, a tipografia de corpo e o raio de borda da hero cinematográfica passaram a seguir **exatamente** `test_hero/prototipo/cinema-basilica.html` — não mais uma tradução pros tokens gerais do site. Isso abre uma exceção real às regras deste documento, restrita a dois componentes:
+
+- **Paleta própria**, tokens `--hero-*` em `tokens.css`, à parte da paleta geral (`--amarelo-seta`, `--azul-profundo` etc.): `--hero-ambar` (`#e8b34b`), `--hero-ambar-hover` (`#f2c96d`), `--hero-sobre-ambar` (`#10100c`), `--hero-fundo-base` (`#141a14`), `--hero-fundo-escuro` (`#0c0a08`).
+- **Fonte Jost** (`--fonte-hero-corpo`), auto-hospedada como as demais, pro corpo/rótulos da hero e do cabeçalho — terceira exceção de fonte, no mesmo espírito da Newsreader e da Cormorant Garamond (seção 3): uso travado a esses dois blocos, não é a família de corpo do site (que continua Source Sans 3).
+- **Cormorant Garamond ganhou o corte itálico peso 500** (além do 500/600 normal já existente) — a citação da cena 2 passou a usar Cormorant Garamond itálico, não mais Newsreader, pra bater com o protótipo.
+- **Botões em pílula** (`rounded-full`, 999px) nos dois CTAs da cena do guia e no CTA do cabeçalho — os únicos lugares do site com esse raio; em todo o resto continua valendo a regra de 2–4px (seção 8).
+- **Cabeçalho** (`Cabecalho.tsx`, sitewide): logo em Cormorant Garamond, links de menu em Jost caixa normal (não mais Archivo maiúsculo), CTA "Falar com o Felipe" em pílula com `--hero-ambar`. Visível em toda página do site, não só na home — decisão consciente do Bruno, não vazamento de escopo.
+
+**Por que é exceção e não correção:** as regras gerais deste documento (tokens únicos de cor, raio 2–4px, lista fechada de fontes) continuam valendo pro resto do site. Essa rodada não as revoga — abre uma segunda paleta/raio/fonte, isolada nesses dois componentes, do mesmo jeito que a Credencial já é uma ilha de pergaminho/carimbo dentro de um site que por padrão é `--azul-profundo`/anguloso.
+
+Junto com essa mudança, dois bugs reais foram corrigidos (não fazem parte da exceção, eram defeitos pré-existentes):
+- `font-[var(--fonte-x)]` não aplicava `font-family` em lugar nenhum do site — no Tailwind v4 essa sintaxe é a utilidade de *peso* da fonte, não de família. A forma certa é a propriedade arbitrária `[font-family:var(--fonte-x)]`. Corrigido nos ~32 arquivos que usavam o padrão errado — Archivo, IBM Plex Mono e Newsreader agora realmente renderizam (antes, tudo caía pra Source Sans 3 herdada do `body`).
+- A imagem de fundo da cena 1 pedia à Sanity um recorte fixo em retrato (`1920×2560`) de uma foto paisagem (`4727×2659`), cortando a fachada da Basílica. Corrigido pedindo só a largura (sem forçar altura), deixando o `object-fit: cover` do CSS recortar de verdade conforme a tela — igual o protótipo faz com a `<img>` crua.
+
 ---
 
 ## 6. Dispositivos estruturais

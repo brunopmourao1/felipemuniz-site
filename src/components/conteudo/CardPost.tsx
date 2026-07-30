@@ -32,11 +32,11 @@ export function CardPost({ post }: { post: Post }) {
       </div>
       <div className="flex flex-1 flex-col gap-2 p-5">
         {post.categoria && (
-          <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
+          <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
             {rotuloCategoria[post.categoria] ?? post.categoria}
           </p>
         )}
-        <h3 className="font-[var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">{post.titulo}</h3>
+        <h3 className="[font-family:var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">{post.titulo}</h3>
         {post.resumo && <p className="text-sm text-[var(--nevoa-fraca)]">{post.resumo}</p>}
         <Link
           href={`/blog/${post.slug}`}

@@ -19,10 +19,10 @@ export default async function PaginaObrigado({ searchParams }: Props) {
 
   return (
     <Container className="flex min-h-[60vh] flex-col items-start justify-center py-16">
-      <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+      <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
         Recebido
       </p>
-      <h1 className="mt-2 font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+      <h1 className="mt-2 [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
         Seu contato chegou até o Felipe
       </h1>
 

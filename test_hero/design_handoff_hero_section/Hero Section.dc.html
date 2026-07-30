@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=Jost:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+html, body { margin: 0; padding: 0; background: #0c0a08; }
+a { color: #e8b34b; text-decoration: none; } a:hover { color: #f2c96d; }
+@keyframes heroZoom { from { transform: scale(1.06); } to { transform: scale(1.14); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes arrowDraw { from { clip-path: inset(-6% 103% -6% -3%); } to { clip-path: inset(-6% -3% -6% -3%); } }
+@keyframes cuePulse { 0%, 100% { opacity: .45; transform: translateY(0); } 50% { opacity: 1; transform: translateY(6px); } }
+</style>
+</helmet>
+<section data-screen-label="Hero" style="position: relative; width: 100%; min-height: 100vh; overflow: hidden; background: #141a14; font-family: Jost, sans-serif;">
+  <div style="position: absolute; inset: 0; animation: heroZoom 22s ease-out both; transform-origin: 50% 35%;">
+    <image-slot id="hero-basilica" shape="rect" src="./assets/basilica.jpg" placeholder="foto: Basílica de Aparecida" credit="Foto de Thiago Cruz (Pexels)"></image-slot>
+  </div>
+  <div style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(8,10,8,.72) 0%, rgba(8,10,8,.25) 24%, rgba(8,10,8,.18) 55%, rgba(8,10,8,.72) 100%);"></div>
+  <div style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 120% 90% at 50% 45%, rgba(0,0,0,0) 55%, rgba(10,7,3,.5) 100%);"></div>
+
+  <header style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 28px 56px; z-index: 2;">
+    <a href="#" style="display: flex; align-items: center; gap: 12px; color: #fff;">
+      <img src="./assets/seta-amarela.png" alt="" style="width: 44px; display: block;">
+      <span style="font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 26px; letter-spacing: 0.02em;">Felipe Muniz</span>
+    </a>
+    <nav style="display: flex; align-items: center; gap: 36px;">
+      <a href="#saidas" style="color: rgba(255,255,255,.85); font-size: 16px; letter-spacing: 0.08em;" style-hover="color: #fff;">Saídas</a>
+      <a href="#o-caminho" style="color: rgba(255,255,255,.85); font-size: 16px; letter-spacing: 0.08em;" style-hover="color: #fff;">O Caminho</a>
+      <a href="#preparacao" style="color: rgba(255,255,255,.85); font-size: 16px; letter-spacing: 0.08em;" style-hover="color: #fff;">Preparação</a>
+      <a href="#quem-sou" style="color: rgba(255,255,255,.85); font-size: 16px; letter-spacing: 0.08em;" style-hover="color: #fff;">Quem sou</a>
+      <a href="https://wa.me/5511953215363" style="color: #10100c; background: #e8b34b; padding: 11px 24px; border-radius: 999px; font-weight: 500; font-size: 16px;" style-hover="background: #f2c96d; color: #10100c;">Falar com o Felipe</a>
+    </nav>
+  </header>
+
+  <div style="position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: clamp(20px, 8vh, 90px) 24px 130px;">
+    <div style="animation: fadeUp .9s ease-out .2s both; font-size: 15px; font-weight: 500; letter-spacing: 0.5em; padding-left: 0.5em; color: rgba(255,255,255,.82);">CAMINHO DA FÉ · RUMO A APARECIDA</div>
+    <h1 style="animation: fadeUp .9s ease-out .45s both; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: clamp(36px, 4.6vw, 68px); line-height: 1.16; color: #fff; max-width: 17em; margin: clamp(16px, 3vh, 28px) 0 0; text-shadow: 0 2px 30px rgba(0,0,0,.5); text-wrap: pretty;">“O caminho não é sobre a chegada,<br>é sobre a transformação.”</h1>
+    <div style="display: flex; align-items: center; gap: 20px; margin-top: clamp(18px, 3.4vh, 34px); animation: fadeUp .9s ease-out .7s both;">
+      <img src="./assets/seta-amarela.png" alt="" style="width: 120px; display: block; filter: drop-shadow(0 6px 16px rgba(0,0,0,.45)); animation: arrowDraw 1s ease-out 1s both;">
+      <span style="font-size: 19px; font-weight: 500; letter-spacing: 0.42em; padding-left: 0.42em; color: #e8b34b;">SIGA A SETA</span>
+    </div>
+    <div style="display: flex; gap: 18px; margin-top: clamp(24px, 5vh, 52px); flex-wrap: wrap; justify-content: center; animation: fadeUp .9s ease-out .95s both;">
+      <a href="#saidas" style="background: #e8b34b; color: #10100c; padding: 17px 36px; border-radius: 999px; font-weight: 500; font-size: 18px; letter-spacing: 0.03em;" style-hover="background: #f2c96d; color: #10100c;">Ver próximas saídas →</a>
+      <a href="#preparacao" style="border: 1px solid rgba(255,255,255,.45); color: #fff; padding: 17px 36px; border-radius: 999px; font-weight: 400; font-size: 18px; letter-spacing: 0.03em;" style-hover="border-color: #fff; color: #fff;">Receber o guia de preparação</a>
+    </div>
+  </div>
+
+  <div style="position: absolute; bottom: 22px; left: 0; right: 0; text-align: center; pointer-events: none; z-index: 1; animation: fadeUp .9s ease-out 1.4s both;">
+    <div style="font-size: 13px; letter-spacing: 0.4em; padding-left: 0.4em; color: rgba(255,255,255,.75);">ROLE PARA SEGUIR</div>
+    <div style="font-size: 22px; color: #e8b34b; margin-top: 4px; animation: cuePulse 2.2s ease-in-out infinite;">↓</div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}"></script>
+</body>
+</html>

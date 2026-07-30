@@ -1,4 +1,5 @@
 import { urlDaImagem } from '@/sanity/image';
+import { statusDaSaida } from '@/lib/status-saida';
 import type {
   CONFIGURACAO_RESULT,
   SAIDA_POR_SLUG_RESULT,
@@ -53,7 +54,13 @@ export function jsonLdSaida(saida: NonNullable<SAIDA_POR_SLUG_RESULT>) {
         '@type': 'Offer',
         priceCurrency: 'BRL',
         availability:
-          (saida.vagasDisponiveis ?? 0) > 0
+          saida.dataFim &&
+          saida.vagasTotal != null &&
+          statusDaSaida({
+            dataFim: saida.dataFim,
+            vagasTotal: saida.vagasTotal,
+            vagasDisponiveis: saida.vagasDisponiveis ?? 0,
+          }) !== 'esgotada'
             ? 'https://schema.org/InStock'
             : 'https://schema.org/SoldOut',
         validThrough: saida.dataInicio,

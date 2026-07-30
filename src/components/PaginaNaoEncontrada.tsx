@@ -4,10 +4,10 @@ import { Botao } from '@/components/ui/Botao';
 export function PaginaNaoEncontrada() {
   return (
     <Container className="flex min-h-[60vh] flex-col items-start justify-center py-16">
-      <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+      <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
         Erro 404
       </p>
-      <h1 className="mt-2 font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+      <h1 className="mt-2 [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
         Essa página não existe
       </h1>
       <p className="mt-4 max-w-md text-[var(--nevoa-fraca)]">

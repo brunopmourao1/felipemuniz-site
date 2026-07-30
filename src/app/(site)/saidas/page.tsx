@@ -22,10 +22,10 @@ export default async function PaginaSaidas() {
   return (
     <Container className="py-16">
       <section>
-        <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+        <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
           Agenda
         </p>
-        <h1 className="mt-2 font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+        <h1 className="mt-2 [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
           Próximas saídas
         </h1>
 
@@ -47,10 +47,10 @@ export default async function PaginaSaidas() {
 
       {realizadas.length > 0 && (
         <section className="mt-24">
-          <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+          <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
             Já aconteceram
           </p>
-          <h2 className="mt-2 font-[var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h2 className="mt-2 [font-family:var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             Saídas realizadas
           </h2>
           <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

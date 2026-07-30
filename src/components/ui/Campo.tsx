@@ -1,7 +1,7 @@
 import { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react';
 
 const classeControle =
-  'w-full min-h-11 rounded-[var(--raio-m)] border border-[color-mix(in_srgb,var(--dourado)_30%,transparent)] bg-[var(--azul-noite)] px-4 py-2 text-[var(--nevoa)] font-[var(--fonte-corpo)] placeholder:text-[var(--nevoa-fraca)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--amarelo-seta)] focus-visible:border-[var(--amarelo-seta)]';
+  'w-full min-h-11 rounded-[var(--raio-m)] border border-[color-mix(in_srgb,var(--dourado)_30%,transparent)] bg-[var(--azul-noite)] px-4 py-2 text-[var(--nevoa)] [font-family:var(--fonte-corpo)] placeholder:text-[var(--nevoa-fraca)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--amarelo-seta)] focus-visible:border-[var(--amarelo-seta)]';
 
 type PropsBase = {
   label: string;

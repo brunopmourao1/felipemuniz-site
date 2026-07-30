@@ -69,33 +69,33 @@ export default async function PaginaSaida({ params }: Props) {
 
       <header id="cabecalho-saida" className="mt-6">
         {saida.ramal?.nome && (
-          <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+          <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
             {saida.ramal.nome}
           </p>
         )}
-        <h1 className="mt-2 font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+        <h1 className="mt-2 [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
           {saida.titulo}
         </h1>
-        <p className="mt-2 font-[var(--fonte-dados)] text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
+        <p className="mt-2 [font-family:var(--fonte-dados)] text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
           {formatarPeriodo(saida.dataInicio, saida.dataFim)} · {contarDias(saida.dataInicio, saida.dataFim)} dias
         </p>
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <Selo status={status}>{rotuloDoStatus[status]}</Selo>
           {saida.distanciaKm && (
-            <span className="font-[var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)]">
+            <span className="[font-family:var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)]">
               {saida.distanciaKm} km
             </span>
           )}
           {saida.nivel && (
-            <span className="font-[var(--fonte-dados)] text-sm capitalize text-[var(--nevoa-fraca)]">
+            <span className="[font-family:var(--fonte-dados)] text-sm capitalize text-[var(--nevoa-fraca)]">
               Nível {saida.nivel}
             </span>
           )}
         </div>
 
         {saida.valor && (
-          <p className="mt-4 font-[var(--fonte-dados)] text-xl text-[var(--nevoa)]">{saida.valor}</p>
+          <p className="mt-4 [font-family:var(--fonte-dados)] text-xl text-[var(--nevoa)]">{saida.valor}</p>
         )}
 
         <div className="mt-6 flex flex-wrap gap-4">
@@ -119,18 +119,18 @@ export default async function PaginaSaida({ params }: Props) {
 
       {saida.roteiro && saida.roteiro.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-[var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             Roteiro dia a dia
           </h2>
           <ol className="mt-6 flex flex-col gap-6">
             {saida.roteiro.map((dia) => (
               <li key={dia.dia} className="flex gap-4 border-t border-[color-mix(in_srgb,var(--dourado)_20%,transparent)] pt-6">
-                <span className="font-[var(--fonte-dados)] text-2xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
+                <span className="[font-family:var(--fonte-dados)] text-2xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
                   {String(dia.dia).padStart(2, '0')}
                 </span>
                 <div>
-                  <p className="font-[var(--fonte-display)] font-bold text-[var(--nevoa)]">{dia.trecho}</p>
-                  <p className="mt-1 font-[var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
+                  <p className="[font-family:var(--fonte-display)] font-bold text-[var(--nevoa)]">{dia.trecho}</p>
+                  <p className="mt-1 [font-family:var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
                     {dia.km} km{dia.altimetria ? ` · +${dia.altimetria} m` : ''}
                     {dia.pousada ? ` · ${dia.pousada}` : ''}
                   </p>
@@ -146,7 +146,7 @@ export default async function PaginaSaida({ params }: Props) {
         <section className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2">
           {saida.incluso && saida.incluso.length > 0 && (
             <div>
-              <h2 className="font-[var(--fonte-display)] font-bold uppercase tracking-[0.08em] text-[var(--nevoa)]">
+              <h2 className="[font-family:var(--fonte-display)] font-bold uppercase tracking-[0.08em] text-[var(--nevoa)]">
                 Está incluso
               </h2>
               <ul className="mt-4 flex flex-col gap-2">
@@ -158,7 +158,7 @@ export default async function PaginaSaida({ params }: Props) {
           )}
           {saida.naoIncluso && saida.naoIncluso.length > 0 && (
             <div>
-              <h2 className="font-[var(--fonte-display)] font-bold uppercase tracking-[0.08em] text-[var(--nevoa)]">
+              <h2 className="[font-family:var(--fonte-display)] font-bold uppercase tracking-[0.08em] text-[var(--nevoa)]">
                 Não está incluso
               </h2>
               <ul className="mt-4 flex flex-col gap-2">
@@ -173,22 +173,31 @@ export default async function PaginaSaida({ params }: Props) {
 
       {saida.galeria && saida.galeria.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-[var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             Galeria
           </h2>
           <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {saida.galeria.map((foto, i) =>
               foto.asset ? (
-                <li key={i} className="relative aspect-square overflow-hidden rounded-[var(--raio-m)]">
-                  <Image
-                    src={urlDaImagem(foto).width(400).height(400).url()}
-                    alt={foto.alt}
-                    fill
-                    sizes="(min-width: 640px) 25vw, 50vw"
-                    placeholder={foto.lqip ? 'blur' : undefined}
-                    blurDataURL={foto.lqip ?? undefined}
-                    className="object-cover"
-                  />
+                <li key={i}>
+                  <figure>
+                    <div className="relative aspect-square overflow-hidden rounded-[var(--raio-m)]">
+                      <Image
+                        src={urlDaImagem(foto).width(400).height(400).url()}
+                        alt={foto.alt}
+                        fill
+                        sizes="(min-width: 640px) 25vw, 50vw"
+                        placeholder={foto.lqip ? 'blur' : undefined}
+                        blurDataURL={foto.lqip ?? undefined}
+                        className="object-cover"
+                      />
+                    </div>
+                    {foto.legenda && (
+                      <figcaption className="mt-2 text-sm text-[var(--nevoa-fraca)]">
+                        {foto.legenda}
+                      </figcaption>
+                    )}
+                  </figure>
                 </li>
               ) : null
             )}
@@ -198,15 +207,15 @@ export default async function PaginaSaida({ params }: Props) {
 
       {saida.depoimentos && saida.depoimentos.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-[var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             Quem já foi nesta saída
           </h2>
           <ul className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {saida.depoimentos.map((dep) => (
               <li key={dep._id} className="rounded-[var(--raio-m)] bg-[var(--azul-noite)] p-6">
-                <p className="font-[var(--fonte-citacao)] italic text-[var(--nevoa)]">&ldquo;{dep.texto}&rdquo;</p>
+                <p className="[font-family:var(--fonte-citacao)] italic text-[var(--nevoa)]">&ldquo;{dep.texto}&rdquo;</p>
                 {dep.videoUrl && <VideoDepoimento url={dep.videoUrl} />}
-                <p className="mt-3 font-[var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)]">
+                <p className="mt-3 [font-family:var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)]">
                   {dep.nome}{dep.cidade ? ` · ${dep.cidade}` : ''}
                 </p>
               </li>
@@ -217,13 +226,13 @@ export default async function PaginaSaida({ params }: Props) {
 
       {saida.perguntas && saida.perguntas.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-[var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             Dúvidas sobre esta saída
           </h2>
           <dl className="mt-6 flex flex-col gap-6">
             {saida.perguntas.map((p) => (
               <div key={p._id} className="border-t border-[color-mix(in_srgb,var(--dourado)_20%,transparent)] pt-4">
-                <dt className="font-[var(--fonte-display)] font-bold text-[var(--nevoa)]">{p.pergunta}</dt>
+                <dt className="[font-family:var(--fonte-display)] font-bold text-[var(--nevoa)]">{p.pergunta}</dt>
                 <dd className="mt-2 max-w-[var(--largura-conteudo)] text-[var(--nevoa-fraca)]">
                   {p.resposta && <PortableText value={p.resposta} />}
                 </dd>
@@ -235,7 +244,7 @@ export default async function PaginaSaida({ params }: Props) {
 
       <section className="mt-16 grid grid-cols-1 gap-8 rounded-[var(--raio-m)] bg-[var(--azul-noite)] p-8 sm:grid-cols-2">
         <div>
-          <h2 className="font-[var(--fonte-display)] text-[var(--texto-xl)] font-extrabold text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-[var(--texto-xl)] font-extrabold text-[var(--nevoa)]">
             Quer garantir sua vaga?
           </h2>
           <p className="mt-2 text-[var(--nevoa-fraca)]">

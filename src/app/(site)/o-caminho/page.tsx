@@ -25,10 +25,10 @@ export default async function PaginaOCaminho() {
 
   return (
     <Container className="py-16">
-      <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+      <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
         O Caminho
       </p>
-      <h1 className="mt-2 max-w-2xl font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+      <h1 className="mt-2 max-w-2xl [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
         O que é o Caminho da Fé
       </h1>
       <div className="mt-4 max-w-[var(--largura-conteudo)] text-[var(--nevoa-fraca)]">
@@ -71,10 +71,10 @@ export default async function PaginaOCaminho() {
                     )}
                   </div>
                   <div className="flex flex-1 flex-col gap-2 p-5">
-                    <h2 className="font-[var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
+                    <h2 className="[font-family:var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
                       {ramal.nome}
                     </h2>
-                    <p className="font-[var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
+                    <p className="[font-family:var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
                       {ramal.cidadeInicio}
                       {ramal.km ? ` · ${ramal.km} km` : ''}
                       {ramal.diasSugeridos ? ` · ${ramal.diasSugeridos} dias` : ''}

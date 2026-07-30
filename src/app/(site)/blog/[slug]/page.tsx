@@ -39,7 +39,7 @@ const componentesPortableText: PortableTextComponents = {
       ) : null,
     destaque: ({ value }) =>
       value?.texto ? (
-        <blockquote className="my-8 border-l-2 border-[var(--amarelo-seta)] py-2 pl-6 font-[var(--fonte-citacao)] italic text-[var(--nevoa)]">
+        <blockquote className="my-8 border-l-2 border-[var(--amarelo-seta)] py-2 pl-6 [font-family:var(--fonte-citacao)] italic text-[var(--nevoa)]">
           {value.texto}
         </blockquote>
       ) : null,
@@ -94,14 +94,14 @@ export default async function PaginaPost({ params }: Props) {
 
       <header className="mt-6">
         {post.categoria && (
-          <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+          <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
             {rotuloCategoria[post.categoria] ?? post.categoria}
           </p>
         )}
-        <h1 className="mt-2 font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+        <h1 className="mt-2 [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
           {post.titulo}
         </h1>
-        <p className="mt-2 font-[var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
+        <p className="mt-2 [font-family:var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
           {post.tempoLeitura} min de leitura
         </p>
       </header>
@@ -123,14 +123,14 @@ export default async function PaginaPost({ params }: Props) {
       )}
 
       {post.corpo && (
-        <div className="mt-8 max-w-[var(--largura-conteudo)] text-[var(--nevoa)] [&>h2]:mt-8 [&>h2]:font-[var(--fonte-display)] [&>h2]:text-xl [&>h2]:font-bold [&>h3]:mt-6 [&>h3]:font-[var(--fonte-display)] [&>h3]:font-bold [&>p]:mt-4">
+        <div className="mt-8 max-w-[var(--largura-conteudo)] text-[var(--nevoa)] [&>h2]:mt-8 [&>h2]:[font-family:var(--fonte-display)] [&>h2]:text-xl [&>h2]:font-bold [&>h3]:mt-6 [&>h3]:[font-family:var(--fonte-display)] [&>h3]:font-bold [&>p]:mt-4">
           <PortableText value={post.corpo} components={componentesPortableText} />
         </div>
       )}
 
       {post.saidasRelacionadas && post.saidasRelacionadas.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-[var(--fonte-display)] text-[var(--texto-xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-[var(--texto-xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             Saídas relacionadas
           </h2>
           <ul className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -145,7 +145,7 @@ export default async function PaginaPost({ params }: Props) {
 
       {post.relacionados.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-[var(--fonte-display)] text-[var(--texto-xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-[var(--texto-xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             Leia também
           </h2>
           <ul className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">

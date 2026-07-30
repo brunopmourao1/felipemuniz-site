@@ -4,7 +4,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'reac
 type Variante = 'primario' | 'secundario' | 'fantasma';
 
 const baseClasse =
-  'inline-flex items-center justify-center gap-2 min-h-11 px-6 font-[var(--fonte-display)] font-bold uppercase tracking-[0.05em] text-sm rounded-[var(--raio-m)] transition-[filter,transform,background-color] duration-150';
+  'inline-flex items-center justify-center gap-2 min-h-11 px-6 [font-family:var(--fonte-display)] font-bold uppercase tracking-[0.05em] text-sm rounded-[var(--raio-m)] transition-[filter,transform,background-color] duration-150';
 
 const classePorVariante: Record<Variante, string> = {
   primario:
@@ -12,7 +12,7 @@ const classePorVariante: Record<Variante, string> = {
   secundario:
     'bg-transparent text-[var(--nevoa)] border border-[var(--dourado)] hover:bg-[color-mix(in_srgb,var(--dourado)_12%,transparent)]',
   fantasma:
-    'bg-transparent text-[var(--nevoa-fraca)] normal-case font-[var(--fonte-corpo)] font-normal tracking-normal hover:underline',
+    'bg-transparent text-[var(--nevoa-fraca)] normal-case [font-family:var(--fonte-corpo)] font-normal tracking-normal hover:underline',
 };
 
 type PropsComuns = {

@@ -20,10 +20,10 @@ export default async function PaginaDepoimentos() {
 
   return (
     <Container className="py-16">
-      <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+      <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
         Prova social
       </p>
-      <h1 className="mt-2 max-w-2xl font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+      <h1 className="mt-2 max-w-2xl [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
         Quem já caminhou com o Felipe
       </h1>
 
@@ -37,7 +37,7 @@ export default async function PaginaDepoimentos() {
             <li key={dep._id} className="flex flex-col gap-4 rounded-[var(--raio-m)] bg-[var(--azul-noite)] p-6">
               <div className="flex items-center gap-3">
                 {dep.foto?.asset && (
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
+                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-[var(--raio-m)]">
                     <Image
                       src={urlDaImagem(dep.foto).width(96).height(96).url()}
                       alt={dep.foto.alt}
@@ -50,13 +50,13 @@ export default async function PaginaDepoimentos() {
                   </div>
                 )}
                 <div>
-                  <p className="font-[var(--fonte-display)] font-bold text-[var(--nevoa)]">{dep.nome}</p>
+                  <p className="[font-family:var(--fonte-display)] font-bold text-[var(--nevoa)]">{dep.nome}</p>
                   {dep.cidade && <p className="text-sm text-[var(--nevoa-fraca)]">{dep.cidade}</p>}
                 </div>
               </div>
 
               {dep.texto && (
-                <p className="font-[var(--fonte-citacao)] italic text-[var(--nevoa)]">&ldquo;{dep.texto}&rdquo;</p>
+                <p className="[font-family:var(--fonte-citacao)] italic text-[var(--nevoa)]">&ldquo;{dep.texto}&rdquo;</p>
               )}
 
               {dep.videoUrl && <VideoDepoimento url={dep.videoUrl} />}

@@ -46,7 +46,7 @@ export default async function PaginaMaterial({ params }: Props) {
             </div>
           )}
 
-          <h1 className="mt-6 font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h1 className="mt-6 [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             {material.titulo}
           </h1>
           {material.promessa && (
@@ -70,7 +70,7 @@ export default async function PaginaMaterial({ params }: Props) {
         </div>
 
         <div className="rounded-[var(--raio-m)] bg-[var(--azul-noite)] p-8">
-          <h2 className="font-[var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
             Receba grátis por e-mail
           </h2>
           <div className="mt-6">

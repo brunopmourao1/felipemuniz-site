@@ -80,13 +80,13 @@ Ver `04-DESIGN-SYSTEM.md` para o detalhamento. O essencial:
 
 Site **escuro**. Azul-noite (`--azul-profundo: #0B2038`) com amarelo da sinalização da trilha (`--amarelo-seta: #F5B31E`) como único acento forte.
 
-**O amarelo aparece em três lugares e só neles:** ação primária, selo de "últimas vagas", seta de navegação. Se estiver num quarto lugar, está errado.
+**O amarelo aparece em três lugares e só neles:** ação primária, selo de "últimas vagas", seta de navegação. Se estiver num quarto lugar, está errado. (Exceção registrada: a hero cinematográfica e o cabeçalho usam `--hero-ambar`, uma cor própria — ver documento 04, seção 5.1.1.)
 
-**Raio de borda 2–4 px.** A marca do Felipe é angular. Nada de cantos arredondados de app.
+**Raio de borda 2–4 px.** A marca do Felipe é angular. Nada de cantos arredondados de app. (Exceção registrada: os CTAs em pílula da hero e do cabeçalho — mesma seção 5.1.1.)
 
 **Elemento assinatura: A Credencial.** Depoimentos renderizados como carimbos numa página de credencial de peregrino, com rotação determinística derivada do `_id`. É onde a ousadia do projeto é gasta — todo o resto é sóbrio.
 
-**Fontes:** Archivo (display), Source Sans 3 (corpo), IBM Plex Mono (números e dados), Newsreader Italic (só citações de peregrino). Auto-hospedadas em WOFF2, subconjunto `latin` + `latin-ext`.
+**Fontes:** Archivo (display), Source Sans 3 (corpo), IBM Plex Mono (números e dados), Newsreader Italic (só citações de peregrino), mais duas exceções travadas à hero/cabeçalho — Cormorant Garamond e Jost (documento 04, seção 5.1.1). Auto-hospedadas em WOFF2, subconjunto `latin` + `latin-ext`.
 
 ---
 

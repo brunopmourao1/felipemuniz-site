@@ -21,7 +21,7 @@ export function Rodape({
       <Container>
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
           <div>
-            <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+            <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
               Saídas
             </p>
             <ul className="mt-4 flex flex-col gap-2">
@@ -40,7 +40,7 @@ export function Rodape({
           </div>
 
           <div>
-            <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+            <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
               Conteúdo
             </p>
             <ul className="mt-4 flex flex-col gap-2">
@@ -52,7 +52,7 @@ export function Rodape({
           </div>
 
           <div>
-            <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+            <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
               Contato
             </p>
             <ul className="mt-4 flex flex-col gap-2">

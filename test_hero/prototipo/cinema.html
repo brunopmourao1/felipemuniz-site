@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teste — Hero cinemática (scroll-pin) · Felipe Muniz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ambar: #e8b34b;
+    --ambar-hover: #f2c96d;
+    --sobre-ambar: #10100c;
+    --fundo-base: #141a14;
+    --fundo-escuro: #0c0a08;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--fundo-escuro);
+    font-family: Jost, sans-serif;
+  }
+
+  a { color: var(--ambar); text-decoration: none; }
+
+  .nota-teste {
+    position: relative;
+    z-index: 60;
+    background: #1c2418;
+    color: rgba(255,255,255,.7);
+    font: 13px/1.5 system-ui, sans-serif;
+    padding: 10px 24px;
+    text-align: center;
+  }
+  .nota-teste strong { color: var(--ambar); }
+
+  /* ── Cabeçalho fixo, acompanha a página inteira ─────────────── */
+  .cabecalho {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 22px 56px;
+    background: linear-gradient(180deg, rgba(8,10,8,.65) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+  .cabecalho__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+  }
+  .cabecalho__logo img { width: 38px; display: block; }
+  .cabecalho__logo span {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 23px;
+    letter-spacing: 0.02em;
+  }
+  .cabecalho__nav { display: flex; align-items: center; gap: 32px; }
+  .cabecalho__nav a.link {
+    color: rgba(255,255,255,.85);
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    transition: color .15s;
+  }
+  .cabecalho__nav a.link:hover { color: #fff; }
+  .cabecalho__cta {
+    color: var(--sobre-ambar) !important;
+    background: var(--ambar);
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 15px;
+    transition: background .15s;
+  }
+  .cabecalho__cta:hover { background: var(--ambar-hover); }
+
+  @media (max-width: 780px) {
+    .cabecalho { padding: 18px 20px; }
+    .cabecalho__nav { display: none; }
+  }
+
+  /* ── Palco fixo (pin) ─────────────────────────────────────────
+     .pin-wrapper tem altura de várias telas: enquanto ela rola por
+     trás, .pin-stage (sticky) fica parado ocupando 100vh, e a JS
+     troca as cenas conforme a posição do scroll dentro dela. Quando
+     o wrapper termina de rolar, o sticky solta sozinho — sem precisar
+     de nenhum código pra "liberar" a rolagem, é o comportamento
+     nativo do position:sticky. */
+  .pin-wrapper {
+    position: relative;
+    height: 450vh;
+  }
+  .pin-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--fundo-escuro);
+  }
+
+  .cena {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .cena__fundo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .cena__conteudo {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+    max-width: 720px;
+  }
+
+  /* Cena 0 — o lugar */
+  .cena__fundo--lugar {
+    background:
+      radial-gradient(ellipse 90% 70% at 50% 38%, rgba(232,179,75,.08) 0%, transparent 60%),
+      radial-gradient(ellipse 140% 100% at 50% 100%, #1c241a 0%, var(--fundo-escuro) 70%);
+  }
+  .eyebrow-lugar {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.55em;
+    padding-left: 0.55em;
+    color: rgba(255,255,255,.75);
+  }
+  #cena0 .cena__conteudo { max-width: 900px; }
+  .titulo-lugar {
+    margin: 20px 0 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(36px, 6vw, 72px);
+    letter-spacing: 0.06em;
+    color: #fff;
+    text-shadow: 0 2px 40px rgba(0,0,0,.5);
+    white-space: nowrap;
+  }
+  @media (max-width: 700px) {
+    .titulo-lugar { white-space: normal; }
+  }
+  .divisor-lugar {
+    width: 46px;
+    height: 1px;
+    background: var(--ambar);
+    margin: 24px 0;
+  }
+  .subtitulo-lugar {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(17px, 2vw, 21px);
+    color: rgba(255,255,255,.8);
+  }
+
+  /* Cena 1 — a citação */
+  .cena__fundo--citacao {
+    background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(232,179,75,.10) 0%, transparent 65%), var(--fundo-escuro);
+  }
+  .seta-pintura { width: 130px; display: block; filter: drop-shadow(0 8px 20px rgba(0,0,0,.5)); }
+  .citacao {
+    margin: 28px 0 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(24px, 3.6vw, 38px);
+    line-height: 1.3;
+    color: #fff;
+    max-width: 15em;
+  }
+  .siga-seta {
+    margin-top: 22px;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    padding-left: 0.42em;
+    color: var(--ambar);
+  }
+
+  /* Cena 2 — o guia */
+  .cena__fundo--guia img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(38px) brightness(.4) saturate(1.1);
+    transform: scale(1.15);
+  }
+  .cena__fundo--guia::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8,10,8,.55) 0%, rgba(8,10,8,.75) 100%);
+  }
+  .foto-guia {
+    width: min(72vw, 300px);
+    aspect-ratio: 4 / 5;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(232,179,75,.35);
+    box-shadow: 0 20px 60px rgba(0,0,0,.55);
+  }
+  .foto-guia img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .seta-pequena { width: 34px; margin: 26px auto 0; display: block; }
+  .nome-guia {
+    margin: 14px 0 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(26px, 3.4vw, 34px);
+    color: #fff;
+  }
+  .cargo-guia {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    padding-left: 0.28em;
+    color: var(--ambar);
+  }
+  .ctas-guia {
+    display: flex;
+    gap: 14px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .botao {
+    padding: 14px 30px;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .botao--primario { background: var(--ambar); color: var(--sobre-ambar) !important; }
+  .botao--primario:hover { background: var(--ambar-hover); }
+  .botao--secundario { border: 1px solid rgba(255,255,255,.45); color: #fff !important; font-weight: 400; }
+  .botao--secundario:hover { border-color: #fff; }
+
+  /* Indicador de progresso das cenas */
+  .progresso-cenas {
+    position: absolute;
+    left: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .progresso-tick {
+    width: 3px;
+    height: 26px;
+    border-radius: 2px;
+    background: rgba(255,255,255,.25);
+    transition: background .3s;
+  }
+  .progresso-tick.ativo { background: var(--ambar); }
+  @media (max-width: 780px) {
+    .progresso-cenas { left: 16px; }
+  }
+
+  /* Indicador "role para continuar" */
+  .cue-rolagem {
+    position: absolute;
+    bottom: 26px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    text-align: center;
+    pointer-events: none;
+    transition: opacity .3s;
+  }
+  .cue-texto {
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    padding-left: 0.4em;
+    color: rgba(255,255,255,.65);
+  }
+  .cue-seta {
+    font-size: 20px;
+    color: var(--ambar);
+    margin-top: 4px;
+    animation: cuePulse 2.2s ease-in-out infinite;
+  }
+  @keyframes cuePulse {
+    0%, 100% { opacity: .45; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(6px); }
+  }
+
+  /* ── Fallback sem movimento: sem pin, cenas empilhadas normais ── */
+  @media (prefers-reduced-motion: reduce) {
+    .pin-wrapper { height: auto; }
+    .pin-stage { position: relative; height: auto; }
+    .cena {
+      position: relative;
+      opacity: 1;
+      pointer-events: auto;
+      min-height: 100vh;
+      padding: 64px 0;
+    }
+    .cena__fundo--guia img { filter: blur(24px) brightness(.4); transform: scale(1); }
+    .foto-guia { border-color: rgba(232,179,75,.35); }
+    .progresso-cenas, .cue-rolagem, .cue-seta { display: none; }
+    .seta-pintura { clip-path: none !important; }
+  }
+
+  .secao-teste {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--fundo-base);
+    color: rgba(255,255,255,.55);
+    font-size: 15px;
+  }
+  .secao-teste strong { color: var(--ambar); }
+</style>
+</head>
+<body>
+
+<p class="nota-teste"><strong>Protótipo de teste</strong> — sequência cinematográfica fixa (scroll-pin) com 3 cenas: lugar → citação → guia. HTML/CSS + JS puro, sem biblioteca de animação. Role devagar pra ver a transição. Não é código de produção do site Next.js.</p>
+
+<header class="cabecalho">
+  <a href="#" class="cabecalho__logo">
+    <img src="../design_handoff_hero_section/assets/seta-amarela.png" alt="">
+    <span>Felipe Muniz</span>
+  </a>
+  <nav class="cabecalho__nav" aria-label="Menu principal">
+    <a href="#saidas" class="link">Saídas</a>
+    <a href="#o-caminho" class="link">O Caminho</a>
+    <a href="#preparacao" class="link">Preparação</a>
+    <a href="#quem-sou" class="link">Quem sou</a>
+    <a href="https://wa.me/5511953215363" class="cabecalho__cta">Falar com o Felipe</a>
+  </nav>
+</header>
+
+<div class="pin-wrapper" id="pinWrapper">
+  <section class="pin-stage" id="pinStage">
+
+    <div class="cena" id="cena0">
+      <div class="cena__fundo cena__fundo--lugar" aria-hidden="true"></div>
+      <div class="cena__conteudo">
+        <p class="eyebrow-lugar">PEREGRINAÇÃO</p>
+        <h1 class="titulo-lugar">CAMINHO DA FÉ</h1>
+        <div class="divisor-lugar"></div>
+        <p class="subtitulo-lugar">Águas da Prata → Aparecida</p>
+      </div>
+    </div>
+
+    <div class="cena" id="cena1">
+      <div class="cena__fundo cena__fundo--citacao" aria-hidden="true"></div>
+      <div class="cena__conteudo">
+        <img class="seta-pintura" id="setaPintura" src="../design_handoff_hero_section/assets/seta-amarela.png" alt="">
+        <p class="citacao">&ldquo;O caminho não é sobre a chegada,<br>é sobre a transformação.&rdquo;</p>
+        <p class="siga-seta">SIGA A SETA</p>
+      </div>
+    </div>
+
+    <div class="cena" id="cena2">
+      <div class="cena__fundo cena__fundo--guia" aria-hidden="true">
+        <img src="../design_handoff_hero_section/assets/felipe.png" alt="">
+      </div>
+      <div class="cena__conteudo">
+        <div class="foto-guia" id="fotoGuia">
+          <img src="../design_handoff_hero_section/assets/felipe.png" alt="Felipe Muniz, guia do Caminho da Fé, em oração à beira da estrada.">
+        </div>
+        <img class="seta-pequena" src="../design_handoff_hero_section/assets/seta-amarela.png" alt="">
+        <h2 class="nome-guia">Felipe Muniz</h2>
+        <p class="cargo-guia">GUIA DE PEREGRINAÇÃO</p>
+        <p class="cargo-guia">FUNDADOR DO SETA AMARELA</p>
+        <div class="ctas-guia">
+          <a href="#saidas" class="botao botao--primario">Ver próximas saídas →</a>
+          <a href="#preparacao" class="botao botao--secundario">Receber o guia de preparação</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="progresso-cenas" aria-hidden="true">
+      <span class="progresso-tick" data-tick="0"></span>
+      <span class="progresso-tick" data-tick="1"></span>
+      <span class="progresso-tick" data-tick="2"></span>
+    </div>
+
+    <div class="cue-rolagem" id="cueRolagem" aria-hidden="true">
+      <div class="cue-texto">ROLE PARA CONTINUAR</div>
+      <div class="cue-seta">↓</div>
+    </div>
+
+  </section>
+</div>
+
+<section class="secao-teste">
+  <p>Fim do trecho fixo — a partir daqui a rolagem já é normal.<br>
+  No site real, aqui viria o resto da home: <strong>Próximas saídas</strong>, Quem guia, etc.</p>
+</section>
+
+<script>
+  var reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduzMovimento) {
+
+    var wrapper = document.getElementById('pinWrapper');
+    var stage = document.getElementById('pinStage');
+    var cena0 = document.getElementById('cena0');
+    var cena1 = document.getElementById('cena1');
+    var cena2 = document.getElementById('cena2');
+    var setaPintura = document.getElementById('setaPintura');
+    var fotoGuia = document.getElementById('fotoGuia');
+    var cueRolagem = document.getElementById('cueRolagem');
+    var ticks = document.querySelectorAll('.progresso-tick');
+
+    // Pontos de corte do progresso (0 a 1) — ajustar aqui pra mudar o ritmo.
+    var CENA0_SAI_INICIO = 0.20, CENA0_SAI_FIM = 0.32;
+    var CENA1_ENTRA_INICIO = 0.22, CENA1_ENTRA_FIM = 0.34;
+    var CENA1_SAI_INICIO = 0.56, CENA1_SAI_FIM = 0.68;
+    var CENA2_ENTRA_INICIO = 0.58, CENA2_ENTRA_FIM = 0.78;
+    var SETA_INICIO = 0.24, SETA_FIM = 0.36;
+
+    function remapear(v, a, b) {
+      if (b === a) return v >= b ? 1 : 0;
+      var t = (v - a) / (b - a);
+      return t < 0 ? 0 : t > 1 ? 1 : t;
+    }
+
+    // Sobe de 0 a 1 entre [inicio,entradaFim], segura em 1, desce a 0 entre [saidaInicio,fim].
+    function trapezio(p, inicio, entradaFim, saidaInicio, fim) {
+      if (p <= inicio) return 0;
+      if (p < entradaFim) return remapear(p, inicio, entradaFim);
+      if (p <= saidaInicio) return 1;
+      if (p < fim) return 1 - remapear(p, saidaInicio, fim);
+      return 0;
+    }
+
+    // Sobe de 0 a 1 entre [inicio,fim] e segura em 1 — nunca desce (última cena).
+    function rampaFinal(p, inicio, fim) {
+      return remapear(p, inicio, fim);
+    }
+
+    function aplicarCena(el, opacidade, deslocaPx) {
+      el.style.opacity = opacidade;
+      el.style.transform = 'translateY(' + (deslocaPx * (1 - opacidade)) + 'px)';
+      var ativa = opacidade > 0.02;
+      el.style.pointerEvents = ativa ? 'auto' : 'none';
+      if (ativa) el.removeAttribute('aria-hidden');
+      else el.setAttribute('aria-hidden', 'true');
+    }
+
+    var tick = false;
+
+    function atualizar() {
+      tick = false;
+      var alturaRolavel = wrapper.offsetHeight - stage.offsetHeight;
+      var progresso = alturaRolavel > 0
+        ? remapear(window.scrollY - wrapper.offsetTop, 0, alturaRolavel)
+        : 0;
+
+      // cena0 não tem "entrada" — já nasce visível — só calculamos a saída.
+      var op0 = progresso >= CENA0_SAI_FIM ? 0 : progresso <= CENA0_SAI_INICIO ? 1
+        : 1 - remapear(progresso, CENA0_SAI_INICIO, CENA0_SAI_FIM);
+
+      var op1 = trapezio(progresso, CENA1_ENTRA_INICIO, CENA1_ENTRA_FIM, CENA1_SAI_INICIO, CENA1_SAI_FIM);
+      var op2 = rampaFinal(progresso, CENA2_ENTRA_INICIO, CENA2_ENTRA_FIM);
+
+      aplicarCena(cena0, op0, -24);
+      aplicarCena(cena1, op1, 24);
+      aplicarCena(cena2, op2, 24);
+
+      // Seta "pintada" — clip-path revela da esquerda pra direita.
+      var progressoSeta = remapear(progresso, SETA_INICIO, SETA_FIM);
+      var recorteDireita = 103 - progressoSeta * 106;
+      setaPintura.style.clipPath = 'inset(-6% ' + recorteDireita + '% -6% -3%)';
+
+      // Foto do guia — desfoca e reduz o zoom conforme entra em foco.
+      var desfoque = 16 * (1 - op2);
+      var escala = 1.06 - 0.06 * op2;
+      fotoGuia.style.filter = 'blur(' + desfoque + 'px)';
+      fotoGuia.style.transform = 'scale(' + escala + ')';
+
+      // Indicador "role para continuar" — some quando a cena do guia assume.
+      cueRolagem.style.opacity = String(1 - op2);
+
+      // Marcador de progresso: acende o tick da cena mais visível no momento.
+      var indiceAtivo = op2 >= op1 && op2 >= op0 ? 2 : op1 >= op0 ? 1 : 0;
+      ticks.forEach(function (t, i) {
+        t.classList.toggle('ativo', i === indiceAtivo);
+      });
+    }
+
+    atualizar();
+    window.addEventListener('scroll', function () {
+      if (!tick) { tick = true; requestAnimationFrame(atualizar); }
+    }, { passive: true });
+    window.addEventListener('resize', atualizar);
+  }
+</script>
+
+</body>
+</html>

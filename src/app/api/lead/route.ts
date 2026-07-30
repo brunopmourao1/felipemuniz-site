@@ -24,7 +24,12 @@ function excedeuLimite(ip: string, max = 5, janelaMs = 60_000) {
 }
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? 'desconhecido';
+  // x-vercel-forwarded-for é preenchido pelo edge da Vercel e não pode ser
+  // forjado pelo cliente, ao contrário de x-forwarded-for atrás de outro proxy.
+  const ip =
+    (req.headers.get('x-vercel-forwarded-for') ?? req.headers.get('x-forwarded-for'))
+      ?.split(',')[0]
+      ?.trim() || 'desconhecido';
 
   if (excedeuLimite(ip)) {
     return NextResponse.json(

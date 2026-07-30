@@ -19,7 +19,7 @@ export function Acordeao({ itens }: { itens: FAQ_HOME_RESULT }) {
                 onClick={() => setAbertoId(aberto ? null : item._id)}
                 aria-expanded={aberto}
                 aria-controls={`faq-resposta-${item._id}`}
-                className="flex w-full items-center justify-between gap-4 py-4 text-left font-[var(--fonte-display)] font-bold text-[var(--nevoa)]"
+                className="flex w-full items-center justify-between gap-4 py-4 text-left [font-family:var(--fonte-display)] font-bold text-[var(--nevoa)]"
               >
                 {item.pergunta}
                 <span

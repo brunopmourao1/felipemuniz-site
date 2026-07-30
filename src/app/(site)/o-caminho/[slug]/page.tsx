@@ -48,13 +48,13 @@ export default async function PaginaRamal({ params }: Props) {
       </Link>
 
       <header className="mt-6">
-        <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+        <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
           Ramal
         </p>
-        <h1 className="mt-2 font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+        <h1 className="mt-2 [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
           {ramal.nome}
         </h1>
-        <p className="mt-2 font-[var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
+        <p className="mt-2 [font-family:var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
           {ramal.cidadeInicio}
           {ramal.km ? ` · ${ramal.km} km` : ''}
           {ramal.diasSugeridos ? ` · ${ramal.diasSugeridos} dias sugeridos` : ''}
@@ -86,7 +86,7 @@ export default async function PaginaRamal({ params }: Props) {
 
       {ramal.saidas.length > 0 && (
         <section className="mt-16">
-          <h2 className="font-[var(--fonte-display)] text-[var(--texto-xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-[var(--texto-xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             Próximas saídas por este ramal
           </h2>
           <ul className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

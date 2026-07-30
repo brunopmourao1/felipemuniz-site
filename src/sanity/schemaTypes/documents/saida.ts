@@ -1,5 +1,6 @@
 import { defineType, defineField, type SanityDocument } from 'sanity';
 import { icons } from '@sanity/icons';
+import { statusDaSaida, rotuloDoStatus } from '@/lib/status-saida';
 
 export const saida = defineType({
   name: 'saida',
@@ -238,16 +239,22 @@ export const saida = defineType({
       midia: 'imagemCapa',
     },
     prepare: ({ titulo, inicio, fim, vagas, total, midia }) => {
-      const passou = fim && new Date(fim) < new Date();
-      const estado = passou
-        ? 'Realizada'
-        : vagas === 0
-          ? 'Esgotada'
-          : vagas <= Math.ceil((total ?? 0) * 0.3)
-            ? `Últimas ${vagas} vagas`
-            : `${vagas} vagas`;
+      const status =
+        fim != null && vagas != null && total != null
+          ? statusDaSaida({ dataFim: fim, vagasTotal: total, vagasDisponiveis: vagas })
+          : null;
+      const estado = !status
+        ? 'sem dados de vagas'
+        : status === 'aberta' || status === 'ultimas'
+          ? `${rotuloDoStatus[status]} (${vagas})`
+          : rotuloDoStatus[status];
       const data = inicio
-        ? new Date(inicio).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })
+        ? new Date(inicio).toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            timeZone: 'America/Sao_Paulo',
+          })
         : 'sem data';
       return { title: titulo, subtitle: `${data} · ${estado}`, media: midia };
     },

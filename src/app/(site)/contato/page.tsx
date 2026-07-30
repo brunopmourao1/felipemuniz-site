@@ -20,10 +20,10 @@ export default async function PaginaContato() {
 
   return (
     <Container className="py-16">
-      <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+      <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
         Contato
       </p>
-      <h1 className="mt-2 max-w-2xl font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+      <h1 className="mt-2 max-w-2xl [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
         Fale com o Felipe
       </h1>
       <p className="mt-4 max-w-[var(--largura-conteudo)] text-[var(--nevoa-fraca)]">
@@ -34,7 +34,7 @@ export default async function PaginaContato() {
       <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2">
         <div className="flex flex-col gap-6">
           <div>
-            <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
+            <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
               WhatsApp
             </p>
             <div className="mt-3">
@@ -46,7 +46,7 @@ export default async function PaginaContato() {
 
           {email && (
             <div>
-              <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
+              <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
                 E-mail
               </p>
               <a href={`mailto:${email}`} className="mt-2 block text-[var(--nevoa)] hover:text-[var(--amarelo-seta)]">
@@ -57,7 +57,7 @@ export default async function PaginaContato() {
 
           {config?.instagram && (
             <div>
-              <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
+              <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
                 Instagram
               </p>
               <a
@@ -73,7 +73,7 @@ export default async function PaginaContato() {
         </div>
 
         <div className="rounded-[var(--raio-m)] bg-[var(--azul-noite)] p-8">
-          <h2 className="font-[var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
+          <h2 className="[font-family:var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
             Prefere e-mail? Deixe seu contato
           </h2>
           <div className="mt-6">

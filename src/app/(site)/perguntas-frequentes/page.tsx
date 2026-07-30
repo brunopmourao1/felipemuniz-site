@@ -39,10 +39,10 @@ export default async function PaginaFAQ() {
         />
       )}
 
-      <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+      <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
         Dúvidas
       </p>
-      <h1 className="mt-2 max-w-2xl font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+      <h1 className="mt-2 max-w-2xl [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
         Perguntas frequentes
       </h1>
 
@@ -54,7 +54,7 @@ export default async function PaginaFAQ() {
         <div className="mt-10 flex flex-col gap-12">
           {grupos.map((grupo) => (
             <section key={grupo.categoria}>
-              <h2 className="font-[var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
+              <h2 className="[font-family:var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
                 {CATEGORIA_ROTULO[grupo.categoria]}
               </h2>
               <div className="mt-4">

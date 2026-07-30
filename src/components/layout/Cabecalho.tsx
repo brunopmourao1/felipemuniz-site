@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
-import { Botao } from '@/components/ui/Botao';
 import { MenuMobil } from './MenuMobil';
 import { linkDoWhatsapp, mensagemGeral } from '@/lib/whatsapp';
 
@@ -35,36 +34,44 @@ export function Cabecalho({ whatsapp }: { whatsapp: string }) {
       className={`fixed inset-x-0 top-0 z-30 border-b transition-colors duration-300 ${
         solido
           ? 'border-[color-mix(in_srgb,var(--dourado)_20%,transparent)] bg-[var(--azul-profundo)]/95 backdrop-blur'
-          : 'border-transparent bg-transparent'
+          : 'border-transparent'
       }`}
+      style={
+        !solido
+          ? { background: 'linear-gradient(180deg, rgba(8,10,8,.65) 0%, transparent 100%)' }
+          : undefined
+      }
     >
       <Container className="flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src="/marca/seta-amarela.png"
             alt=""
             width={2795}
             height={1525}
-            className="h-4 w-auto"
+            className="h-auto w-[38px]"
           />
-          <span className="font-[var(--fonte-display)] font-extrabold uppercase tracking-[-0.02em] text-[var(--nevoa)]">
+          <span className="[font-family:var(--fonte-hero)] text-[23px] font-semibold tracking-[0.02em] text-white">
             Felipe Muniz
           </span>
         </Link>
 
-        <nav aria-label="Menu principal" className="hidden md:flex items-center gap-6">
+        <nav aria-label="Menu principal" className="hidden md:flex items-center gap-8">
           {ITENS_NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="font-[var(--fonte-display)] text-sm uppercase tracking-[0.05em] text-[var(--nevoa)] hover:text-[var(--amarelo-seta)]"
+              className="[font-family:var(--fonte-hero-corpo)] text-[15px] tracking-[0.08em] text-white/85 transition-colors duration-150 hover:text-white"
             >
               {item.rotulo}
             </Link>
           ))}
-          <Botao href={linkDoWhatsapp(whatsapp, mensagemGeral())} variante="primario">
+          <Link
+            href={linkDoWhatsapp(whatsapp, mensagemGeral())}
+            className="rounded-full bg-[var(--hero-ambar)] px-[22px] py-[10px] [font-family:var(--fonte-hero-corpo)] text-[15px] font-medium text-[var(--hero-sobre-ambar)] transition-colors duration-150 hover:bg-[var(--hero-ambar-hover)]"
+          >
             Falar com o Felipe
-          </Botao>
+          </Link>
         </nav>
 
         <MenuMobil

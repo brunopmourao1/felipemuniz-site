@@ -53,10 +53,10 @@ export default async function PaginaCategoria({ params }: Props) {
         ← Voltar para o blog
       </Link>
 
-      <p className="mt-6 font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+      <p className="mt-6 [font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
         Categoria
       </p>
-      <h1 className="mt-2 font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+      <h1 className="mt-2 [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
         {CATEGORIAS[slug]}
       </h1>
 

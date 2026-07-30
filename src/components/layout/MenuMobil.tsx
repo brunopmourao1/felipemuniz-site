@@ -45,14 +45,14 @@ export function MenuMobil({ itens }: { itens: ItemNav[] }) {
           <nav
             aria-label="Menu principal"
             onClick={(e) => e.stopPropagation()}
-            className="absolute right-0 top-0 flex h-full w-72 max-w-[85vw] flex-col gap-1 bg-[var(--azul-noite)] p-6 pt-20 animate-[deslizar_250ms_ease-out]"
+            className="absolute right-0 top-0 flex h-full w-72 max-w-[85vw] flex-col gap-1 bg-[var(--azul-noite)] p-6 pt-20 animate-[deslizar_250ms_ease-out] motion-reduce:animate-none"
           >
             {itens.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setAberto(false)}
-                className="rounded-[var(--raio-m)] px-3 py-3 text-[var(--nevoa)] font-[var(--fonte-display)] uppercase tracking-[0.05em] hover:bg-[color-mix(in_srgb,var(--dourado)_12%,transparent)]"
+                className="rounded-[var(--raio-m)] px-3 py-3 text-[var(--nevoa)] [font-family:var(--fonte-display)] uppercase tracking-[0.05em] hover:bg-[color-mix(in_srgb,var(--dourado)_12%,transparent)]"
               >
                 {item.rotulo}
               </Link>
@@ -65,9 +65,6 @@ export function MenuMobil({ itens }: { itens: ItemNav[] }) {
         @keyframes deslizar {
           from { transform: translateX(100%); }
           to { transform: translateX(0); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          #menu-mobile { animation: none !important; }
         }
       `}</style>
     </div>

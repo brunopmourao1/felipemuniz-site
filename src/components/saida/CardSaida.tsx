@@ -54,13 +54,13 @@ export function CardSaida({
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5">
-        <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
+        <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--dourado)]">
           {mesAno(saida.dataInicio)}
         </p>
-        <h3 className="font-[var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
+        <h3 className="[font-family:var(--fonte-display)] text-lg font-bold text-[var(--nevoa)]">
           {saida.titulo}
         </h3>
-        <p className="font-[var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
+        <p className="[font-family:var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)] [font-variant-numeric:tabular-nums]">
           {formatarPeriodo(saida.dataInicio, saida.dataFim)} · {contarDias(saida.dataInicio, saida.dataFim)} dias
           {saida.distanciaKm ? ` · ${saida.distanciaKm} km` : ''}
         </p>
@@ -68,7 +68,7 @@ export function CardSaida({
         <hr className="border-t border-[color-mix(in_srgb,var(--dourado)_30%,transparent)]" />
 
         <div className="flex items-center justify-between">
-          <span className="font-[var(--fonte-dados)] text-sm text-[var(--nevoa)]">
+          <span className="[font-family:var(--fonte-dados)] text-sm text-[var(--nevoa)]">
             {variante === 'realizada'
               ? 'Realizada'
               : status === 'esgotada'
@@ -76,7 +76,7 @@ export function CardSaida({
                 : `${saida.vagasDisponiveis ?? 0} vagas`}
           </span>
           {saida.valor && (
-            <span className="font-[var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)]">{saida.valor}</span>
+            <span className="[font-family:var(--fonte-dados)] text-sm text-[var(--nevoa-fraca)]">{saida.valor}</span>
           )}
         </div>
 

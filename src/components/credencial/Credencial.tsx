@@ -17,10 +17,10 @@ export function Credencial({
   return (
     <div className="rounded-[var(--raio-m)] bg-[var(--pergaminho)] px-6 py-10 sm:px-10">
       <div className="flex items-baseline justify-between border-b border-[color-mix(in_srgb,var(--tinta-carimbo)_30%,transparent)] pb-4">
-        <p className="font-[var(--fonte-dados)] text-xs font-bold uppercase tracking-[0.15em] text-[var(--tinta-carimbo)]">
+        <p className="[font-family:var(--fonte-dados)] text-xs font-bold uppercase tracking-[0.15em] text-[var(--tinta-carimbo)]">
           Credencial do peregrino
         </p>
-        <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--tinta-carimbo)] [font-variant-numeric:tabular-nums]">
+        <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.1em] text-[var(--tinta-carimbo)] [font-variant-numeric:tabular-nums]">
           nº {numero}
         </p>
       </div>
@@ -34,7 +34,7 @@ export function Credencial({
       </ul>
 
       {(peregrinosGuiados || saidasRealizadas) && (
-        <p className="mt-6 text-center font-[var(--fonte-dados)] text-sm text-[var(--tinta-carimbo)] [font-variant-numeric:tabular-nums]">
+        <p className="mt-6 text-center [font-family:var(--fonte-dados)] text-sm text-[var(--tinta-carimbo)] [font-variant-numeric:tabular-nums]">
           {peregrinosGuiados ? `${peregrinosGuiados} peregrinos guiados` : ''}
           {peregrinosGuiados && saidasRealizadas ? ' · ' : ''}
           {saidasRealizadas ? `${saidasRealizadas} saídas` : ''}

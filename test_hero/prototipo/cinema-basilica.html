@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teste — Hero cinemática, fundo Basílica · Felipe Muniz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ambar: #e8b34b;
+    --ambar-hover: #f2c96d;
+    --sobre-ambar: #10100c;
+    --fundo-base: #141a14;
+    --fundo-escuro: #0c0a08;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--fundo-escuro);
+    font-family: Jost, sans-serif;
+  }
+
+  a { color: var(--ambar); text-decoration: none; }
+
+  .nota-teste {
+    position: relative;
+    z-index: 60;
+    background: #1c2418;
+    color: rgba(255,255,255,.7);
+    font: 13px/1.5 system-ui, sans-serif;
+    padding: 10px 24px;
+    text-align: center;
+  }
+  .nota-teste strong { color: var(--ambar); }
+
+  /* ── Cabeçalho fixo, acompanha a página inteira ─────────────── */
+  .cabecalho {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 22px 56px;
+    background: linear-gradient(180deg, rgba(8,10,8,.65) 0%, transparent 100%);
+  }
+  .cabecalho__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+  }
+  .cabecalho__logo img { width: 38px; display: block; }
+  .cabecalho__logo span {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 23px;
+    letter-spacing: 0.02em;
+  }
+  .cabecalho__nav { display: flex; align-items: center; gap: 32px; }
+  .cabecalho__nav a.link {
+    color: rgba(255,255,255,.85);
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    transition: color .15s;
+  }
+  .cabecalho__nav a.link:hover { color: #fff; }
+  .cabecalho__cta {
+    color: var(--sobre-ambar) !important;
+    background: var(--ambar);
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 15px;
+    transition: background .15s;
+  }
+  .cabecalho__cta:hover { background: var(--ambar-hover); }
+
+  @media (max-width: 780px) {
+    .cabecalho { padding: 18px 20px; }
+    .cabecalho__nav { display: none; }
+  }
+
+  /* ── Palco fixo (pin) ─────────────────────────────────────────
+     .pin-wrapper tem altura de várias telas: enquanto ela rola por
+     trás, .pin-stage (sticky) fica parado ocupando 100vh, e a JS
+     troca as cenas conforme a posição do scroll dentro dela. Quando
+     o wrapper termina de rolar, o sticky solta sozinho — sem precisar
+     de nenhum código pra "liberar" a rolagem, é o comportamento
+     nativo do position:sticky. */
+  .pin-wrapper {
+    position: relative;
+    height: 220vh;
+  }
+  .pin-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--fundo-escuro);
+  }
+
+  .cena {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity, transform;
+  }
+  .cena__fundo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .cena__conteudo {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+    max-width: 720px;
+  }
+
+  /* Cena 0 — o lugar, agora com a Basílica de Aparecida como fundo */
+  @keyframes heroZoom {
+    from { transform: scale(1.06); }
+    to { transform: scale(1.14); }
+  }
+  .cena__fundo--lugar {
+    overflow: hidden;
+    background: var(--fundo-escuro);
+  }
+  .cena__fundo--lugar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    animation: heroZoom 22s ease-out both;
+    transform-origin: 50% 35%;
+  }
+  .cena__fundo--lugar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(8,10,8,.58) 0%, rgba(8,10,8,.18) 32%, rgba(8,10,8,.3) 58%, rgba(8,10,8,.8) 100%),
+      radial-gradient(ellipse 120% 90% at 50% 45%, transparent 50%, rgba(10,7,3,.5) 100%);
+  }
+  /* Entrada em cascata na primeira carga — só toca uma vez, ao abrir a
+     página; a partir daí quem comanda a cena 0 é o scroll (op0 em
+     aplicarVisual), não essa animação. */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(26px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .eyebrow-lugar {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.55em;
+    padding-left: 0.55em;
+    color: rgba(255,255,255,.75);
+    animation: fadeUp .9s ease-out .15s both;
+  }
+  #cena0 .cena__conteudo { max-width: 900px; }
+  .titulo-lugar {
+    margin: 20px 0 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(36px, 6vw, 72px);
+    letter-spacing: 0.06em;
+    color: #fff;
+    text-shadow: 0 2px 40px rgba(0,0,0,.5);
+    white-space: nowrap;
+    animation: fadeUp 1s ease-out .35s both;
+  }
+  @media (max-width: 700px) {
+    .titulo-lugar { white-space: normal; }
+  }
+  .divisor-lugar {
+    width: 46px;
+    height: 1px;
+    background: var(--ambar);
+    margin: 24px 0 0;
+    animation: fadeUp .9s ease-out .6s both;
+  }
+
+  /* Cena 1 — a citação */
+  .cena__fundo--citacao {
+    background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(232,179,75,.10) 0%, transparent 65%), var(--fundo-escuro);
+  }
+  .seta-pintura { width: 130px; display: block; filter: drop-shadow(0 8px 20px rgba(0,0,0,.5)); }
+  .citacao {
+    margin: 28px 0 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(24px, 3.6vw, 38px);
+    line-height: 1.3;
+    color: #fff;
+    max-width: 15em;
+  }
+  .siga-seta {
+    margin-top: 22px;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    padding-left: 0.42em;
+    color: var(--ambar);
+  }
+
+  /* Cena 2 — o guia */
+  .cena__fundo--guia img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(38px) brightness(.4) saturate(1.1);
+    transform: scale(1.15);
+  }
+  .cena__fundo--guia::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8,10,8,.55) 0%, rgba(8,10,8,.75) 100%);
+  }
+  /* Foco: duas imagens sobrepostas em vez de animar blur() por JS a cada
+     frame — animar o raio do desfoque é caro (o navegador recalcula o
+     efeito inteiro a cada frame); trocar a OPACIDADE de uma camada já
+     desfocada (calculada uma vez só) é praticamente de graça, porque só
+     mexe no compositor. */
+  .foto-guia {
+    position: relative;
+    width: min(72vw, 300px);
+    aspect-ratio: 4 / 5;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(232,179,75,.35);
+    box-shadow: 0 20px 60px rgba(0,0,0,.55);
+    will-change: transform;
+  }
+  .foto-guia img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .foto-guia__desfocada {
+    filter: blur(16px) saturate(1.05);
+    transform: scale(1.15);
+    will-change: opacity;
+  }
+  .seta-pequena { width: 34px; margin: 26px auto 0; display: block; }
+  .nome-guia {
+    margin: 14px 0 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(26px, 3.4vw, 34px);
+    color: #fff;
+  }
+  .cargo-guia {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    padding-left: 0.28em;
+    color: var(--ambar);
+  }
+  .ctas-guia {
+    display: flex;
+    gap: 14px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .botao {
+    padding: 14px 30px;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .botao--primario { background: var(--ambar); color: var(--sobre-ambar) !important; }
+  .botao--primario:hover { background: var(--ambar-hover); }
+  .botao--secundario { border: 1px solid rgba(255,255,255,.45); color: #fff !important; font-weight: 400; }
+  .botao--secundario:hover { border-color: #fff; }
+
+  /* Indicador "role para continuar" */
+  .cue-rolagem {
+    position: absolute;
+    bottom: 26px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    text-align: center;
+    pointer-events: none;
+    transition: opacity .3s;
+  }
+  .cue-texto {
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    padding-left: 0.4em;
+    color: rgba(255,255,255,.65);
+  }
+  .cue-seta {
+    font-size: 20px;
+    color: var(--ambar);
+    margin-top: 4px;
+    animation: cuePulse 2.2s ease-in-out infinite;
+  }
+  @keyframes cuePulse {
+    0%, 100% { opacity: .45; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(6px); }
+  }
+
+  /* ── Fallback sem movimento: sem pin, cenas empilhadas normais ── */
+  @media (prefers-reduced-motion: reduce) {
+    .pin-wrapper { height: auto; }
+    .pin-stage { position: relative; height: auto; }
+    .cena {
+      position: relative;
+      opacity: 1;
+      pointer-events: auto;
+      min-height: 100vh;
+      padding: 64px 0;
+    }
+    .cena__fundo--lugar-img { animation: none; }
+    .eyebrow-lugar, .titulo-lugar, .divisor-lugar { animation: none; }
+    .cena__fundo--guia img { filter: blur(24px) brightness(.4); transform: scale(1); }
+    .foto-guia__desfocada { display: none; }
+    .cue-rolagem, .cue-seta { display: none; }
+    .seta-pintura { clip-path: none !important; }
+  }
+
+  .secao-teste {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--fundo-base);
+    color: rgba(255,255,255,.55);
+    font-size: 15px;
+  }
+  .secao-teste strong { color: var(--ambar); }
+</style>
+</head>
+<body>
+
+<p class="nota-teste"><strong>Protótipo de teste — variante com fundo da Basílica</strong> — mesma sequência de <code>cinema.html</code>, sem os traços de progresso, com o scroll suavizado por interpolação (em vez de preso cru ao evento de scroll) e sem animar o desfoque por JS a cada frame. Não é código de produção do site Next.js.</p>
+
+<header class="cabecalho">
+  <a href="#" class="cabecalho__logo">
+    <img src="../design_handoff_hero_section/assets/seta-amarela.png" alt="">
+    <span>Felipe Muniz</span>
+  </a>
+  <nav class="cabecalho__nav" aria-label="Menu principal">
+    <a href="#saidas" class="link">Saídas</a>
+    <a href="#o-caminho" class="link">O Caminho</a>
+    <a href="#preparacao" class="link">Preparação</a>
+    <a href="#quem-sou" class="link">Quem sou</a>
+    <a href="https://wa.me/5511953215363" class="cabecalho__cta">Falar com o Felipe</a>
+  </nav>
+</header>
+
+<div class="pin-wrapper" id="pinWrapper">
+  <section class="pin-stage" id="pinStage">
+
+    <div class="cena" id="cena0">
+      <div class="cena__fundo cena__fundo--lugar" aria-hidden="true">
+        <img class="cena__fundo--lugar-img" src="../design_handoff_hero_section/assets/basilica.jpg" alt="">
+      </div>
+      <div class="cena__conteudo">
+        <p class="eyebrow-lugar">PEREGRINAÇÃO</p>
+        <h1 class="titulo-lugar">CAMINHO DA FÉ</h1>
+        <div class="divisor-lugar"></div>
+      </div>
+    </div>
+
+    <div class="cena" id="cena1">
+      <div class="cena__fundo cena__fundo--citacao" aria-hidden="true"></div>
+      <div class="cena__conteudo">
+        <img class="seta-pintura" id="setaPintura" src="../design_handoff_hero_section/assets/seta-amarela.png" alt="">
+        <p class="citacao">&ldquo;O caminho não é sobre a chegada,<br>é sobre a transformação.&rdquo;</p>
+        <p class="siga-seta">SIGA A SETA</p>
+      </div>
+    </div>
+
+    <div class="cena" id="cena2">
+      <div class="cena__fundo cena__fundo--guia" aria-hidden="true">
+        <img src="../design_handoff_hero_section/assets/felipe.png" alt="">
+      </div>
+      <div class="cena__conteudo">
+        <div class="foto-guia" id="fotoGuia">
+          <img src="../design_handoff_hero_section/assets/felipe.png" alt="Felipe Muniz, guia do Caminho da Fé, em oração à beira da estrada.">
+          <img class="foto-guia__desfocada" id="fotoGuiaDesfocada" src="../design_handoff_hero_section/assets/felipe.png" alt="" aria-hidden="true">
+        </div>
+        <img class="seta-pequena" src="../design_handoff_hero_section/assets/seta-amarela.png" alt="">
+        <h2 class="nome-guia">Felipe Muniz</h2>
+        <p class="cargo-guia">GUIA DE PEREGRINAÇÃO</p>
+        <div class="ctas-guia">
+          <a href="#saidas" class="botao botao--primario">Ver próximas saídas →</a>
+          <a href="#preparacao" class="botao botao--secundario">Receber o guia de preparação</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cue-rolagem" id="cueRolagem" aria-hidden="true">
+      <div class="cue-texto">ROLE PARA CONTINUAR</div>
+      <div class="cue-seta">↓</div>
+    </div>
+
+  </section>
+</div>
+
+<section class="secao-teste">
+  <p>Fim do trecho fixo — a partir daqui a rolagem já é normal.<br>
+  No site real, aqui viria o resto da home: <strong>Próximas saídas</strong>, Quem guia, etc.</p>
+</section>
+
+<script>
+  var reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduzMovimento) {
+
+    var wrapper = document.getElementById('pinWrapper');
+    var stage = document.getElementById('pinStage');
+    var cena0 = document.getElementById('cena0');
+    var cena1 = document.getElementById('cena1');
+    var cena2 = document.getElementById('cena2');
+    var setaPintura = document.getElementById('setaPintura');
+    var fotoGuia = document.getElementById('fotoGuia');
+    var fotoGuiaDesfocada = document.getElementById('fotoGuiaDesfocada');
+    var cueRolagem = document.getElementById('cueRolagem');
+
+    // Pontos de corte do progresso (0 a 1) — ajustar aqui pra mudar o ritmo.
+    var CENA0_SAI_INICIO = 0.20, CENA0_SAI_FIM = 0.32;
+    var CENA1_ENTRA_INICIO = 0.22, CENA1_ENTRA_FIM = 0.34;
+    var CENA1_SAI_INICIO = 0.56, CENA1_SAI_FIM = 0.68;
+    var CENA2_ENTRA_INICIO = 0.58, CENA2_ENTRA_FIM = 0.78;
+    var SETA_INICIO = 0.24, SETA_FIM = 0.36;
+
+    // Quanto menor, mais "atrasado"/suave o movimento fica atrás do scroll real.
+    var FATOR_SUAVIZACAO = 0.12;
+
+    function remapear(v, a, b) {
+      if (b === a) return v >= b ? 1 : 0;
+      var t = (v - a) / (b - a);
+      return t < 0 ? 0 : t > 1 ? 1 : t;
+    }
+
+    // Sobe de 0 a 1 entre [inicio,entradaFim], segura em 1, desce a 0 entre [saidaInicio,fim].
+    function trapezio(p, inicio, entradaFim, saidaInicio, fim) {
+      if (p <= inicio) return 0;
+      if (p < entradaFim) return remapear(p, inicio, entradaFim);
+      if (p <= saidaInicio) return 1;
+      if (p < fim) return 1 - remapear(p, saidaInicio, fim);
+      return 0;
+    }
+
+    // Sobe de 0 a 1 entre [inicio,fim] e segura em 1 — nunca desce (última cena).
+    function rampaFinal(p, inicio, fim) {
+      return remapear(p, inicio, fim);
+    }
+
+    function aplicarCena(el, opacidade, deslocaPx) {
+      el.style.opacity = opacidade;
+      el.style.transform = 'translateY(' + (deslocaPx * (1 - opacidade)) + 'px)';
+      var ativa = opacidade > 0.02;
+      el.style.pointerEvents = ativa ? 'auto' : 'none';
+      if (ativa) el.removeAttribute('aria-hidden');
+      else el.setAttribute('aria-hidden', 'true');
+    }
+
+    // Medidas de layout — lidas UMA vez (não a cada frame de scroll, que
+    // força reflow síncrono) e recalculadas só quando a página muda de
+    // tamanho de verdade.
+    var offsetTopCache = 0;
+    var alturaRolavelCache = 0;
+    function medir() {
+      offsetTopCache = wrapper.offsetTop;
+      alturaRolavelCache = wrapper.offsetHeight - stage.offsetHeight;
+    }
+
+    function progressoDoScroll() {
+      return alturaRolavelCache > 0
+        ? remapear(window.scrollY - offsetTopCache, 0, alturaRolavelCache)
+        : 0;
+    }
+
+    // Aplica o progresso (já suavizado) na tela. Não lê nada de layout —
+    // só escreve estilo, então é seguro chamar a cada frame.
+    function aplicarVisual(p) {
+      // cena0 não tem "entrada" — já nasce visível — só calculamos a saída.
+      var op0 = p >= CENA0_SAI_FIM ? 0 : p <= CENA0_SAI_INICIO ? 1
+        : 1 - remapear(p, CENA0_SAI_INICIO, CENA0_SAI_FIM);
+
+      var op1 = trapezio(p, CENA1_ENTRA_INICIO, CENA1_ENTRA_FIM, CENA1_SAI_INICIO, CENA1_SAI_FIM);
+      var op2 = rampaFinal(p, CENA2_ENTRA_INICIO, CENA2_ENTRA_FIM);
+
+      aplicarCena(cena0, op0, -24);
+      aplicarCena(cena1, op1, 24);
+      aplicarCena(cena2, op2, 24);
+
+      // Seta "pintada" — clip-path revela da esquerda pra direita.
+      var progressoSeta = remapear(p, SETA_INICIO, SETA_FIM);
+      var recorteDireita = 103 - progressoSeta * 106;
+      setaPintura.style.clipPath = 'inset(-6% ' + recorteDireita + '% -6% -3%)';
+
+      // Foto do guia — a camada desfocada (já pré-calculada em CSS) some
+      // por opacidade conforme a foto entra em foco; nada de blur() sendo
+      // recalculado em JS a cada frame.
+      fotoGuiaDesfocada.style.opacity = String(1 - op2);
+      fotoGuia.style.transform = 'scale(' + (1.05 - 0.05 * op2) + ')';
+
+      // Indicador "role para continuar" — some quando a cena do guia assume.
+      cueRolagem.style.opacity = String(1 - op2);
+    }
+
+    var progressoAlvo = 0;
+    var progressoSuave = 0;
+    var rodando = false;
+
+    function laco() {
+      progressoSuave += (progressoAlvo - progressoSuave) * FATOR_SUAVIZACAO;
+      if (Math.abs(progressoAlvo - progressoSuave) < 0.0005) progressoSuave = progressoAlvo;
+      aplicarVisual(progressoSuave);
+
+      // Continua só enquanto ainda está convergindo pro alvo — parado (e já
+      // alcançado), não há motivo pra continuar gastando frame.
+      if (progressoSuave !== progressoAlvo) {
+        requestAnimationFrame(laco);
+      } else {
+        rodando = false;
+      }
+    }
+
+    function iniciarLaco() {
+      if (rodando) return;
+      rodando = true;
+      requestAnimationFrame(laco);
+    }
+
+    // Só escuta scroll (e só faz aritmética barata) enquanto o trecho fixo
+    // está perto da tela — fora dele não há nada pra atualizar.
+    var intersectando = false;
+    var observador = new IntersectionObserver(function (entradas) {
+      intersectando = entradas[0].isIntersecting;
+      if (intersectando) iniciarLaco();
+    }, { rootMargin: '20% 0px 20% 0px' });
+    observador.observe(wrapper);
+
+    window.addEventListener('scroll', function () {
+      progressoAlvo = progressoDoScroll();
+      if (intersectando) iniciarLaco();
+    }, { passive: true });
+
+    window.addEventListener('resize', function () {
+      medir();
+      progressoAlvo = progressoDoScroll();
+      iniciarLaco();
+    });
+
+    medir();
+    progressoAlvo = progressoDoScroll();
+    progressoSuave = progressoAlvo;
+    aplicarVisual(progressoSuave);
+  }
+</script>
+
+</body>
+</html>

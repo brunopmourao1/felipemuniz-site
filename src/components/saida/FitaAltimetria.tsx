@@ -19,7 +19,7 @@ export function FitaAltimetria({ roteiro }: { roteiro: Dia[] }) {
 
   return (
     <figure className="fita-altimetria">
-      <figcaption className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+      <figcaption className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
         Perfil do percurso
       </figcaption>
       <svg viewBox={`0 0 ${L} ${A}`} role="img"

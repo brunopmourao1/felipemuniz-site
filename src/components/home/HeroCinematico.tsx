@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { urlDaImagem } from '@/sanity/image';
-import { Botao } from '@/components/ui/Botao';
 import type {
   CONFIGURACAO_RESULT,
   MATERIAL_PRINCIPAL_RESULT,
@@ -54,6 +54,8 @@ export function HeroCinematico({
   const cenaLugarRef = useRef<HTMLDivElement>(null);
   const cenaCitacaoRef = useRef<HTMLDivElement>(null);
   const cenaGuiaRef = useRef<HTMLDivElement>(null);
+  const fotoGuiaRef = useRef<HTMLDivElement>(null);
+  const fotoGuiaDesfocadaRef = useRef<HTMLImageElement>(null);
   const setaRef = useRef<HTMLImageElement>(null);
   const cueRef = useRef<HTMLDivElement>(null);
 
@@ -65,6 +67,9 @@ export function HeroCinematico({
     const cenaLugar = cenaLugarRef.current;
     const cenaCitacao = cenaCitacaoRef.current;
     const cenaGuia = cenaGuiaRef.current;
+    // Foto-foco da cena 3 é opcional: só existe quando quemSou.foto vem preenchido.
+    const fotoGuia = fotoGuiaRef.current;
+    const fotoGuiaDesfocada = fotoGuiaDesfocadaRef.current;
     const seta = setaRef.current;
     const cue = cueRef.current;
     if (!wrapper || !stage || !cenaLugar || !cenaCitacao || !cenaGuia || !seta || !cue) return;
@@ -101,6 +106,12 @@ export function HeroCinematico({
       aplicarCena(cenaLugar!, op0, -24);
       aplicarCena(cenaCitacao!, op1, 24);
       aplicarCena(cenaGuia!, op2, 24);
+
+      // Foco: a camada borrada sobre o retrato (pré-calculada em CSS) some
+      // por opacidade conforme a cena entra em foco — trocar opacidade é
+      // praticamente de graça, animar o raio do blur a cada frame não é.
+      if (fotoGuiaDesfocada) fotoGuiaDesfocada.style.opacity = String(1 - op2);
+      if (fotoGuia) fotoGuia.style.transform = `scale(${1.05 - 0.05 * op2})`;
 
       // Seta "pintada" — clip-path revela da esquerda pra direita.
       const progressoSeta = remapear(p, SETA_INICIO, SETA_FIM);
@@ -176,7 +187,7 @@ export function HeroCinematico({
     <div ref={wrapperRef} className="relative -mt-16 h-[220vh] motion-reduce:h-auto">
       <section
         ref={stageRef}
-        className="sticky top-0 h-screen overflow-hidden bg-[var(--azul-profundo)] motion-reduce:relative motion-reduce:h-auto"
+        className="sticky top-0 h-screen overflow-hidden bg-[var(--hero-fundo-escuro)] motion-reduce:relative motion-reduce:h-auto"
       >
         {/* Cena 1 — o lugar */}
         <div
@@ -184,13 +195,14 @@ export function HeroCinematico({
           className="absolute inset-0 flex items-center justify-center motion-reduce:relative motion-reduce:min-h-screen motion-reduce:py-16"
         >
           {config?.heroImagem?.asset && (
-            <div className="absolute inset-[-8%] overflow-hidden" aria-hidden="true">
+            <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
               <Image
-                src={urlDaImagem(config.heroImagem).width(1920).height(2560).url()}
+                src={urlDaImagem(config.heroImagem).width(2560).url()}
                 alt={config.heroImagem.alt}
                 fill
                 priority
                 fetchPriority="high"
+                quality={95}
                 sizes="100vw"
                 placeholder={config.heroImagem.lqip ? 'blur' : undefined}
                 blurDataURL={config.heroImagem.lqip ?? undefined}
@@ -203,22 +215,22 @@ export function HeroCinematico({
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(to top, var(--azul-profundo) 0%, color-mix(in srgb, var(--azul-profundo) 55%, transparent) 45%, color-mix(in srgb, var(--azul-profundo) 15%, transparent) 70%, transparent 100%)',
+                'linear-gradient(180deg, rgba(8,10,8,.58) 0%, rgba(8,10,8,.18) 32%, rgba(8,10,8,.3) 58%, rgba(8,10,8,.8) 100%), radial-gradient(ellipse 120% 90% at 50% 45%, transparent 50%, rgba(10,7,3,.5) 100%)',
             }}
           />
           <div className="relative z-[1] flex flex-col items-center px-6 text-center">
-            <p className="animate-[fadeUp_.9s_ease-out_.15s_both] font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+            <p className="animate-[fadeUp_.9s_ease-out_.15s_both] pl-[0.55em] [font-family:var(--fonte-hero-corpo)] text-sm font-medium tracking-[0.55em] text-white/75">
               Peregrinação
             </p>
-            <h1 className="animate-[fadeUp_1s_ease-out_.35s_both] mt-5 max-w-3xl font-[var(--fonte-hero)] text-[var(--texto-4xl)] font-semibold leading-[1] tracking-[0.01em] text-[var(--nevoa)]">
+            <h1 className="animate-[fadeUp_1s_ease-out_.35s_both] mt-5 max-w-3xl [font-family:var(--fonte-hero)] text-[clamp(36px,6vw,72px)] font-semibold tracking-[0.06em] text-white [text-shadow:0_2px_40px_rgba(0,0,0,.5)]">
               {config?.heroTitulo ?? 'Caminhe o Caminho da Fé com quem conhece cada passo'}
             </h1>
             <div
               aria-hidden="true"
-              className="animate-[fadeUp_.9s_ease-out_.4s_both] mt-6 h-px w-12 bg-[var(--dourado)]"
+              className="animate-[fadeUp_.9s_ease-out_.6s_both] mt-6 h-px w-[46px] bg-[var(--hero-ambar)]"
             />
             {config?.heroSubtitulo && (
-              <p className="animate-[fadeUp_.9s_ease-out_.55s_both] mt-6 max-w-xl text-[var(--texto-lg)] text-[var(--nevoa-fraca)]">
+              <p className="animate-[fadeUp_.9s_ease-out_.55s_both] mt-6 max-w-xl [font-family:var(--fonte-hero-corpo)] text-[var(--texto-lg)] text-white/80">
                 {config.heroSubtitulo}
               </p>
             )}
@@ -230,6 +242,14 @@ export function HeroCinematico({
           ref={cenaCitacaoRef}
           className="absolute inset-0 flex items-center justify-center opacity-0 motion-reduce:relative motion-reduce:min-h-screen motion-reduce:py-16 motion-reduce:opacity-100"
         >
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse 70% 55% at 50% 42%, color-mix(in srgb, var(--hero-ambar) 10%, transparent) 0%, transparent 65%), var(--hero-fundo-escuro)',
+            }}
+          />
           <div className="relative z-[1] flex max-w-xl flex-col items-center px-6 text-center">
             <Image
               ref={setaRef}
@@ -237,15 +257,15 @@ export function HeroCinematico({
               alt=""
               width={2795}
               height={1525}
-              className="h-auto w-32 [clip-path:inset(-6%_103%_-6%_-3%)] [filter:drop-shadow(0_6px_16px_rgba(0,0,0,.45))] motion-reduce:[clip-path:none]"
+              className="h-auto w-[130px] [clip-path:inset(-6%_103%_-6%_-3%)] [filter:drop-shadow(var(--sombra-m))] motion-reduce:[clip-path:none]"
             />
-            <p className="mt-6 font-[var(--fonte-citacao)] text-[var(--texto-2xl)] italic text-[var(--nevoa)]">
+            <p className="mt-[28px] max-w-[15em] [font-family:var(--fonte-hero)] text-[clamp(24px,3.6vw,38px)] font-medium italic leading-[1.3] text-white">
               &ldquo;
               {config?.heroCitacao ??
                 'O caminho não é sobre a chegada, é sobre a transformação.'}
               &rdquo;
             </p>
-            <p className="mt-4 font-[var(--fonte-dados)] text-sm uppercase tracking-[0.35em] text-[var(--dourado)]">
+            <p className="mt-[22px] pl-[0.42em] [font-family:var(--fonte-hero-corpo)] text-[15px] font-medium tracking-[0.42em] text-[var(--hero-ambar)]">
               Siga a seta
             </p>
           </div>
@@ -256,9 +276,30 @@ export function HeroCinematico({
           ref={cenaGuiaRef}
           className="absolute inset-0 flex items-center justify-center opacity-0 motion-reduce:relative motion-reduce:min-h-screen motion-reduce:py-16 motion-reduce:opacity-100"
         >
+          {quemSou?.foto?.asset && (
+            <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+              <Image
+                src={urlDaImagem(quemSou.foto).width(1200).height(1200).url()}
+                alt=""
+                fill
+                sizes="100vw"
+                className="scale-[1.15] object-cover [filter:blur(38px)_brightness(.4)_saturate(1.1)] motion-reduce:scale-100 motion-reduce:[filter:blur(24px)_brightness(.4)]"
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    'linear-gradient(180deg, rgba(8,10,8,.55) 0%, rgba(8,10,8,.75) 100%)',
+                }}
+              />
+            </div>
+          )}
           <div className="relative z-[1] flex flex-col items-center px-6 text-center">
             {quemSou?.foto?.asset && (
-              <div className="relative aspect-[4/5] w-[min(72vw,300px)] overflow-hidden rounded-[var(--raio-m)] border border-[color-mix(in_srgb,var(--dourado)_35%,transparent)] shadow-[0_20px_60px_rgba(0,0,0,.55)]">
+              <div
+                ref={fotoGuiaRef}
+                className="relative aspect-[4/5] w-[min(72vw,300px)] overflow-hidden rounded-[6px] border border-[color-mix(in_srgb,var(--hero-ambar)_35%,transparent)] shadow-[var(--sombra-g)]"
+              >
                 <Image
                   src={urlDaImagem(quemSou.foto).width(600).height(750).url()}
                   alt={quemSou.foto.alt}
@@ -268,6 +309,15 @@ export function HeroCinematico({
                   blurDataURL={quemSou.foto.lqip ?? undefined}
                   className="object-cover"
                 />
+                <Image
+                  ref={fotoGuiaDesfocadaRef}
+                  src={urlDaImagem(quemSou.foto).width(600).height(750).url()}
+                  alt=""
+                  aria-hidden="true"
+                  fill
+                  sizes="300px"
+                  className="scale-[1.15] object-cover [filter:blur(16px)_saturate(1.05)] motion-reduce:hidden"
+                />
               </div>
             )}
             <Image
@@ -275,22 +325,31 @@ export function HeroCinematico({
               alt=""
               width={2795}
               height={1525}
-              className="mt-6 h-auto w-9"
+              className="mt-[26px] h-auto w-[34px]"
             />
-            <h2 className="mt-3 font-[var(--fonte-hero)] text-[var(--texto-2xl)] font-semibold text-[var(--nevoa)]">
+            <h2 className="mt-[14px] [font-family:var(--fonte-hero)] text-[clamp(26px,3.4vw,34px)] font-semibold text-white">
               Felipe Muniz
             </h2>
-            <p className="mt-1 font-[var(--fonte-dados)] text-xs uppercase tracking-[0.28em] text-[var(--dourado)]">
+            <p className="mt-1 pl-[0.28em] [font-family:var(--fonte-hero-corpo)] text-xs font-medium tracking-[0.28em] text-[var(--hero-ambar)]">
               Guia de peregrinação
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Botao href="/saidas" variante="primario" comSeta>
+            <div className="mt-[30px] flex flex-wrap justify-center gap-[14px]">
+              <Link
+                href="/saidas"
+                className="group inline-flex items-center gap-2 rounded-full bg-[var(--hero-ambar)] px-[30px] py-[14px] [font-family:var(--fonte-hero-corpo)] text-base font-medium tracking-[0.03em] text-[var(--hero-sobre-ambar)] transition-colors duration-150 hover:bg-[var(--hero-ambar-hover)]"
+              >
                 Ver próximas saídas
-              </Botao>
+                <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
               {material?.slug && (
-                <Botao href={`/materiais/${material.slug}`} variante="secundario">
+                <Link
+                  href={`/materiais/${material.slug}`}
+                  className="rounded-full border border-white/45 px-[30px] py-[14px] [font-family:var(--fonte-hero-corpo)] text-base font-normal tracking-[0.03em] text-white transition-colors duration-150 hover:border-white"
+                >
                   Receber o guia de preparação
-                </Botao>
+                </Link>
               )}
             </div>
           </div>
@@ -301,10 +360,10 @@ export function HeroCinematico({
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 bottom-6 z-[1] text-center motion-reduce:hidden"
         >
-          <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.3em] text-[var(--nevoa-fraca)]">
+          <p className="pl-[0.4em] [font-family:var(--fonte-hero-corpo)] text-xs font-medium tracking-[0.4em] text-white/65">
             Role para continuar
           </p>
-          <p className="mt-1 animate-[cuePulse_2.2s_ease-in-out_infinite] text-lg text-[var(--amarelo-seta)]">
+          <p className="mt-1 animate-[cuePulse_2.2s_ease-in-out_infinite] text-[20px] text-[var(--hero-ambar)]">
             ↓
           </p>
         </div>

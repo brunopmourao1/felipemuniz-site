@@ -24,7 +24,11 @@ export const lead = defineType({
     select: { title: 'nome', origem: 'origem', quando: 'recebidoEm' },
     prepare: ({ title, origem, quando }) => ({
       title,
-      subtitle: `${origem ?? 'site'} · ${quando ? new Date(quando).toLocaleDateString('pt-BR') : ''}`,
+      subtitle: `${origem ?? 'site'} · ${
+        quando
+          ? new Date(quando).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+          : ''
+      }`,
     }),
   },
 });

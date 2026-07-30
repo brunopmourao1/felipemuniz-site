@@ -75,7 +75,7 @@ export default async function PaginaQuemSou() {
               {quemSou.credenciais.map((credencial) => (
                 <li
                   key={credencial}
-                  className="rounded-[var(--raio-p)] border border-[var(--dourado)] px-3 py-1 font-[var(--fonte-dados)] text-xs uppercase tracking-[0.05em] text-[var(--nevoa)]"
+                  className="rounded-[var(--raio-p)] border border-[var(--dourado)] px-3 py-1 [font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.05em] text-[var(--nevoa)]"
                 >
                   {credencial}
                 </li>
@@ -85,10 +85,10 @@ export default async function PaginaQuemSou() {
         </div>
 
         <div>
-          <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+          <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
             Quem sou
           </p>
-          <h1 className="mt-2 font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+          <h1 className="mt-2 [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
             {quemSou?.titulo ?? 'Quem caminha com você'}
           </h1>
 

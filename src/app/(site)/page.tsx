@@ -33,9 +33,9 @@ import { HeroCinematico } from '@/components/home/HeroCinematico';
 export const revalidate = 3600;
 
 const classeEyebrow =
-  'font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]';
+  '[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]';
 const classeTituloSecao =
-  'mt-2 font-[var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]';
+  'mt-2 [font-family:var(--fonte-display)] text-[var(--texto-2xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]';
 
 const ETAPAS_COMO_FUNCIONA = [
   {
@@ -139,7 +139,7 @@ export default async function PaginaInicial() {
                 <div className="mt-6 flex flex-wrap gap-8">
                   {config?.peregrinosGuiados != null && (
                     <div>
-                      <p className="font-[var(--fonte-dados)] text-2xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
+                      <p className="[font-family:var(--fonte-dados)] text-2xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
                         {config.peregrinosGuiados}
                       </p>
                       <p className="text-sm text-[var(--nevoa-fraca)]">peregrinos guiados</p>
@@ -147,7 +147,7 @@ export default async function PaginaInicial() {
                   )}
                   {config?.saidasRealizadas != null && (
                     <div>
-                      <p className="font-[var(--fonte-dados)] text-2xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
+                      <p className="[font-family:var(--fonte-dados)] text-2xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
                         {config.saidasRealizadas}
                       </p>
                       <p className="text-sm text-[var(--nevoa-fraca)]">saídas realizadas</p>
@@ -155,7 +155,7 @@ export default async function PaginaInicial() {
                   )}
                   {config?.anoInicio != null && (
                     <div>
-                      <p className="font-[var(--fonte-dados)] text-2xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
+                      <p className="[font-family:var(--fonte-dados)] text-2xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
                         {config.anoInicio}
                       </p>
                       <p className="text-sm text-[var(--nevoa-fraca)]">guiando desde</p>
@@ -176,10 +176,10 @@ export default async function PaginaInicial() {
           <ol className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {ETAPAS_COMO_FUNCIONA.map((etapa) => (
               <li key={etapa.numero} className="border-t border-[color-mix(in_srgb,var(--dourado)_30%,transparent)] pt-4">
-                <span className="font-[var(--fonte-dados)] text-3xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
+                <span className="[font-family:var(--fonte-dados)] text-3xl font-bold text-[var(--dourado)] [font-variant-numeric:tabular-nums]">
                   {etapa.numero}
                 </span>
-                <h3 className="mt-2 font-[var(--fonte-display)] font-bold text-[var(--nevoa)]">{etapa.titulo}</h3>
+                <h3 className="mt-2 [font-family:var(--fonte-display)] font-bold text-[var(--nevoa)]">{etapa.titulo}</h3>
                 <p className="mt-1 text-sm text-[var(--nevoa-fraca)]">{etapa.texto}</p>
               </li>
             ))}

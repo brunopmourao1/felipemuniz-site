@@ -6,7 +6,9 @@ Diário de bordo do desenvolvimento. Atualizado a cada avanço, para retomar o t
 
 ## Onde estamos agora
 
-**Hero cinematográfica pronta localmente — ainda não commitada nem enviada.** Últimos commits em produção (`2bf8111`) são das Fases 3/4. Esta sessão trocou a hero da home por uma sequência fixa no scroll com 3 cenas, mais um cabeçalho transparente-no-topo sitewide, testada e com build limpo, mas **aguardando autorização pra commit/push** antes de ir pra Vercel. O bloqueio de sessões anteriores segue: `RESEND_API_KEY` vazia — ver "Pendências" abaixo.
+**Sessão atual: auditoria de código + identidade visual exata da hero, tudo local, ainda sem commit.** Partiu de uma revisão pedida pelo Bruno (rate limit, duplicação de `statusDaSaida`, tokens de raio/sombra, fuso, `prefers-reduced-motion`) e evoluiu para uma rodada de fidelidade total ao protótipo `test_hero/prototipo/cinema-basilica.html`, documentada no documento 04, seção 5.1.1: paleta `--hero-*` própria, fonte Jost, Cormorant Garamond itálico, botões em pílula na hero e no `Cabecalho` (agora sitewide). Achado e corrigido de passagem: `font-[var(--fonte-x)]` nunca aplicou `font-family` em lugar nenhum do site (bug de sintaxe do Tailwind v4, 32 arquivos corrigidos para `[font-family:var(--fonte-x)]`) e a imagem de fundo da cena 1 estava sendo cortada num formato retrato errado. Testado no navegador, comparado lado a lado com o protótipo (servidor estático local), `npm run build` limpo. **Aguardando autorização pra commit.**
+
+Sessão anterior (histórico, já commitada e no ar): trocou a hero da home por uma sequência fixa no scroll com 3 cenas, mais um cabeçalho transparente-no-topo sitewide. Últimos commits em produção antes dela (`2bf8111`) eram das Fases 3/4. O bloqueio de sessões anteriores segue: `RESEND_API_KEY` vazia — ver "Pendências" abaixo.
 
 **URL de produção (ainda com a hero antiga):** https://felipemuniz-site.vercel.app
 **Studio de produção:** https://felipemuniz-site.vercel.app/studio

@@ -16,14 +16,14 @@ export default async function PaginaPoliticaDePrivacidade() {
 
   return (
     <Container className="py-16">
-      <p className="font-[var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
+      <p className="[font-family:var(--fonte-dados)] text-xs uppercase tracking-[0.15em] text-[var(--dourado)]">
         Política de privacidade
       </p>
-      <h1 className="mt-2 max-w-2xl font-[var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
+      <h1 className="mt-2 max-w-2xl [font-family:var(--fonte-display)] text-[var(--texto-3xl)] font-extrabold tracking-[-0.02em] text-[var(--nevoa)]">
         Como tratamos seus dados
       </h1>
 
-      <div className="mt-8 max-w-[var(--largura-conteudo)] text-[var(--nevoa)] [&>h2]:mt-8 [&>h2]:font-[var(--fonte-display)] [&>h2]:text-lg [&>h2]:font-bold [&>p]:mt-3 [&>ul]:mt-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul>li]:mt-1">
+      <div className="mt-8 max-w-[var(--largura-conteudo)] text-[var(--nevoa)] [&>h2]:mt-8 [&>h2]:[font-family:var(--fonte-display)] [&>h2]:text-lg [&>h2]:font-bold [&>p]:mt-3 [&>ul]:mt-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul>li]:mt-1">
         <p>
           Este site é operado por Felipe Muniz, guia do Caminho da Fé. Esta página explica quais
           dados pessoais coletamos pelos formulários do site, para que servem e como você pode

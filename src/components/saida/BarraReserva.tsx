@@ -36,7 +36,7 @@ export function BarraReserva({
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-4 border-t border-[var(--dourado)] bg-[var(--azul-sombra)] px-4 py-3 md:hidden">
-      <div className="min-w-0 font-[var(--fonte-dados)] text-xs text-[var(--nevoa)] [font-variant-numeric:tabular-nums]">
+      <div className="min-w-0 [font-family:var(--fonte-dados)] text-xs text-[var(--nevoa)] [font-variant-numeric:tabular-nums]">
         <p className="truncate">{periodo}</p>
         <p className="truncate text-[var(--nevoa-fraca)]">{vagasTexto}</p>
       </div>

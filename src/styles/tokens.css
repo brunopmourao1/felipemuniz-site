@@ -55,5 +55,18 @@
 
   --raio-p: 2px;
   --raio-m: 4px;
-  --raio-g: 8px;
+
+  --sombra-m: 0 8px 20px rgba(0, 0, 0, .5);
+  --sombra-g: 0 20px 60px rgba(0, 0, 0, .55);
+
+  /* Paleta e fonte de corpo da hero cinematográfica — vem do protótipo
+     cinema-basilica.html, tratado como identidade visual própria dessa
+     seção (decisão do Bruno, ver PROGRESSO.md). De propósito fora da
+     paleta/escala geral do site — não usar --hero-* fora do HeroCinematico. */
+  --hero-ambar:        #e8b34b;
+  --hero-ambar-hover:  #f2c96d;
+  --hero-sobre-ambar:  #10100c;
+  --hero-fundo-base:   #141a14;
+  --hero-fundo-escuro: #0c0a08;
+  --fonte-hero-corpo:  'Jost', system-ui, sans-serif;
 }

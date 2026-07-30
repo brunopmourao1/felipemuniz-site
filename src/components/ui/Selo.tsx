@@ -10,7 +10,7 @@ const classePorStatus: Record<StatusSaida, string> = {
 export function Selo({ status, children }: { status: StatusSaida; children: React.ReactNode }) {
   return (
     <span
-      className={`inline-block rounded-none px-2 py-1 font-[var(--fonte-dados)] uppercase text-[11px] tracking-[0.1em] ${classePorStatus[status]}`}
+      className={`inline-block rounded-none px-2 py-1 [font-family:var(--fonte-dados)] uppercase text-[11px] tracking-[0.1em] ${classePorStatus[status]}`}
     >
       {children}
     </span>
