@@ -31,18 +31,25 @@ export function Cabecalho({ whatsapp }: { whatsapp: string }) {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-30 border-b transition-colors duration-300 ${
+      className={`fixed inset-x-0 top-0 z-30 transition-colors duration-300 ${
         solido
-          ? 'border-[color-mix(in_srgb,var(--dourado)_20%,transparent)] bg-[var(--azul-profundo)]/95 backdrop-blur'
-          : 'border-transparent'
+          ? 'border-b border-[color-mix(in_srgb,var(--dourado)_20%,transparent)] bg-[var(--azul-profundo)]/95 backdrop-blur'
+          : ''
       }`}
-      style={
-        !solido
-          ? { background: 'linear-gradient(180deg, rgba(8,10,8,.65) 0%, transparent 100%)' }
-          : undefined
-      }
     >
-      <Container className="flex h-16 items-center justify-between">
+      {!solido && (
+        // Mais alto que a barra (64px) de propósito: o degradê já está 100%
+        // transparente aos 64px, a sobra é só pra empurrar a borda da camada
+        // composta pra dentro de uma faixa onde não há nada visível — sem
+        // isso, o Chrome desenha uma linha de costura exatamente no limite
+        // da barra, sobre o vídeo/imagem animado da hero.
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-24"
+          style={{ background: 'linear-gradient(180deg, rgba(8,10,8,.65) 0px, transparent 64px)' }}
+        />
+      )}
+      <Container className="relative flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Image
             src="/marca/seta-amarela.png"
